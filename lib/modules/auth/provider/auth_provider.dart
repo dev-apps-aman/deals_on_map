@@ -10,6 +10,7 @@ import 'package:deals_on_map/service/api_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider extends ChangeNotifier {
   bool locationPermissionGranted = false;
@@ -28,25 +29,33 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future loginApi(BuildContext context, String countryCode1) async {
+  Future<void> loginApi(BuildContext context, String countryCode1) async {
     String result = countryCode1.replaceAll('+', '');
     try {
       var mobile = mobileController.text.trim();
 
       final response = await ApiService.login(mobile, result);
       var json = jsonDecode(response.body);
-      if (json.status == true) {
-        successToast(context, json['massage']);
-        Navigator.push(context, MaterialPageRoute(builder: (context) =>
-            OtpScreen()));
+
+
+      print("API Response: $json");
+
+      if (json.containsKey('message') && json['message'] == "OTP sent successfully") {
+        successToast(context, json['message']);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OtpScreen(mobile: mobile, countryCode: result),
+          ),
+        );
       } else {
-        errorToast(context, json['massage']);
+        errorToast(context, json['message'] ?? "Something went wrong");
       }
     } catch (e) {
       Log.console(e.toString());
     }
-    notifyListeners();
   }
+
 
   Future otpVerify(
     BuildContext context,
@@ -55,12 +64,12 @@ class AuthProvider extends ChangeNotifier {
     String otp,
     String countryCode1,
   ) async {
-    EasyLoading.show(status: 'Loading.....');
+
     try {
       final response = await ApiService.otpVerification(mobile, otp, countryCode1);
       var json = jsonDecode(response.body);
-      OtpModel otpModel = OtpModel.fromJson(json);
-      if (otpModel.status == true) {
+
+      if (json[] == true) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', otpModel.accessToken.toString());
         await prefs.setString('mobile', otpModel.data!.mobile.toString());

@@ -13,7 +13,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class OtpScreen extends StatefulWidget {
-  const OtpScreen({super.key});
+  final String mobile;
+  final String countryCode;
+
+  const OtpScreen({super.key, required this.mobile, required this.countryCode});
 
   @override
   State<OtpScreen> createState() => _OtpScreenState();
