@@ -27,7 +27,6 @@ class ApiService {
     }
   }
 
-  ///loginApi
   static Future<http.Response> login(String mobile, String countryCode) async {
     http.Response response;
     var token = await getAccessToken();
@@ -35,10 +34,12 @@ class ApiService {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
     }, body: {
-      'mobile': mobile,
+      'mobileNumber': mobile,
       "country_code": countryCode,
     });
-    response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
     return response;
   }
 
@@ -66,7 +67,9 @@ class ApiService {
       'flat': flat,
       'address': address,
     });
-    response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
     return response;
   }
 
@@ -74,7 +77,6 @@ class ApiService {
   static Future<http.Response> otpVerification(
     String mobile,
     String otp,
-    String countryCode,
   ) async {
     http.Response response;
     var token = await getAccessToken();
@@ -82,11 +84,12 @@ class ApiService {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
     }, body: {
-      'mobile': mobile,
+      'mobileNumber': mobile,
       'otp': otp,
-      'country_code': countryCode,
     });
-    response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
     return response;
   }
 
@@ -98,7 +101,9 @@ class ApiService {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
     }, body: {});
-    response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
     return response;
   }
 
@@ -113,7 +118,9 @@ class ApiService {
     }, body: {
       'society_id': societyId
     });
-    response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
     return response;
   }
 
@@ -125,7 +132,9 @@ class ApiService {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
     }, body: {});
-    response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
     return response;
   }
 
@@ -140,7 +149,9 @@ class ApiService {
     }, body: {
       'category_id': categoryId,
     });
-    response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
     return response;
   }
 
@@ -155,7 +166,9 @@ class ApiService {
     }, body: {
       'product_id': productId
     });
-    response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
     return response;
   }
 
@@ -168,12 +181,15 @@ class ApiService {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
     }, body: {});
-    response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
     return response;
   }
 
   ///addCart
-  static Future<http.Response> addCart(String productId, String quantity, String remove) async {
+  static Future<http.Response> addCart(
+      String productId, String quantity, String remove) async {
     http.Response response;
     var instance = await SharedPreferences.getInstance();
     var token = instance.getString('access_token');
@@ -185,7 +201,9 @@ class ApiService {
       'quantity': quantity,
       'remove': remove,
     });
-    response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
     return response;
   }
 
@@ -198,7 +216,9 @@ class ApiService {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
     }, body: {});
-    response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
     return response;
   }
 
@@ -214,7 +234,9 @@ class ApiService {
       'product_id': productId,
       'type': type,
     });
-    response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
     return response;
   }
 
@@ -229,7 +251,9 @@ class ApiService {
     }, body: {
       'product_id': productId,
     });
-    response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
     return response;
   }
 
@@ -242,7 +266,9 @@ class ApiService {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
     }, body: {});
-    response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
     return response;
   }
 
@@ -255,7 +281,9 @@ class ApiService {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
     }, body: {});
-    response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
     return response;
   }
 
@@ -270,7 +298,9 @@ class ApiService {
     }, body: {
       'delivery_status': deliveryStatus,
     });
-    response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
     return response;
   }
 
@@ -315,7 +345,9 @@ class ApiService {
       'total_amount': totalAmount,
       'gst_per': gstPer,
     });
-    response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
     return response;
   }
 
@@ -327,13 +359,15 @@ class ApiService {
       var url = ApiUrl.updateProfileImg;
       Log.console('Http.Post Url: $url');
       var token = await getAccessToken();
-      http.MultipartRequest request = http.MultipartRequest('POST', Uri.parse(url));
+      http.MultipartRequest request =
+          http.MultipartRequest('POST', Uri.parse(url));
       request.headers.addAll({
         'Authorization': 'Bearer $token',
       });
       Log.console('Http.Post Headers: ${request.headers}');
       if (profileImage.isNotEmpty) {
-        http.MultipartFile file = await http.MultipartFile.fromPath('profile_image', profileImage);
+        http.MultipartFile file =
+            await http.MultipartFile.fromPath('profile_image', profileImage);
         request.files.add(file);
       }
       Log.console('Http.Post filed: ${request.fields}');
@@ -350,7 +384,9 @@ class ApiService {
       result = http.Response(
         jsonEncode({e.toString()}),
         204,
-        headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'},
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+        },
       );
     }
     return result;
@@ -375,7 +411,9 @@ class ApiService {
       'date_of_birth': dob,
       'whatsapp_number': whatsappNumber,
     });
-    response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
     return response;
   }
 
@@ -390,7 +428,9 @@ class ApiService {
     }, body: {
       "type": type
     });
-    response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
     return response;
   }
 
@@ -405,7 +445,9 @@ class ApiService {
     }, body: {
       "type": type
     });
-    response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
     return response;
   }
 
@@ -418,7 +460,9 @@ class ApiService {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
     }, body: {});
-    response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
     return response;
   }
 
@@ -430,7 +474,9 @@ class ApiService {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
     }, body: {});
-    response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
     return response;
   }
 
@@ -442,7 +488,9 @@ class ApiService {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
     }, body: {});
-    response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
     return response;
   }
 
@@ -454,7 +502,9 @@ class ApiService {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
     }, body: {});
-    response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
     return response;
   }
 
@@ -475,7 +525,9 @@ class ApiService {
         'remove': isRemove,
       },
     );
-    response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
     return response;
   }
 
@@ -488,7 +540,9 @@ class ApiService {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
     }, body: {});
-    response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
     return response;
   }
 
@@ -521,7 +575,9 @@ class ApiService {
       'near_by_landmark': nearByLandmark,
       'address_type': addressType,
     });
-    response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
     return response;
   }
 
@@ -536,7 +592,9 @@ class ApiService {
     }, body: {
       'address_id': addressId,
     });
-    response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
     return response;
   }
 
@@ -551,7 +609,9 @@ class ApiService {
     }, body: {
       'address_id': addressId,
     });
-    response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
     return response;
   }
 }

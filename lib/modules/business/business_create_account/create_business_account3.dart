@@ -4,10 +4,10 @@ import 'package:deals_on_map/constants/styles.dart';
 import 'package:deals_on_map/core/common_widgets/custom_app_bar.dart';
 import 'package:deals_on_map/core/common_widgets/custom_button.dart';
 import 'package:deals_on_map/core/common_widgets/custom_input_fields.dart';
-import 'package:deals_on_map/modules/business/business_create_account/create_business_account2.dart';
-import 'package:deals_on_map/modules/business/business_create_account/create_business_account4.dart';
+import 'package:deals_on_map/modules/business/provider/business_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class CreateBusinessAccount3 extends StatefulWidget {
   const CreateBusinessAccount3({super.key});
@@ -49,23 +49,28 @@ class _CreateBusinessAccount3State extends State<CreateBusinessAccount3> {
                 ),
               ),
               SizedBox(height: 22.h),
-              CustomTextField(
-                borderRadius: 10,
-                fillColor: Colors.white,
-                borderCl: brdColor,
-                hintText: "Website Link",
-                txKeyboardType: TextInputType.phone,
-                maxLength: 10,
-                leading1: Image.asset(
-                  webIc,
-                  height: 20.h,
-                  width: 20.w,
-                ),
+              Consumer<BusinessProvider>(
+                builder: (context, businessProvider, child) {
+                  return CustomTextField(
+                    controller: businessProvider.webLinkController,
+                    borderRadius: 10,
+                    fillColor: Colors.white,
+                    borderCl: brdColor,
+                    hintText: "Website Link",
+                    leading1: Image.asset(
+                      webIc,
+                      height: 20.h,
+                      width: 20.w,
+                    ),
+                  );
+                },
               ),
               SizedBox(height: 30.h),
-              CustomButton(buttonName: "Continue", onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const CreateBusinessAccount4()));
-              }),
+              CustomButton(
+                  buttonName: "Continue",
+                  onPressed: () {
+                    context.read<BusinessProvider>().onWebLinkSubmit(context);
+                  }),
             ],
           ),
         ),

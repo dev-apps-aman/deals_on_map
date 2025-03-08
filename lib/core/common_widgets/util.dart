@@ -3,7 +3,8 @@ import 'package:deals_on_map/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void showToast(BuildContext context, String msg, Color bgColor, Color textColor) {
+void showToast(
+    BuildContext context, String msg, Color bgColor, Color textColor) {
   OverlayEntry overlayEntry = OverlayEntry(
     builder: (context) => Positioned(
       top: 50,
@@ -40,11 +41,11 @@ void showToast(BuildContext context, String msg, Color bgColor, Color textColor)
 }
 
 void successToast(BuildContext context, String msg) {
-  showToast(context, msg, Colors.white, Colors.green);
+  showToast(context, msg, Colors.green, Colors.white);
 }
 
 void errorToast(BuildContext context, String msg) {
-  showToast(context, msg, Colors.white, Colors.red);
+  showToast(context, msg, Colors.red, Colors.white);
 }
 
 void showProgress(BuildContext context) {
@@ -61,8 +62,9 @@ void showProgress(BuildContext context) {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              height: 200.h,width: 200,
-              padding:  EdgeInsets.all(50.h),
+              height: 200.h,
+              width: 200,
+              padding: EdgeInsets.all(50.h),
               decoration: BoxDecoration(
                 color: Colors.transparent,
                 borderRadius: BorderRadius.circular(10),

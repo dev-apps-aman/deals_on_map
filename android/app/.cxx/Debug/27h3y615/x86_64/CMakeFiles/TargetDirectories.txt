@@ -1,0 +1,2 @@
+C:/Users/Aman/Downloads/deals_on_map/deals_on_map/android/app/.cxx/Debug/27h3y615/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/Aman/Downloads/deals_on_map/deals_on_map/android/app/.cxx/Debug/27h3y615/x86_64/CMakeFiles/rebuild_cache.dir

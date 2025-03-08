@@ -61,6 +61,14 @@ const shareArrowIc = "assets/icons/shareArrowIc.png";
 const currentLocIc = "assets/icons/currentLocIc.png";
 const locationOnIc = "assets/icons/locationOnIc.png";
 
+
+
+const shopBegIc = "assets/icons/shop_beg_ic.png";
+const idIc = "assets/icons/id_ic.png";
+
+
+
+
 const pictureIc = "assets/icons/pictureIc.png";
 const pictureFillIc = "assets/icons/pictureFillIc.png";
 const reelIc = "assets/icons/reelIc.png";

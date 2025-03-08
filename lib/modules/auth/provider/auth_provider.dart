@@ -2,8 +2,9 @@
 
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:deals_on_map/core/common_widgets/loader_utils.dart';
 import 'package:deals_on_map/core/common_widgets/util.dart';
+import 'package:deals_on_map/modules/auth/view/location_access_screen.dart';
 import 'package:deals_on_map/modules/auth/view/otp_screen.dart';
 import 'package:deals_on_map/service/api_logs.dart';
 import 'package:deals_on_map/service/api_service.dart';
@@ -15,75 +16,81 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthProvider extends ChangeNotifier {
   bool locationPermissionGranted = false;
   File? image;
-  String countryCode = "";
+  String countryCode = '+91';
+  String otp = '';
   TextEditingController mobileController = TextEditingController();
-
-  void updateImage(File newImage) {
-    image = newImage;
-    notifyListeners();
-  }
 
   void onCountryChange(String countryCode1) {
     countryCode = countryCode1;
-    print(countryCode);
+    Log.console(countryCode);
     notifyListeners();
   }
 
-  Future<void> loginApi(BuildContext context, String countryCode1) async {
-    String result = countryCode1.replaceAll('+', '');
+  Future<void> loginApi(BuildContext context) async {
     try {
-      var mobile = mobileController.text.trim();
+      String mobile = mobileController.text.trim();
+      String result = countryCode.replaceAll('+', '');
 
       final response = await ApiService.login(mobile, result);
       var json = jsonDecode(response.body);
 
+      Log.console("Login API Response: $json");
 
-      print("API Response: $json");
-
-      if (json.containsKey('message') && json['message'] == "OTP sent successfully") {
+      if (json.containsKey('message') &&
+          json['message'] == "OTP sent successfully") {
         successToast(context, json['message']);
+
         Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (context) => OtpScreen(mobile: mobile, countryCode: result),
-          ),
+          MaterialPageRoute(builder: (context) => const OtpScreen()),
         );
       } else {
-        errorToast(context, json['message'] ?? "Something went wrong");
+        errorToast(
+            context,
+            json.containsKey('message')
+                ? json['message']
+                : "Something went wrong");
       }
     } catch (e) {
-      Log.console(e.toString());
+      Log.console("Login API Error: $e");
+      errorToast(context, "An error occurred. Please try again.");
     }
   }
 
+  void updateOtp(String newOtp) {
+    otp = newOtp;
+    notifyListeners();
+  }
 
   Future otpVerify(
     BuildContext context,
-    String name,
-    String mobile,
-    String otp,
-    String countryCode1,
   ) async {
-
     try {
-      final response = await ApiService.otpVerification(mobile, otp, countryCode1);
+      final response =
+          await ApiService.otpVerification(mobileController.text.trim(), otp);
       var json = jsonDecode(response.body);
 
-      if (json[] == true) {
+      if (json['message'] == "OTP verified successfully") {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('token', otpModel.accessToken.toString());
-        await prefs.setString('mobile', otpModel.data!.mobile.toString());
-        await prefs.setString('name', otpModel.data!.name.toString());
-        await prefs.setString('id', otpModel.data!.id.toString());
-        await prefs.setString('relation', otpModel.data!.relation.toString());
-        await prefs.setString('userType', otpModel.data!.userType.toString());
-        await prefs.setString('countryCode1', "+$countryCode1");
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const IntroVideoView()), (route) => false,);
+        await prefs.setString('access_token', json['access_token'] ?? '');
+        await prefs.setString('mobile', json['user']?['mobile'] ?? '');
+        await prefs.setString('name', json['user']?['name'] ?? '');
+        await prefs.setString('id', json['user']?['id']?.toString() ?? '');
+        await prefs.setString('status', json['user']?['status'] ?? '');
+        await prefs.setString('role', json['user']?['role'] ?? '');
+        await prefs.setString('countryCode', countryCode);
+
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const LocationAccessScreen()),
+          (route) => false,
+        );
       } else {
-        errorToast(context, json['massage']);
+        errorToast(context, json['message'] ?? "Invalid OTP");
       }
     } catch (e) {
-      Log.console(e.toString());
+      Log.console("Error in OTP Verification: $e");
+      errorToast(context, "An error occurred. Please try again.");
     }
     notifyListeners();
   }
@@ -92,30 +99,51 @@ class AuthProvider extends ChangeNotifier {
     bool serviceEnabled;
     LocationPermission permission;
 
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      showPermissionDialog(context, 'Location Services Disabled', 'Please enable location services to use this feature.');
-      return;
-    }
+    try {
+      LoaderUtils.showLoader(context);
 
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        showPermissionDialog(context, 'Permission Denied', 'Location permission is required.');
+      serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        LoaderUtils.removeLoader(context);
+        showPermissionDialog(context, 'Location Services Disabled',
+            'Please enable location services to use this feature.');
         return;
       }
+
+      permission = await Geolocator.checkPermission();
+
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          LoaderUtils.removeLoader(context);
+          showPermissionDialog(
+              context, 'Permission Denied', 'Location permission is required.');
+          return;
+        }
+      } else if (permission == LocationPermission.deniedForever) {
+        LoaderUtils.removeLoader(context);
+        showPermissionDialog(context, 'Permission Denied Forever',
+            'Location permission is permanently denied. Please go to settings to enable it.');
+        return;
+      }
+
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      locationPermissionGranted = true;
+
+      LoaderUtils.removeLoader(context);
+      notifyListeners();
+    } catch (e) {
+      LoaderUtils.removeLoader(context);
+      Log.console("Error in location permission: $e");
+      errorToast(context, "Failed to get location permission.");
     }
-
-    Position position = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    );
-
-    locationPermissionGranted = true;
-    notifyListeners();
   }
 
-  void showPermissionDialog(BuildContext context, String title, String content) {
+  void showPermissionDialog(
+      BuildContext context, String title, String content) {
     showCupertinoDialog(
       context: context,
       builder: (BuildContext context) => CupertinoAlertDialog(
@@ -131,5 +159,10 @@ class AuthProvider extends ChangeNotifier {
         ],
       ),
     );
+  }
+
+  void updateImage(File newImage) {
+    image = newImage;
+    notifyListeners();
   }
 }

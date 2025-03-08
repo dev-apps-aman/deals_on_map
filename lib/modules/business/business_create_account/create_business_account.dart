@@ -4,9 +4,10 @@ import 'package:deals_on_map/constants/styles.dart';
 import 'package:deals_on_map/core/common_widgets/custom_app_bar.dart';
 import 'package:deals_on_map/core/common_widgets/custom_button.dart';
 import 'package:deals_on_map/core/common_widgets/custom_input_fields.dart';
-import 'package:deals_on_map/modules/business/business_create_account/create_business_account2.dart';
+import 'package:deals_on_map/modules/business/provider/business_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class CreateBusinessAccount extends StatefulWidget {
   const CreateBusinessAccount({super.key});
@@ -48,23 +49,32 @@ class _CreateBusinessAccountState extends State<CreateBusinessAccount> {
                 ),
               ),
               SizedBox(height: 22.h),
-              CustomTextField(
-                borderRadius: 10,
-                fillColor: Colors.white,
-                borderCl: brdColor,
-                hintText: "Business Name",
-                txKeyboardType: TextInputType.phone,
-                maxLength: 10,
-                leading1: Image.asset(
-                  shopIc,
-                  height: 20.h,
-                  width: 20.w,
-                ),
+              Consumer<BusinessProvider>(
+                builder: (context, businessProvider, child) {
+                  return CustomTextField(
+                    controller: businessProvider.businessNameController,
+                    borderRadius: 10,
+                    fillColor: Colors.white,
+                    borderCl: brdColor,
+                    hintText: "Business Name",
+                    txKeyboardType: TextInputType.text,
+                    leading1: Image.asset(
+                      shopIc,
+                      height: 20.h,
+                      width: 20.w,
+                    ),
+                  );
+                },
               ),
               SizedBox(height: 30.h),
-              CustomButton(buttonName: "Continue", onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const CreateBusinessAccount2()));
-              }),
+              CustomButton(
+                buttonName: "Continue",
+                onPressed: () {
+                  context
+                      .read<BusinessProvider>()
+                      .onBusinessNameSubmit(context);
+                },
+              ),
             ],
           ),
         ),

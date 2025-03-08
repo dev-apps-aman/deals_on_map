@@ -8,20 +8,19 @@ class CustomProgressBar extends StatelessWidget {
   final int currentPage;
   final bool isLoading;
 
-  const CustomProgressBar({super.key, required this.totalPage, required this.currentPage, required this.isLoading});
+  const CustomProgressBar(
+      {super.key,
+      required this.totalPage,
+      required this.currentPage,
+      required this.isLoading});
 
   @override
   Widget build(BuildContext context) {
     double progress = (currentPage) / totalPage;
 
-    Color progressColor = Colors.green;
     if (progress < 0.3) {
-      progressColor = Colors.red;
     } else if (progress < 0.6) {
-      progressColor = Colors.yellow;
-    } else {
-      progressColor = Colors.green;
-    }
+    } else {}
 
     return Stack(
       children: [
@@ -30,9 +29,7 @@ class CustomProgressBar extends StatelessWidget {
             height: 10.h,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-              color: appBarBdrColor,
-              borderRadius: BorderRadius.circular(10)
-            ),
+                color: appBarBdrColor, borderRadius: BorderRadius.circular(10)),
             child: Stack(
               alignment: Alignment.centerLeft,
               children: [
@@ -58,7 +55,8 @@ class CustomProgressBar extends StatelessWidget {
                     value: progress,
                     backgroundColor: Colors.transparent,
                     color: mainColor,
-                    minHeight: 3.h,borderRadius: BorderRadius.circular(10),
+                    minHeight: 3.h,
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
               ],

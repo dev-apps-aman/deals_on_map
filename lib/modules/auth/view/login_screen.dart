@@ -2,10 +2,9 @@ import 'package:deals_on_map/constants/colors.dart';
 import 'package:deals_on_map/constants/images.dart';
 import 'package:deals_on_map/constants/styles.dart';
 import 'package:deals_on_map/core/common_widgets/custom_button.dart';
-import 'package:deals_on_map/core/common_widgets/custom_input_fields.dart';
 import 'package:deals_on_map/modules/auth/provider/auth_provider.dart';
-import 'package:deals_on_map/modules/auth/view/otp_screen.dart';
 import 'package:deals_on_map/modules/dashboard/view/dashboard_screen.dart';
+import 'package:deals_on_map/service/api_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
@@ -19,9 +18,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  String initialCountry = 'NG';
-  PhoneNumber number = PhoneNumber(isoCode: 'US');
-
+  String initialCountry = 'IN';
+  PhoneNumber number = PhoneNumber(isoCode: 'IN');
   @override
   Widget build(BuildContext context) {
     return Consumer<AuthProvider>(builder: (context, authProvider, child) {
@@ -36,12 +34,19 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const Dashboard(index: 0)));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Dashboard(index: 0)));
                     },
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 17.w, vertical: 4.h),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 17.w, vertical: 4.h),
                       margin: EdgeInsets.only(top: 10.h, right: 10.w),
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(6), border: Border.all(color: secondaryFontColor, width: 1)),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6),
+                          border:
+                              Border.all(color: secondaryFontColor, width: 1)),
                       child: const Text(
                         'Skip',
                         style: TextStyle(
@@ -102,15 +107,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     InternationalPhoneNumberInput(
                       onInputChanged: (PhoneNumber number) {
-                        print(number.dialCode);
-                        authProvider.onCountryChange(number.dialCode.toString());
+                        Log.console(number.dialCode);
+                        authProvider
+                            .onCountryChange(number.dialCode.toString());
                       },
                       onInputValidated: (bool value) {
-                        print(value);
+                        Log.console(value);
                       },
                       inputDecoration: InputDecoration(
                         counterText: "",
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 10),
                         hintText: "Enter Your Mobile Number",
                         fillColor: Colors.white,
                         filled: true,
@@ -139,21 +146,23 @@ class _LoginScreenState extends State<LoginScreen> {
                         selectorType: PhoneInputSelectorType.DIALOG,
                       ),
                       ignoreBlank: false,
-                      autoValidateMode: AutovalidateMode.disabled,searchBoxDecoration: const InputDecoration(focusedBorder: OutlineInputBorder(borderSide: BorderSide(
-                      color: brdColor
-                    ))),
+                      autoValidateMode: AutovalidateMode.disabled,
+                      searchBoxDecoration: const InputDecoration(
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: brdColor))),
                       selectorTextStyle: TextStyle(
                         color: headingColor,
                         fontSize: 14.sp,
                         fontFamily: regular,
                         fontWeight: FontWeight.w500,
                       ),
-                      initialValue: number,
+                      initialValue: PhoneNumber(isoCode: 'IN'),
                       spaceBetweenSelectorAndTextField: 0,
                       textFieldController: authProvider.mobileController,
                       selectorButtonOnErrorPadding: 2,
                       formatInput: false,
-                      keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: true),
+                      keyboardType: const TextInputType.numberWithOptions(
+                          signed: true, decimal: true),
                       inputBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.dm),
                         borderSide: const BorderSide(
@@ -207,7 +216,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     CustomButton(
                         buttonName: "Continue",
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const OtpScreen()));
+                          authProvider.loginApi(context);
                         })
                   ],
                 ),

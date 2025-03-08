@@ -1,7 +1,9 @@
 class ApiUrl {
-  static const String baseUrl = "https://rodistaa.com/surefix/api/auth/";
-  static const String imageUrl = "https://rodistaa.com/surefix/public/";
-  static const String login = "${baseUrl}login-registration";
+  static const String baseUrl =
+      "https://project.dealsonmap.aamoditsolutions.com/api/v1/";
+  static const String imageUrl =
+      "https://project.dealsonmap.aamoditsolutions.com/public/";
+  static const String login = "${baseUrl}send-otp";
   static const String register = "${baseUrl}register";
   static const String verifyOtp = "${baseUrl}verify-otp";
   static const String societyList = "${baseUrl}society-list";
@@ -31,6 +33,4 @@ class ApiUrl {
   static const String deleteAddress = "${baseUrl}user/delete-address";
   static const String selectAddress = "${baseUrl}user/select-address";
   static const String contactUs = "${baseUrl}contact-us";
-
-
 }
