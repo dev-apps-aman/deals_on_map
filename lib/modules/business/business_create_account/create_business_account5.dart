@@ -4,8 +4,8 @@ import 'package:deals_on_map/constants/styles.dart';
 import 'package:deals_on_map/core/common_widgets/custom_app_bar.dart';
 import 'package:deals_on_map/core/common_widgets/custom_button.dart';
 import 'package:deals_on_map/core/common_widgets/custom_input_fields.dart';
-import 'package:deals_on_map/modules/business/business_create_account/create_business_account6.dart';
 import 'package:deals_on_map/modules/business/provider/business_provider.dart';
+import 'package:deals_on_map/service/api_logs.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -57,7 +57,7 @@ class _CreateBusinessAccount5State extends State<CreateBusinessAccount5> {
                   items: ["Rajasthan", "Gujraat", "Uttrakhand", "Delhi"],
                   value: "Rajasthan",
                   onChanged: (String? value) {
-                    print("Selected SubCategory: $value");
+                    Log.console("Selected SubCategory: $value");
                   },
                 ),
                 SizedBox(height: 20.h),
@@ -66,7 +66,7 @@ class _CreateBusinessAccount5State extends State<CreateBusinessAccount5> {
                   items: ["Rajasthan", "Gujraat", "Uttrakhand", "Delhi"],
                   value: "Rajasthan",
                   onChanged: (String? value) {
-                    print("Selected SubCategory: $value");
+                    Log.console("Selected SubCategory: $value");
                   },
                 ),
                 SizedBox(height: 20.h),
@@ -75,7 +75,7 @@ class _CreateBusinessAccount5State extends State<CreateBusinessAccount5> {
                   items: ["Rajasthan", "Gujraat", "Uttrakhand", "Delhi"],
                   value: "Rajasthan",
                   onChanged: (String? value) {
-                    print("Selected SubCategory: $value");
+                    Log.console("Selected SubCategory: $value");
                   },
                 ),
                 SizedBox(height: 20.h),
@@ -122,10 +122,11 @@ class _CreateBusinessAccount5State extends State<CreateBusinessAccount5> {
                 Consumer<BusinessProvider>(
                   builder: (context, businessProvider, child) {
                     return CustomButton(
-                        buttonName: "Continue",
-                        onPressed: () {
-                          businessProvider.onBussAddressSubmit(context);
-                        });
+                      buttonName: "Continue",
+                      onPressed: () {
+                        businessProvider.onBussAddressSubmit(context);
+                      },
+                    );
                   },
                 ),
               ],
@@ -150,14 +151,14 @@ class _CreateBusinessAccount5State extends State<CreateBusinessAccount5> {
         label == "" || label == null
             ? const SizedBox.shrink()
             : Text(
-                label,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  color: fontColor,
-                  fontFamily: regular,
-                ),
+              label,
+              style: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w500,
+                color: fontColor,
+                fontFamily: regular,
               ),
+            ),
         label == "" || label == null
             ? const SizedBox.shrink()
             : const SizedBox(height: 8),
@@ -175,16 +176,11 @@ class _CreateBusinessAccount5State extends State<CreateBusinessAccount5> {
                 padding: const EdgeInsets.only(left: 14, right: 14),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: Colors.transparent,
-                  ),
+                  border: Border.all(color: Colors.transparent),
                 ),
               ),
               iconStyleData: const IconStyleData(
-                icon: Icon(
-                  Icons.arrow_drop_down,
-                  size: 24,
-                ),
+                icon: Icon(Icons.arrow_drop_down, size: 24),
                 iconSize: 14,
                 iconEnabledColor: Colors.black,
                 iconDisabledColor: Colors.grey,
@@ -219,24 +215,26 @@ class _CreateBusinessAccount5State extends State<CreateBusinessAccount5> {
                 ),
               ),
               style: const TextStyle(
-                  color: Colors.white60,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500),
+                color: Colors.white60,
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+              ),
               isExpanded: true,
-              items: states.map((paymentType) {
-                return DropdownMenuItem<String>(
-                  value: paymentType,
-                  child: Text(
-                    paymentType,
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      fontFamily: regular,
-                    ),
-                  ),
-                );
-              }).toList(),
+              items:
+                  states.map((paymentType) {
+                    return DropdownMenuItem<String>(
+                      value: paymentType,
+                      child: Text(
+                        paymentType,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: regular,
+                        ),
+                      ),
+                    );
+                  }).toList(),
               onChanged: onChanged,
             ),
           ),

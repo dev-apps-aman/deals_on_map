@@ -120,16 +120,31 @@ class _CustomTextFieldState extends State<CustomTextField> {
         if (widget.labelText != null)
           Text(
             widget.labelText!,
-            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500, color: fontColor, fontFamily: regular),
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w500,
+              color: fontColor,
+              fontFamily: regular,
+            ),
           ),
         if (widget.labelText != null) const SizedBox(height: 4),
         if (widget.labelWidget != null) widget.labelWidget!,
         if (widget.labelWidget != null) const SizedBox(height: 10),
         Container(
-          decoration: const BoxDecoration(boxShadow: [BoxShadow(color: Color.fromRGBO(153, 171, 198, 0.18), offset: Offset(0, 4), spreadRadius: 0, blurRadius: 62)]),
+          decoration: const BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromRGBO(153, 171, 198, 0.18),
+                offset: Offset(0, 4),
+                spreadRadius: 0,
+                blurRadius: 62,
+              ),
+            ],
+          ),
           child: TextFormField(
             readOnly: widget.readOnly ?? false,
-            textCapitalization: widget.textCapitalization ?? TextCapitalization.none,
+            textCapitalization:
+                widget.textCapitalization ?? TextCapitalization.none,
             controller: widget.controller,
             focusNode: widget.focusNode,
             autofocus: widget.isFocused,
@@ -166,59 +181,74 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 color: fontColor,
                 fontFamily: regular,
               ),
-              contentPadding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 14.w),
+              contentPadding: EdgeInsets.symmetric(
+                vertical: 14.h,
+                horizontal: 14.w,
+              ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(widget.borderRadius ?? 12),
-                borderSide: BorderSide(
-                  color: widget.borderCl ?? Colors.white,
-                ),
+                borderSide: BorderSide(color: widget.borderCl ?? Colors.white),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(widget.borderRadius ?? 12),
-                borderSide: const BorderSide(
-                  color: focusedBrdColor,
-                ),
+                borderSide: const BorderSide(color: focusedBrdColor),
               ),
               disabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(widget.borderRadius ?? 12),
-                borderSide: BorderSide(
-                  color: widget.borderCl ?? Colors.white,
-                ),
+                borderSide: BorderSide(color: widget.borderCl ?? Colors.white),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(widget.borderRadius ?? 12),
-                borderSide: BorderSide(
-                  color: widget.borderCl ?? Colors.white,
-                ),
+                borderSide: BorderSide(color: widget.borderCl ?? Colors.white),
               ),
               hintText: widget.hintText,
-              hintStyle: TextStyle(fontSize: 12.sp, color: secondaryFontColor, fontWeight: FontWeight.w400, fontFamily: regular),
+              hintStyle: TextStyle(
+                fontSize: 12.sp,
+                color: secondaryFontColor,
+                fontWeight: FontWeight.w400,
+                fontFamily: regular,
+              ),
               isDense: true,
-              suffixIcon: widget.leading1 == null ? null : Padding(padding: const EdgeInsets.symmetric(horizontal: 12), child: widget.leading1!),
-              suffixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
-              prefixIcon: widget.leading == null
-                  ? null
-                  : Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: widget.leading,
-                    ),
-              prefixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
+              suffixIcon:
+                  widget.leading1 == null
+                      ? null
+                      : Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: widget.leading1!,
+                      ),
+              suffixIconConstraints: const BoxConstraints(
+                minWidth: 0,
+                minHeight: 0,
+              ),
+              prefixIcon:
+                  widget.leading == null
+                      ? null
+                      : Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: widget.leading,
+                      ),
+              prefixIconConstraints: const BoxConstraints(
+                minWidth: 0,
+                minHeight: 0,
+              ),
             ),
             validator: widget.validator,
             inputFormatters: widget.inputFormatters,
           ),
         ),
-        if (widget.focusNode != null && widget.options.isNotEmpty && showdropdown) const SizedBox(height: 8),
-        if (widget.focusNode != null && widget.options.isNotEmpty && showdropdown)
+        if (widget.focusNode != null &&
+            widget.options.isNotEmpty &&
+            showdropdown)
+          const SizedBox(height: 8),
+        if (widget.focusNode != null &&
+            widget.options.isNotEmpty &&
+            showdropdown)
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                width: 0.5,
-                color: Colors.white,
-              ),
+              border: Border.all(width: 0.5, color: Colors.white),
               boxShadow: const [
                 BoxShadow(
                   color: Color.fromRGBO(115, 115, 115, 0.33),
@@ -241,18 +271,17 @@ class _CustomTextFieldState extends State<CustomTextField> {
                       widget.focusNode!.unfocus();
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-                      child: Row(
-                        children: [
-                          Text(e),
-                        ],
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 12,
                       ),
+                      child: Row(children: [Text(e)]),
                     ),
                   ),
                 ),
               ],
             ),
-          )
+          ),
       ],
     );
   }
@@ -340,39 +369,30 @@ class _CustomDateFieldState extends State<CustomDateField> {
             obscureText: widget.obscureText ?? false,
             enabled: widget.isEnabled,
             maxLines: widget.maxCheck,
-            style: const TextStyle(
-              color: mainColor,
-              fontSize: 16,
-            ),
+            style: const TextStyle(color: mainColor, fontSize: 16),
             decoration: InputDecoration(
               counterText: "",
-              contentPadding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 14.w),
-              suffixIcon: const Icon(
-                Icons.calendar_month,
-                color: mainColor,
+              contentPadding: EdgeInsets.symmetric(
+                vertical: 10.h,
+                horizontal: 14.w,
               ),
+              suffixIcon: const Icon(Icons.calendar_month, color: mainColor),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(
-                  color: mainColor,
-                ),
+                borderSide: const BorderSide(color: mainColor),
               ),
               disabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(
-                  color: mainColor,
-                ),
+                borderSide: const BorderSide(color: mainColor),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(
-                  color: mainColor,
-                ),
+                borderSide: const BorderSide(color: mainColor),
               ),
               hintText: widget.hintText,
               hintStyle: TextStyle(
                 fontSize: 16,
-                color: mainColor.withOpacity(0.25),
+                color: mainColor.withAlpha(75),
               ),
             ),
             validator: widget.validator,

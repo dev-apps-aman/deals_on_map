@@ -1,11 +1,9 @@
 import 'package:deals_on_map/constants/colors.dart';
-import 'package:deals_on_map/constants/images.dart';
 import 'package:deals_on_map/constants/styles.dart';
 import 'package:deals_on_map/core/common_widgets/custom_app_bar.dart';
 import 'package:deals_on_map/core/common_widgets/custom_button.dart';
-import 'package:deals_on_map/core/common_widgets/custom_input_fields.dart';
 import 'package:deals_on_map/modules/business/business_pro/view/business_pro.dart';
-import 'package:deals_on_map/modules/business/business_create_account/create_business_account5.dart';
+import 'package:deals_on_map/service/api_logs.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -69,7 +67,8 @@ class _CreateBusinessAccount7State extends State<CreateBusinessAccount7> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        padding: const EdgeInsets.only(top: 3, bottom: 3, left: 3, right: 3),
+                        padding: const EdgeInsets.only(
+                            top: 3, bottom: 3, left: 3, right: 3),
                         margin: const EdgeInsets.only(bottom: 10),
                         decoration: const BoxDecoration(
                           shape: BoxShape.circle,
@@ -121,7 +120,7 @@ class _CreateBusinessAccount7State extends State<CreateBusinessAccount7> {
                       ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          print('Terms of Service clicked');
+                          Log.console('Terms of Service clicked');
                         },
                     ),
                     TextSpan(
@@ -152,7 +151,10 @@ class _CreateBusinessAccount7State extends State<CreateBusinessAccount7> {
               CustomButton(
                   buttonName: "Continue",
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const BusinessPro()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const BusinessPro()));
                   }),
             ],
           ),

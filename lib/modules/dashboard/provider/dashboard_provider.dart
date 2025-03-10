@@ -1,5 +1,4 @@
 import 'package:deals_on_map/modules/business/business_create_account/business_screen.dart';
-import 'package:deals_on_map/modules/business/business_dashboard/view/business_dashboard.dart';
 import 'package:deals_on_map/modules/dashboard/view/home/view/home_screen.dart';
 import 'package:deals_on_map/modules/dashboard/view/map/view/map_screen.dart';
 import 'package:deals_on_map/modules/dashboard/view/offers/view/offers.dart';

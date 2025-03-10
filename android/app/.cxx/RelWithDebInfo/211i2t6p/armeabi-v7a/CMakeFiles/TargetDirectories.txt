@@ -1,0 +1,2 @@
+C:/Users/Aman/Downloads/deals_on_map/deals_on_map/android/app/.cxx/RelWithDebInfo/211i2t6p/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/Aman/Downloads/deals_on_map/deals_on_map/android/app/.cxx/RelWithDebInfo/211i2t6p/armeabi-v7a/CMakeFiles/rebuild_cache.dir
