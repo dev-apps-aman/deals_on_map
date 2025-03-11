@@ -2,10 +2,10 @@ import 'package:deals_on_map/constants/colors.dart';
 import 'package:deals_on_map/constants/images.dart';
 import 'package:deals_on_map/constants/styles.dart';
 import 'package:deals_on_map/core/common_widgets/custom_app_bar2.dart';
-import 'package:deals_on_map/modules/business/business_details/view/business_details.dart';
-import 'package:deals_on_map/modules/business/customize_profile/view/add_contact.dart';
-import 'package:deals_on_map/modules/business/customize_profile/view/add_photos.dart';
-import 'package:deals_on_map/modules/business/customize_profile/view/add_services.dart';
+import 'package:deals_on_map/modules/business/views/business_details/view/business_details.dart';
+import 'package:deals_on_map/modules/business/views/customize_profile/view/add_contact.dart';
+import 'package:deals_on_map/modules/business/views/customize_profile/view/add_photos.dart';
+import 'package:deals_on_map/modules/business/views/customize_profile/view/add_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

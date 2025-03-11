@@ -2,7 +2,7 @@ import 'package:deals_on_map/constants/colors.dart';
 import 'package:deals_on_map/constants/styles.dart';
 import 'package:deals_on_map/core/common_widgets/custom_app_bar.dart';
 import 'package:deals_on_map/core/common_widgets/custom_button.dart';
-import 'package:deals_on_map/modules/business/business_pro/view/business_pro.dart';
+import 'package:deals_on_map/modules/business/views/business_pro/view/business_pro.dart';
 import 'package:deals_on_map/service/api_logs.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';

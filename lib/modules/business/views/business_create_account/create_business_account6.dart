@@ -4,9 +4,10 @@ import 'package:deals_on_map/constants/styles.dart';
 import 'package:deals_on_map/core/common_widgets/custom_app_bar.dart';
 import 'package:deals_on_map/core/common_widgets/custom_button.dart';
 import 'package:deals_on_map/core/common_widgets/custom_input_fields.dart';
-import 'package:deals_on_map/modules/business/business_create_account/create_business_account7.dart';
+import 'package:deals_on_map/modules/business/provider/business_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class CreateBusinessAccount6 extends StatefulWidget {
   const CreateBusinessAccount6({super.key});
@@ -51,7 +52,8 @@ class _CreateBusinessAccount6State extends State<CreateBusinessAccount6> {
               Row(
                 children: [
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 14.w),
+                    padding:
+                        EdgeInsets.symmetric(vertical: 14.h, horizontal: 14.w),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
@@ -86,7 +88,6 @@ class _CreateBusinessAccount6State extends State<CreateBusinessAccount6> {
                       borderCl: unselectedFontColor,
                       hintText: "Enter Mobile Number",
                       txKeyboardType: TextInputType.phone,
-                      maxLength: 10,
                     ),
                   ),
                 ],
@@ -101,7 +102,7 @@ class _CreateBusinessAccount6State extends State<CreateBusinessAccount6> {
                         borderColor: mainColor,
                         textColor: mainColor,
                         onPressed: () {
-                          //Navigator.push(context, MaterialPageRoute(builder: (context) => const CreateBusinessAccount5()));
+                          context.read<BusinessProvider>().onSkip(context);
                         }),
                   ),
                   SizedBox(width: 30.w),
@@ -109,7 +110,9 @@ class _CreateBusinessAccount6State extends State<CreateBusinessAccount6> {
                     child: CustomButton(
                         buttonName: "Continue",
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const CreateBusinessAccount7()));
+                          context
+                              .read<BusinessProvider>()
+                              .onMobileNumberSubmit(context);
                         }),
                   ),
                 ],

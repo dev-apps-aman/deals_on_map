@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:deals_on_map/modules/auth/provider/auth_provider.dart';
+import 'package:deals_on_map/modules/auth/provider/location_provider.dart';
 import 'package:deals_on_map/modules/business/provider/business_provider.dart';
 import 'package:deals_on_map/modules/dashboard/provider/dashboard_provider.dart';
 import 'package:deals_on_map/modules/dashboard/view/home/provider/home_provider.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (_) => DashboardProvider()),
           ChangeNotifierProvider(create: (_) => HomeProvider()),
           ChangeNotifierProvider(create: (_) => BusinessProvider()),
+          ChangeNotifierProvider(create: (_) => LocationProvider()),
         ],
         child: GestureDetector(
             onTap: () {

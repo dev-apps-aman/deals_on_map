@@ -9,14 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-class CreateBusinessAccount extends StatefulWidget {
-  const CreateBusinessAccount({super.key});
+class CreateBusinessAccount1 extends StatelessWidget {
+  const CreateBusinessAccount1({super.key});
 
-  @override
-  State<CreateBusinessAccount> createState() => _CreateBusinessAccountState();
-}
-
-class _CreateBusinessAccountState extends State<CreateBusinessAccount> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(

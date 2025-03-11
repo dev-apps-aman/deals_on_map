@@ -34,10 +34,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Dashboard(index: 0)));
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Dashboard(index: 0)),
+                        (route) => false,
+                      );
                     },
                     child: Container(
                       padding:

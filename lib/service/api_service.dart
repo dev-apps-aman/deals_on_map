@@ -93,6 +93,98 @@ class ApiService {
     return response;
   }
 
+  /// countries list
+  static Future<http.Response> countryList() async {
+    http.Response response;
+    var instance = await SharedPreferences.getInstance();
+    var token = instance.getString('access_token');
+    var result = await ApiClient.postData(ApiUrl.contactUs, headers: {
+      'Authorization': 'Bearer $token',
+      "Accept": "application/json",
+    }, body: {});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
+    return response;
+  }
+
+  /// state list
+  static Future<http.Response> stateList(String country) async {
+    http.Response response;
+    var instance = await SharedPreferences.getInstance();
+    var token = instance.getString('access_token');
+    var result = await ApiClient.postData(ApiUrl.contactUs, headers: {
+      'Authorization': 'Bearer $token',
+      "Accept": "application/json",
+    }, body: {});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
+    return response;
+  }
+
+  /// city list
+  static Future<http.Response> cityList(String state) async {
+    http.Response response;
+    var instance = await SharedPreferences.getInstance();
+    var token = instance.getString('access_token');
+    var result = await ApiClient.postData(ApiUrl.contactUs, headers: {
+      'Authorization': 'Bearer $token',
+      "Accept": "application/json",
+    }, body: {});
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
+    return response;
+  }
+
+  /// seller Reg
+  static Future<http.Response> sellerReg({
+    required String businessName,
+  required  String businessOwnerName,
+  required  String businessType,
+   required String websiteLink,
+  required  String businessCategoryId,
+   required String gstNumber,
+  required  String panCardNumber,
+  required  String countryId,
+   required String stateId,
+  required  String cityId,
+ required   String address,
+  required  String pincode,
+  required  String sellerMobile,
+  }) async {
+    http.Response response;
+    var instance = await SharedPreferences.getInstance();
+    var token = instance.getString('access_token');
+    var result = await ApiClient.postData(
+      ApiUrl.sellerReg,
+      headers: {
+        'Authorization': 'Bearer $token',
+        "Accept": "application/json",
+      },
+      body: {
+        "business_name": businessName,
+        "business_owner_name": businessOwnerName,
+        "business_type": businessType,
+        "website_link": websiteLink,
+        "business_category_id": businessCategoryId,
+        "gst_number": gstNumber,
+        "pan_card_number": panCardNumber,
+        "country_id": countryId,
+        "state_id": stateId,
+        "city_id": cityId,
+        "address": address,
+        "pincode": pincode,
+        "seller_mobile": sellerMobile
+      },
+    );
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
+    return response;
+  }
+
   ///societyListApi
   static Future<http.Response> societyListApi() async {
     http.Response response;

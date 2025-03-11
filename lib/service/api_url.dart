@@ -6,6 +6,8 @@ class ApiUrl {
   static const String login = "${baseUrl}send-otp";
   static const String register = "${baseUrl}register";
   static const String verifyOtp = "${baseUrl}verify-otp";
+  static const String sellerReg = "${baseUrl}seller-registration";
+
   static const String societyList = "${baseUrl}society-list";
   static const String towerList = "${baseUrl}tower-list";
   static const String homeApi = "${baseUrl}user/home";
