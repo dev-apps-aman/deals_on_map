@@ -1,5 +1,4 @@
 import 'package:deals_on_map/constants/colors.dart';
-import 'package:deals_on_map/constants/images.dart';
 import 'package:deals_on_map/constants/styles.dart';
 import 'package:deals_on_map/core/common_widgets/custom_app_bar.dart';
 import 'package:deals_on_map/core/common_widgets/custom_button.dart';
@@ -24,7 +23,6 @@ class CreateBusinessAccount2 extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  textAlign: TextAlign.start,
                   'Choose Your Business Type',
                   style: TextStyle(
                     fontSize: 16.sp,
@@ -35,7 +33,7 @@ class CreateBusinessAccount2 extends StatelessWidget {
                 ),
                 SizedBox(height: 6.h),
                 Text(
-                  'Select All That Apply To Aamod ItSolutions',
+                  'Select the most appropriate type for your business',
                   style: TextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w400,
@@ -46,49 +44,38 @@ class CreateBusinessAccount2 extends StatelessWidget {
                 SizedBox(height: 22.h),
                 Consumer<BusinessProvider>(
                   builder: (context, provider, child) {
-                    return Column(
-                      children: [
-                        buildContainer(
-                          "Online Retail",
-                          "Customers can purchase products through your Website",
-                          retailIc,
-                          provider.isSelectedRetail,
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: provider.businessTypes.length,
+                      itemBuilder: (context, index) {
+                        final business = provider.businessTypes[index];
+                        final isSelected =
+                            provider.selectedType == business["title"];
+
+                        return buildContainer(
+                          business["title"],
+                          business["description"],
+                          business["imagePath"],
+                          isSelected,
                           () {
-                            provider.toggleRetail(!provider.isSelectedRetail);
+                            provider.setSelectedBusinessType(business["title"]);
                           },
-                        ),
-                        SizedBox(height: 13.h),
-                        buildContainer(
-                          "Local Store",
-                          "Customers can visit your business in person",
-                          shopIc,
-                          provider.isSelectedStore,
-                          () {
-                            provider.toggleStore(!provider.isSelectedStore);
-                          },
-                        ),
-                        SizedBox(height: 13.h),
-                        buildContainer(
-                          "Service Business",
-                          "Your business makes visits to customers",
-                          serviceIc,
-                          provider.isSelectedService,
-                          () {
-                            provider.toggleService(!provider.isSelectedService);
-                          },
-                        ),
-                      ],
+                          provider,
+                        );
+                      },
                     );
                   },
                 ),
                 SizedBox(height: 30.h),
                 CustomButton(
-                    buttonName: "Continue",
-                    onPressed: () {
-                      context
-                          .read<BusinessProvider>()
-                          .onBusinessTypeSubmit(context);
-                    }),
+                  buttonName: "Continue",
+                  onPressed: () {
+                    context
+                        .read<BusinessProvider>()
+                        .onBusinessTypeSubmit(context);
+                  },
+                ),
               ],
             ),
           ),
@@ -103,10 +90,12 @@ class CreateBusinessAccount2 extends StatelessWidget {
     String imagePath,
     bool isSelected,
     VoidCallback onTap,
+    dynamic provider,
   ) {
     return InkWell(
       onTap: onTap,
       child: Container(
+        margin: EdgeInsets.only(bottom: 13.h),
         padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
@@ -114,6 +103,7 @@ class CreateBusinessAccount2 extends StatelessWidget {
             color: isSelected ? mainColor : businessBrdColor,
             width: 1.w,
           ),
+          color: isSelected ? mainColor.withOpacity(0.1) : Colors.transparent,
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,14 +141,11 @@ class CreateBusinessAccount2 extends StatelessWidget {
               ),
             ),
             SizedBox(width: 7.w),
-            Checkbox(
-              value: isSelected,
-              side: BorderSide(width: 1.w, color: unselectedFontColor),
-              visualDensity: VisualDensity.compact,
-              onChanged: (_) =>
-                  onTap(), // This is the same action as tapping the container
+            Radio<String>(
+              value: title,
+              groupValue: provider.selectedType,
+              onChanged: (_) => onTap(),
               activeColor: mainColor,
-              checkColor: Colors.white,
             ),
           ],
         ),

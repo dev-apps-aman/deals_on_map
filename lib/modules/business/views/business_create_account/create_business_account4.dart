@@ -3,8 +3,10 @@ import 'package:deals_on_map/constants/images.dart';
 import 'package:deals_on_map/constants/styles.dart';
 import 'package:deals_on_map/core/common_widgets/custom_app_bar.dart';
 import 'package:deals_on_map/core/common_widgets/custom_button.dart';
+import 'package:deals_on_map/core/common_widgets/custom_dropdown.dart';
 import 'package:deals_on_map/core/common_widgets/custom_input_fields.dart';
 import 'package:deals_on_map/modules/business/provider/business_provider.dart';
+import 'package:deals_on_map/service/api_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -52,17 +54,36 @@ class _CreateBusinessAccount4State extends State<CreateBusinessAccount4> {
                 SizedBox(height: 22.h),
                 Consumer<BusinessProvider>(
                   builder: (context, businessProvider, child) {
-                    return CustomTextField(
-                      controller: businessProvider.bussCatController,
-                      borderRadius: 10,
-                      fillColor: Colors.white,
-                      borderCl: brdColor,
-                      hintText: "Business Category",
-                      leading1: Image.asset(
-                        catIc,
-                        height: 20.h,
-                        width: 20.w,
-                      ),
+                    return CustomDropdown(
+                      hint: "Business Category",
+                      isLoading: businessProvider.isLoading,
+                      items: businessProvider.stateList,
+                      value: businessProvider.selectedState,
+                      onChanged: (String? value) {
+                        if (value != null &&
+                            businessProvider.selectedCountry != null) {
+                          businessProvider.onStateChange(context, value);
+                          Log.console("Selected Busi cat: $value");
+                        }
+                      },
+                    );
+                  },
+                ),
+                SizedBox(height: 30.h),
+                Consumer<BusinessProvider>(
+                  builder: (context, businessProvider, child) {
+                    return CustomDropdown(
+                      hint: "Business Services",
+                      isLoading: businessProvider.isLoading,
+                      items: businessProvider.stateList,
+                      value: businessProvider.selectedState,
+                      onChanged: (String? value) {
+                        if (value != null &&
+                            businessProvider.selectedCountry != null) {
+                          businessProvider.onStateChange(context, value);
+                          Log.console("Selected Busi Services: $value");
+                        }
+                      },
                     );
                   },
                 ),

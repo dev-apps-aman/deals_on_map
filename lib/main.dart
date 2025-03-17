@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:deals_on_map/modules/auth/provider/auth_provider.dart';
 import 'package:deals_on_map/modules/auth/provider/location_provider.dart';
+import 'package:deals_on_map/modules/auth/provider/timer_provider.dart';
 import 'package:deals_on_map/modules/business/provider/business_provider.dart';
 import 'package:deals_on_map/modules/dashboard/provider/dashboard_provider.dart';
 import 'package:deals_on_map/modules/dashboard/view/home/provider/home_provider.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => AuthProvider()),
+          ChangeNotifierProvider(create: (_) => TimerProvider()),
           ChangeNotifierProvider(create: (_) => DashboardProvider()),
           ChangeNotifierProvider(create: (_) => HomeProvider()),
           ChangeNotifierProvider(create: (_) => BusinessProvider()),

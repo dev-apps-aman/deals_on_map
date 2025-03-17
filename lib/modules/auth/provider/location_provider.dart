@@ -4,14 +4,18 @@ import 'package:geocoding/geocoding.dart';
 
 class LocationProvider extends ChangeNotifier {
   String currentLocation = 'Fetching location...';
-  String plotName = '';
+
+  String fullAddress = '';
   String country = '';
   String state = '';
+  String district = '';
   String city = '';
-  String postalCode = '';
-  String streetName = '';
-  String streetDetails = '';
   String colony = '';
+  String street = '';
+  String mainRoad = '';
+  String houseNumber = '';
+  String landmark = '';
+  String postalCode = '';
 
   // Method to get the current location and fetch address
   Future<void> getCurrentLocation() async {
@@ -63,16 +67,21 @@ class LocationProvider extends ChangeNotifier {
       if (placemarks.isNotEmpty) {
         Placemark place = placemarks.first;
 
-        plotName = place.name ?? 'Unknown';
         country = place.country ?? 'Unknown';
         state = place.administrativeArea ?? 'Unknown';
+        district = place.subAdministrativeArea ?? 'Unknown';
         city = place.locality ?? 'Unknown';
-        postalCode = place.postalCode ?? 'Unknown';
-        streetName = place.thoroughfare ?? 'Unknown';
-        streetDetails = place.subThoroughfare ?? 'Unknown';
         colony = place.subLocality ?? 'Unknown';
+        street = place.street ?? 'Unknown';
+        mainRoad = place.thoroughfare ?? 'Unknown';
+        houseNumber = place.subThoroughfare ?? 'Unknown';
+        landmark = place.name ?? 'Unknown';
+        postalCode = place.postalCode ?? 'Unknown';
 
-        currentLocation = '$city, $state, $country, $postalCode'.trim();
+        currentLocation =
+            '$street, $city, $district, $state, $country - $postalCode'.trim();
+        fullAddress =
+            '$street, $city, $district, $state, $country - $postalCode'.trim();
       } else {
         currentLocation = 'Address not found';
       }

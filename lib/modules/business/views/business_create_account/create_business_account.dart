@@ -76,42 +76,30 @@ class CreateBusinessAccount extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: 7.w),
-                  Expanded(
-                    child: CustomTextField(
-                      borderRadius: 10,
-                      fillColor: Colors.white,
-                      borderCl: unselectedFontColor,
-                      hintText: "Enter Mobile Number",
-                      txKeyboardType: TextInputType.phone,
-                    ),
+                  Consumer<BusinessProvider>(
+                    builder: (context, businessProvider, child) {
+                      return Expanded(
+                        child: CustomTextField(
+                          controller: businessProvider.mobileController,
+                          borderRadius: 10,
+                          fillColor: Colors.white,
+                          borderCl: unselectedFontColor,
+                          hintText: "Enter Mobile Number",
+                          txKeyboardType: TextInputType.phone,
+                          maxLength: 10,
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
               SizedBox(height: 30.h),
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomButton(
-                        buttonName: "Skip",
-                        backgroundColor: Colors.white,
-                        borderColor: mainColor,
-                        textColor: mainColor,
-                        onPressed: () {
-                          context.read<BusinessProvider>().onSkip(context);
-                        }),
-                  ),
-                  SizedBox(width: 30.w),
-                  Expanded(
-                    child: CustomButton(
-                        buttonName: "Continue",
-                        onPressed: () {
-                          context
-                              .read<BusinessProvider>()
-                              .onMobileNumberSubmit(context);
-                        }),
-                  ),
-                ],
-              ),
+              CustomButton(
+                  buttonName: "Continue",
+                  onPressed: () {
+                    context.read<BusinessProvider>().onSentOtp(context);
+                  }),
+              SizedBox(height: 30.h),
             ],
           ),
         ),

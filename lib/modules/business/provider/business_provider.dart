@@ -1,7 +1,11 @@
 import 'dart:convert';
 
+import 'package:deals_on_map/constants/images.dart';
 import 'package:deals_on_map/core/common_widgets/loader_utils.dart';
 import 'package:deals_on_map/modules/auth/provider/location_provider.dart';
+import 'package:deals_on_map/modules/auth/provider/timer_provider.dart';
+import 'package:deals_on_map/modules/auth/view/otp_screen.dart';
+import 'package:deals_on_map/modules/business/views/business_create_account/create_business_account1.dart';
 import 'package:deals_on_map/modules/business/views/business_create_account/create_business_account3.dart';
 import 'package:deals_on_map/modules/business/views/business_create_account/create_business_account4.dart';
 import 'package:deals_on_map/modules/business/views/business_create_account/create_business_account5.dart';
@@ -25,6 +29,7 @@ class BusinessProvider extends ChangeNotifier {
   TextEditingController sAddressController = TextEditingController();
   TextEditingController pinCodeController = TextEditingController();
   TextEditingController mobileController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
 
   bool isLoading = true;
 
@@ -32,19 +37,109 @@ class BusinessProvider extends ChangeNotifier {
   String? selectedCountry;
   String? selectedState;
   String? selectedCity;
+  String? fullAddress;
 
-  // Checkbox states
-  bool isSelectedRetail = false;
-  bool isSelectedStore = false;
-  bool isSelectedService = false;
+  String? selectedType;
+  String otp = '';
+
+  // // Checkbox states
+  // bool isSelectedRetail = false;
+  // bool isSelectedStore = false;
+  // bool isSelectedService = false;
 
   // Address Lists
   List<String> countryList = [];
   List<String> stateList = [];
   List<String> cityList = [];
+  final List<Map<String, dynamic>> businessTypes = [
+    {
+      "title": "Online Retail",
+      "description": "Customers can purchase products through your Website",
+      "imagePath": retailIc
+    },
+    {
+      "title": "Local Store",
+      "description": "Customers can visit your business in person",
+      "imagePath": shopIc
+    },
+    {
+      "title": "Service Business",
+      "description": "Your business makes visits to customers",
+      "imagePath": serviceIc
+    },
+  ];
+
+  // Bussiness mobile number submit
+  Future<void> onSentOtp(BuildContext context) async {
+    String mobile = mobileController.text.trim();
+
+    if (mobile.isEmpty) {
+      errorToast(context, "Enter Mobile Number");
+      return;
+    }
+    if (mobile.length != 10) {
+      errorToast(context, "Enter valid Mobile Number");
+      return;
+    }
+
+    String mobileWithCode = '+91-$mobile';
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => OtpScreen(
+          phoneNumber: mobileWithCode,
+          onOtpChanged: (otp) {
+            updateOtp(otp);
+          },
+          onResendOtp: () {
+            resendOtp(context);
+          },
+          onVerifyPressed: () {
+            onOtpVerify(context);
+          },
+        ),
+      ),
+    );
+  }
+
+  void updateOtp(String newOtp) {
+    otp = newOtp;
+    notifyListeners();
+  }
+
+  void resendOtp(BuildContext context) {
+    successToast(context, "Sending OTP...");
+
+    // loginApi(context);
+
+    context.read<TimerProvider>().resetTimer();
+  }
+
+// Bussiness otp verify
+  Future<void> onOtpVerify(BuildContext context) async {
+    String otpValue = otp.trim();
+    if (otpValue.isEmpty) {
+      errorToast(context, "Enter OTP");
+      return;
+    }
+    if (otpValue.length != 6) {
+      errorToast(context, "Enter a valid 6-digit OTP");
+      return;
+    }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => CreateBusinessAccount1()),
+    );
+  }
 
   // Method to handle business name submission
   Future<void> onBusinessNameSubmit(BuildContext context) async {
+    if (nameController.text.isEmpty) {
+      errorToast(context, "Enter Your Full Name");
+      return;
+    }
     if (businessNameController.text.isEmpty) {
       errorToast(context, "Please enter business name");
       return;
@@ -57,43 +152,21 @@ class BusinessProvider extends ChangeNotifier {
     );
   }
 
-  // Method to toggle retail checkbox state
-  void toggleRetail(bool value) {
-    isSelectedRetail = value;
-    if (value) {
-      isSelectedStore = false;
-      isSelectedService = false;
+  // toggle business type
+  void setSelectedBusinessType(String title) {
+    if (selectedType == title) {
+      selectedType = null;
+    } else {
+      selectedType = title;
     }
     notifyListeners();
-  }
-
-  // Method to toggle store checkbox state
-  void toggleStore(bool value) {
-    isSelectedStore = value;
-    if (value) {
-      isSelectedRetail = false;
-      isSelectedService = false;
-    }
-    notifyListeners();
-  }
-
-  // Method to toggle service checkbox state
-  void toggleService(bool value) {
-    isSelectedService = value;
-    if (value) {
-      isSelectedRetail = false;
-      isSelectedStore = false;
-    }
-    notifyListeners();
-  }
-
-  bool validateBusinessTypeSelection() {
-    return isSelectedRetail || isSelectedStore || isSelectedService;
   }
 
   Future<void> onBusinessTypeSubmit(BuildContext context) async {
-    if (!validateBusinessTypeSelection()) {
-      errorToast(context, "Please select Your business type");
+    Log.console("Selected Business Type: $selectedType");
+
+    if (selectedType == null || selectedType!.isEmpty) {
+      errorToast(context, "Please select your business type");
       return;
     }
 
@@ -108,7 +181,8 @@ class BusinessProvider extends ChangeNotifier {
   Future<void> onWebLinkSubmit(BuildContext context) async {
     String webLink = webLinkController.text.trim();
 
-    if (isSelectedRetail && webLink.isEmpty) {
+    if ((selectedType ?? "").toLowerCase() == "online retail" &&
+        webLink.isEmpty) {
       errorToast(context, "Please enter your website link");
       return;
     }
@@ -145,20 +219,24 @@ class BusinessProvider extends ChangeNotifier {
       isLoading = true;
       notifyListeners();
 
-      var response = await ApiService.countryList();
-      var json = jsonDecode(response.body);
+      final response = await ApiService.countryList();
+      var data = jsonDecode(response.body);
 
-      Log.console("Country List Response: $json");
-
-      if (json != null && json.isNotEmpty) {
-        countryList = json;
+      if (response.statusCode == 200 && data is List) {
+        countryList = List<String>.from(data);
+      } else if (response.statusCode == 200 &&
+          data is Map &&
+          data.containsKey('countries')) {
+        countryList = List<String>.from(data['countries']);
       } else {
+        Log.console("Error: Unexpected API response format.");
         countryList = [];
-        errorToast(context, "No countries found.");
+        errorToast(context, "Failed to fetch countries.");
       }
     } catch (e) {
-      print("Error fetching country list: $e");
-      errorToast(context, "Failed to fetch countries. Please try again.");
+      Log.console("Error fetching country list: $e");
+      countryList = [];
+      errorToast(context, "Network issue. Please try again.");
     } finally {
       isLoading = false;
       notifyListeners();
@@ -186,19 +264,24 @@ class BusinessProvider extends ChangeNotifier {
       isLoading = true;
       notifyListeners();
 
-      var response = await ApiService.stateList(country);
-      var json = jsonDecode(response.body);
+      final response = await ApiService.stateList(country);
+      var data = jsonDecode(response.body);
 
-      Log.console("State List Response: $json");
+      Log.console("State List Response: $data");
 
-      if (json != null && json.isNotEmpty) {
-        stateList = json;
+      if (response.statusCode == 200 && data is List) {
+        stateList = List<String>.from(data);
+      } else if (response.statusCode == 200 &&
+          data is Map &&
+          data.containsKey('states')) {
+        stateList = List<String>.from(data['states']);
       } else {
         stateList = [];
         errorToast(context, "No states found for the selected country.");
       }
     } catch (e) {
-      print("Error fetching state list: $e");
+      Log.console("Error fetching state list: $e");
+      stateList = [];
       errorToast(context, "Failed to fetch states. Please try again.");
     } finally {
       isLoading = false;
@@ -254,21 +337,23 @@ class BusinessProvider extends ChangeNotifier {
   }
 
   void setLocationFromLocationProvider(LocationProvider locationProvider) {
+    fullAddress = locationProvider.fullAddress;
     selectedCountry = locationProvider.country;
-    Log.console("selectedCountry: $selectedCountry");
-
     selectedState = locationProvider.state;
-    Log.console("selectedState: $selectedState");
     selectedCity = locationProvider.city;
-    Log.console("selectedCity: $selectedCity");
-    sAddressController.text = locationProvider.streetName;
-    Log.console("Street Address: ${sAddressController.text}");
+    sAddressController.text = locationProvider.street;
     pinCodeController.text = locationProvider.postalCode;
-    Log.console("pin Code: ${pinCodeController.text}");
+
+    Log.console("Full Address: $fullAddress");
+    Log.console("selectedCountry: $selectedCountry");
+    Log.console("selectedState: $selectedState");
+    Log.console("selectedCity: $selectedCity");
+    Log.console("Street Address: ${sAddressController.text}");
+    Log.console("Pin Code: ${pinCodeController.text}");
+
     notifyListeners();
   }
 
-// Fetching current location
   Future<void> fetchCurrentLoc(BuildContext context) async {
     try {
       LoaderUtils.showLoader(context);
@@ -277,9 +362,39 @@ class BusinessProvider extends ChangeNotifier {
           Provider.of<LocationProvider>(context, listen: false);
       await locationProvider.getCurrentLocation();
 
-      final businessProvider =
-          Provider.of<BusinessProvider>(context, listen: false);
-      businessProvider.setLocationFromLocationProvider(locationProvider);
+      Log.console("Fetched Country: ${locationProvider.country}");
+      Log.console("Fetched State: ${locationProvider.state}");
+      Log.console("Fetched City: ${locationProvider.city}");
+
+      // Fill the text fields
+      sAddressController.text = locationProvider.street;
+      pinCodeController.text = locationProvider.postalCode;
+      fullAddress = locationProvider.fullAddress;
+
+      // Make sure the country list contains your country
+      if (!countryList.contains(locationProvider.country)) {
+        countryList.add(locationProvider.country);
+      }
+      selectedCountry = locationProvider.country;
+
+      // Make sure state list contains your state
+      if (!stateList.contains(locationProvider.state)) {
+        stateList.add(locationProvider.state);
+      }
+      selectedState = locationProvider.state;
+
+      // Make sure city list contains your city
+      if (!cityList.contains(locationProvider.city)) {
+        cityList.add(locationProvider.city);
+      }
+      selectedCity = locationProvider.city;
+
+      notifyListeners();
+
+      Log.console("Updated lists to include location data");
+      Log.console("Country list now has ${countryList.length} items");
+      Log.console("State list now has ${stateList.length} items");
+      Log.console("City list now has ${cityList.length} items");
     } catch (e) {
       print("Error fetching current location: $e");
     } finally {
@@ -306,23 +421,6 @@ class BusinessProvider extends ChangeNotifier {
       context,
       MaterialPageRoute(
         builder: (context) => const CreateBusinessAccount6(),
-      ),
-    );
-  }
-
-  // Bussiness address submit
-  Future<void> onMobileNumberSubmit(BuildContext context) async {
-    String mobile = mobileController.text.trim();
-
-    if (mobile.isEmpty) {
-      errorToast(context, "Enter Mobile Number");
-      return;
-    }
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const CreateBusinessAccount7(),
       ),
     );
   }

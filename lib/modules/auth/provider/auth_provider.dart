@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:deals_on_map/core/common_widgets/loader_utils.dart';
 import 'package:deals_on_map/core/common_widgets/util.dart';
+import 'package:deals_on_map/modules/auth/provider/timer_provider.dart';
 import 'package:deals_on_map/modules/auth/view/location_access_screen.dart';
 import 'package:deals_on_map/modules/auth/view/otp_screen.dart';
 import 'package:deals_on_map/service/api_logs.dart';
@@ -11,6 +12,7 @@ import 'package:deals_on_map/service/api_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider extends ChangeNotifier {
@@ -42,7 +44,20 @@ class AuthProvider extends ChangeNotifier {
 
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const OtpScreen()),
+          MaterialPageRoute(
+            builder: (context) => OtpScreen(
+              phoneNumber: "$countryCode-$mobile",
+              onOtpChanged: (otp) {
+                updateOtp(otp);
+              },
+              onVerifyPressed: () {
+                otpVerify(context);
+              },
+              onResendOtp: () {
+                resendOtp(context);
+              },
+            ),
+          ),
         );
       } else {
         errorToast(
@@ -60,6 +75,14 @@ class AuthProvider extends ChangeNotifier {
   void updateOtp(String newOtp) {
     otp = newOtp;
     notifyListeners();
+  }
+
+  void resendOtp(BuildContext context) {
+    successToast(context, "Sending OTP...");
+
+    loginApi(context);
+
+    context.read<TimerProvider>().resetTimer();
   }
 
   Future otpVerify(

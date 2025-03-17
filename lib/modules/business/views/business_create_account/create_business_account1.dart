@@ -47,6 +47,18 @@ class CreateBusinessAccount1 extends StatelessWidget {
               Consumer<BusinessProvider>(
                 builder: (context, businessProvider, child) {
                   return CustomTextField(
+                    controller: businessProvider.nameController,
+                    borderRadius: 10,
+                    fillColor: Colors.white,
+                    borderCl: brdColor,
+                    hintText: "Enter Full Name",
+                  );
+                },
+              ),
+              SizedBox(height: 22.h),
+              Consumer<BusinessProvider>(
+                builder: (context, businessProvider, child) {
+                  return CustomTextField(
                     controller: businessProvider.businessNameController,
                     borderRadius: 10,
                     fillColor: Colors.white,

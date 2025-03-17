@@ -4,7 +4,6 @@ import 'package:deals_on_map/constants/styles.dart';
 import 'package:deals_on_map/core/common_widgets/custom_app_bar2.dart';
 import 'package:deals_on_map/core/common_widgets/custom_button.dart';
 import 'package:deals_on_map/modules/business/views/business_create_account/create_business_account.dart';
-import 'package:deals_on_map/modules/business/views/business_create_account/create_business_account1.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -36,7 +35,8 @@ class _BusinessScreenState extends State<BusinessScreen> {
                 ),
                 SizedBox(height: 13.h),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
                       begin: Alignment.topCenter,
@@ -83,9 +83,15 @@ class _BusinessScreenState extends State<BusinessScreen> {
                         ),
                       ),
                       SizedBox(height: 26.h),
-                      CustomButton(buttonName: "Create Account", onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => const CreateBusinessAccount()));
-                      }),
+                      CustomButton(
+                          buttonName: "Create Account",
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const CreateBusinessAccount()));
+                          }),
                     ],
                   ),
                 ),
@@ -101,7 +107,7 @@ class _BusinessScreenState extends State<BusinessScreen> {
                 ),
                 SizedBox(height: 6.h),
                 ListView.builder(
-                  itemCount: 4,                        
+                  itemCount: 4,
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
@@ -109,10 +115,11 @@ class _BusinessScreenState extends State<BusinessScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
-                          padding: const EdgeInsets.only(top: 3, bottom: 3, left: 3, right: 3),
+                          padding: const EdgeInsets.only(
+                              top: 3, bottom: 3, left: 3, right: 3),
                           margin: const EdgeInsets.only(bottom: 10),
                           decoration: const BoxDecoration(
-                            shape: BoxShape.circle,                                       
+                            shape: BoxShape.circle,
                             color: mainColor,
                           ),
                           child: Icon(
