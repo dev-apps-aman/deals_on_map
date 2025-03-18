@@ -2,14 +2,11 @@
 
 import 'dart:convert';
 
-
 import 'package:deals_on_map/modules/auth/view/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'api_logs.dart';
 
 import 'package:http/http.dart' as http;
-
-
 
 class ApiClient {
   static Future getData(String url, {Map<String, String>? headers}) async {

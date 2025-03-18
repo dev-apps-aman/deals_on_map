@@ -52,6 +52,11 @@ class CreateBusinessAccount1 extends StatelessWidget {
                     fillColor: Colors.white,
                     borderCl: brdColor,
                     hintText: "Enter Full Name",
+                    leading1: Image.asset(
+                      profileFillIc,
+                      height: 20.h,
+                      width: 20.w,
+                    ),
                   );
                 },
               ),

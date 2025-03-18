@@ -6,6 +6,7 @@ import 'package:deals_on_map/modules/business/provider/business_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:deals_on_map/modules/business/models/business_type_model.dart'; // ✅ Model import
 
 class CreateBusinessAccount2 extends StatelessWidget {
   const CreateBusinessAccount2({super.key});
@@ -47,19 +48,18 @@ class CreateBusinessAccount2 extends StatelessWidget {
                     return ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: provider.businessTypes.length,
+                      itemCount: provider.businessTypesList.length,
                       itemBuilder: (context, index) {
-                        final business = provider.businessTypes[index];
-                        final isSelected =
-                            provider.selectedType == business["title"];
+                        final BusinessTypeModel business =
+                            provider.businessTypesList[index];
+                        final bool isSelected =
+                            provider.selectedBusinessType == business;
 
                         return buildContainer(
-                          business["title"],
-                          business["description"],
-                          business["imagePath"],
+                          business,
                           isSelected,
                           () {
-                            provider.setSelectedBusinessType(business["title"]);
+                            provider.setSelectedBusinessType(business);
                           },
                           provider,
                         );
@@ -85,12 +85,10 @@ class CreateBusinessAccount2 extends StatelessWidget {
   }
 
   Widget buildContainer(
-    String title,
-    String description,
-    String imagePath,
+    BusinessTypeModel business,
     bool isSelected,
     VoidCallback onTap,
-    dynamic provider,
+    BusinessProvider provider,
   ) {
     return InkWell(
       onTap: onTap,
@@ -103,13 +101,13 @@ class CreateBusinessAccount2 extends StatelessWidget {
             color: isSelected ? mainColor : businessBrdColor,
             width: 1.w,
           ),
-          color: isSelected ? mainColor.withOpacity(0.1) : Colors.transparent,
+          color: isSelected ? mainColor.withAlpha(25) : Colors.transparent,
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image.asset(
-              imagePath,
+              business.imagePath, // ✅ Direct model se data le rahe hain
               height: 26.h,
               width: 26.h,
             ),
@@ -119,7 +117,7 @@ class CreateBusinessAccount2 extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    business.title,
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
@@ -129,7 +127,7 @@ class CreateBusinessAccount2 extends StatelessWidget {
                   ),
                   SizedBox(height: 2.h),
                   Text(
-                    description,
+                    business.description,
                     style: TextStyle(
                       fontSize: 10.sp,
                       fontWeight: FontWeight.w400,
@@ -141,9 +139,9 @@ class CreateBusinessAccount2 extends StatelessWidget {
               ),
             ),
             SizedBox(width: 7.w),
-            Radio<String>(
-              value: title,
-              groupValue: provider.selectedType,
+            Radio<BusinessTypeModel>(
+              value: business,
+              groupValue: provider.selectedBusinessType,
               onChanged: (_) => onTap(),
               activeColor: mainColor,
             ),

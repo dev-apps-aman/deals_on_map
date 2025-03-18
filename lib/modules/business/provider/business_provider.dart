@@ -5,14 +5,19 @@ import 'package:deals_on_map/core/common_widgets/loader_utils.dart';
 import 'package:deals_on_map/modules/auth/provider/location_provider.dart';
 import 'package:deals_on_map/modules/auth/provider/timer_provider.dart';
 import 'package:deals_on_map/modules/auth/view/otp_screen.dart';
+import 'package:deals_on_map/modules/business/models/business_cat_model.dart';
+import 'package:deals_on_map/modules/business/models/business_cat_services_model.dart';
+import 'package:deals_on_map/modules/business/models/business_type_model.dart';
 import 'package:deals_on_map/modules/business/views/business_create_account/create_business_account1.dart';
 import 'package:deals_on_map/modules/business/views/business_create_account/create_business_account3.dart';
 import 'package:deals_on_map/modules/business/views/business_create_account/create_business_account4.dart';
 import 'package:deals_on_map/modules/business/views/business_create_account/create_business_account5.dart';
 import 'package:deals_on_map/modules/business/views/business_create_account/create_business_account6.dart';
 import 'package:deals_on_map/modules/business/views/business_create_account/create_business_account7.dart';
+import 'package:deals_on_map/service/api_client.dart';
 import 'package:deals_on_map/service/api_logs.dart';
 import 'package:deals_on_map/service/api_service.dart';
+import 'package:deals_on_map/service/api_url.dart';
 import 'package:flutter/material.dart';
 import 'package:deals_on_map/core/common_widgets/util.dart';
 import 'package:deals_on_map/modules/business/views/business_create_account/create_business_account2.dart';
@@ -33,40 +38,50 @@ class BusinessProvider extends ChangeNotifier {
 
   bool isLoading = true;
 
+  // // Checkbox states
+  // bool isSelectedRetail = false;
+  // bool isSelectedStore = false;
+  // bool isSelectedService = false;
+
+  String otp = '';
+
   //  Address Vari
   String? selectedCountry;
   String? selectedState;
   String? selectedCity;
   String? fullAddress;
 
-  String? selectedType;
-  String otp = '';
-
-  // // Checkbox states
-  // bool isSelectedRetail = false;
-  // bool isSelectedStore = false;
-  // bool isSelectedService = false;
-
   // Address Lists
   List<String> countryList = [];
   List<String> stateList = [];
   List<String> cityList = [];
-  final List<Map<String, dynamic>> businessTypes = [
-    {
-      "title": "Online Retail",
-      "description": "Customers can purchase products through your Website",
-      "imagePath": retailIc
-    },
-    {
-      "title": "Local Store",
-      "description": "Customers can visit your business in person",
-      "imagePath": shopIc
-    },
-    {
-      "title": "Service Business",
-      "description": "Your business makes visits to customers",
-      "imagePath": serviceIc
-    },
+
+  BusinessTypeModel? selectedBusinessType;
+  BusinessCatModel? selectedBusinessCat;
+  BusinessCatServicesModel? selectedBusinessCatService;
+
+  List<BusinessCatModel> businessCatList = [];
+  List<BusinessCatServicesModel> businessCatServicesList = [];
+
+  final List<BusinessTypeModel> businessTypesList = [
+    BusinessTypeModel(
+      title: "Online Retail",
+      description: "Customers can purchase products through your Website",
+      imagePath: retailIc,
+      apiValue: "online_retail",
+    ),
+    BusinessTypeModel(
+      title: "Local Store",
+      description: "Customers can visit your business in person",
+      imagePath: shopIc,
+      apiValue: "local_store",
+    ),
+    BusinessTypeModel(
+      title: "Service Business",
+      description: "Your business makes visits to customers",
+      imagePath: serviceIc,
+      apiValue: "service_business",
+    ),
   ];
 
   // Bussiness mobile number submit
@@ -83,7 +98,6 @@ class BusinessProvider extends ChangeNotifier {
     }
 
     String mobileWithCode = '+91-$mobile';
-
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -153,22 +167,28 @@ class BusinessProvider extends ChangeNotifier {
   }
 
   // toggle business type
-  void setSelectedBusinessType(String title) {
-    if (selectedType == title) {
-      selectedType = null;
+  void setSelectedBusinessType(BusinessTypeModel type) {
+    if (selectedBusinessType == type) {
+      Log.console("Business Type Deselected: ${type.title}");
+      selectedBusinessType = null;
     } else {
-      selectedType = title;
+      selectedBusinessType = type;
+      Log.console("Business Type Selected: ${type.title}");
     }
     notifyListeners();
   }
 
   Future<void> onBusinessTypeSubmit(BuildContext context) async {
-    Log.console("Selected Business Type: $selectedType");
+    Log.console("Submit Button Clicked");
 
-    if (selectedType == null || selectedType!.isEmpty) {
+    if (selectedBusinessType == null) {
+      Log.console("Error: No business type selected!");
       errorToast(context, "Please select your business type");
       return;
     }
+
+    Log.console(
+        "Navigating to Next Screen with Type: ${selectedBusinessType!.title}");
 
     Navigator.push(
       context,
@@ -181,7 +201,7 @@ class BusinessProvider extends ChangeNotifier {
   Future<void> onWebLinkSubmit(BuildContext context) async {
     String webLink = webLinkController.text.trim();
 
-    if ((selectedType ?? "").toLowerCase() == "online retail" &&
+    if (selectedBusinessType?.title.toLowerCase() == "online retail" &&
         webLink.isEmpty) {
       errorToast(context, "Please enter your website link");
       return;
@@ -193,6 +213,71 @@ class BusinessProvider extends ChangeNotifier {
         builder: (context) => const CreateBusinessAccount4(),
       ),
     );
+  }
+
+  // Fetch business categories
+  Future<void> fetchBusinessCategories(BuildContext context) async {
+    try {
+      businessCatList.clear();
+      selectedBusinessCat = null;
+      final response = await ApiService.businessCategoryList();
+      var json = jsonDecode(response.body);
+      Log.console("Business Category API Response: $json");
+
+      if (json != null && json is List) {
+        businessCatList =
+            json.map((e) => BusinessCatModel.fromJson(e)).toList();
+        Log.console("Business Categories Loaded: ${businessCatList.length}");
+      } else {}
+    } catch (e) {
+      Log.console(e.toString());
+    }
+    notifyListeners();
+  }
+
+  // Handle business category change.......
+  void onBusinessCategoryChange(BuildContext context, BusinessCatModel model) {
+    selectedBusinessCat = model;
+    fetchCategoryServices(context, selectedBusinessCat!.id.toString());
+    notifyListeners();
+  }
+
+  // Fetch business services
+  Future<void> fetchCategoryServices(
+      BuildContext context, String categoryId) async {
+    try {
+      businessCatServicesList.clear();
+      selectedBusinessCatService = null;
+      var result = await ApiService.businessCategoryServicesList(categoryId);
+      var json = jsonDecode(result.body);
+      if (json["status"] == true) {
+        if (context.mounted) {
+          businessCatServicesList = List<BusinessCatServicesModel>.from(
+                  json['data'].map((i) => BusinessCatServicesModel.fromJson(i)))
+              .toList(growable: true);
+        }
+      } else {
+        if (context.mounted) {
+          errorToast(context, json["message"].toString());
+        }
+      }
+    } catch (e) {
+      Log.console(e.toString());
+    }
+    notifyListeners();
+  }
+
+  // Handle service change
+  void onServiceChange(BusinessCatServicesModel? service) {
+    selectedBusinessCatService = service;
+
+    if (service == null) {
+      Log.console("Service Deselected");
+    } else {
+      Log.console("Selected Service: ${service.title}");
+    }
+
+    notifyListeners();
   }
 
   Future<void> onBussCatSubmit(BuildContext context) async {
@@ -213,35 +298,35 @@ class BusinessProvider extends ChangeNotifier {
     );
   }
 
-// Fetching country list from the API
-  Future<void> fetchCountryList(BuildContext context) async {
-    try {
-      isLoading = true;
-      notifyListeners();
+// // Fetching country list from the API
+//   Future<void> fetchCountryList(BuildContext context) async {
+//     try {
+//       isLoading = true;
+//       notifyListeners();
 
-      final response = await ApiService.countryList();
-      var data = jsonDecode(response.body);
+//       final response = await ApiService.countryList();
+//       var data = jsonDecode(response.body);
 
-      if (response.statusCode == 200 && data is List) {
-        countryList = List<String>.from(data);
-      } else if (response.statusCode == 200 &&
-          data is Map &&
-          data.containsKey('countries')) {
-        countryList = List<String>.from(data['countries']);
-      } else {
-        Log.console("Error: Unexpected API response format.");
-        countryList = [];
-        errorToast(context, "Failed to fetch countries.");
-      }
-    } catch (e) {
-      Log.console("Error fetching country list: $e");
-      countryList = [];
-      errorToast(context, "Network issue. Please try again.");
-    } finally {
-      isLoading = false;
-      notifyListeners();
-    }
-  }
+//       if (response.statusCode == 200 && data is List) {
+//         countryList = List<String>.from(data);
+//       } else if (response.statusCode == 200 &&
+//           data is Map &&
+//           data.containsKey('countries')) {
+//         countryList = List<String>.from(data['countries']);
+//       } else {
+//         Log.console("Error: Unexpected API response format.");
+//         countryList = [];
+//         errorToast(context, "Failed to fetch countries.");
+//       }
+//     } catch (e) {
+//       Log.console("Error fetching country list: $e");
+//       countryList = [];
+//       errorToast(context, "Network issue. Please try again.");
+//     } finally {
+//       isLoading = false;
+//       notifyListeners();
+//     }
+//   }
 
   // Function to handle country change
   void onCountryChange(BuildContext context, String? country) async {
@@ -495,28 +580,28 @@ class BusinessProvider extends ChangeNotifier {
   }
 
   // Payment  submit
-  Future<void> onPaymentSubmit(BuildContext context) async {
-    try {
-      LoaderUtils.showLoader(context);
-      notifyListeners();
+  // Future<void> onPaymentSubmit(BuildContext context) async {
+  //   try {
+  //     LoaderUtils.showLoader(context);
+  //     notifyListeners();
 
-      var response = await ApiService.countryList();
-      var json = jsonDecode(response.body);
+  //     var response = await ApiService.countryList();
+  //     var json = jsonDecode(response.body);
 
-      Log.console("Country List Response: $json");
+  //     Log.console("Country List Response: $json");
 
-      if (json != null && json.isNotEmpty) {
-        countryList = json;
-      } else {
-        countryList = [];
-        errorToast(context, "No countries found.");
-      }
-    } catch (e) {
-      print("Error fetching country list: $e");
-      errorToast(context, "Failed to fetch countries. Please try again.");
-    } finally {
-      isLoading = false;
-      notifyListeners();
-    }
-  }
+  //     if (json != null && json.isNotEmpty) {
+  //       countryList = json;
+  //     } else {
+  //       countryList = [];
+  //       errorToast(context, "No countries found.");
+  //     }
+  //   } catch (e) {
+  //     print("Error fetching country list: $e");
+  //     errorToast(context, "Failed to fetch countries. Please try again.");
+  //   } finally {
+  //     isLoading = false;
+  //     notifyListeners();
+  //   }
+  // }
 }

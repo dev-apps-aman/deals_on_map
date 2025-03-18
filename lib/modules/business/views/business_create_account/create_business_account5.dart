@@ -22,8 +22,8 @@ class _CreateBusinessAccount5State extends State<CreateBusinessAccount5> {
   @override
   void initState() {
     super.initState();
-    Provider.of<BusinessProvider>(context, listen: false)
-        .fetchCountryList(context);
+    // Provider.of<BusinessProvider>(context, listen: false)
+    //     .fetchCountryList(context);
   }
 
   @override

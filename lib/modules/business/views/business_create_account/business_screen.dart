@@ -3,7 +3,8 @@ import 'package:deals_on_map/constants/images.dart';
 import 'package:deals_on_map/constants/styles.dart';
 import 'package:deals_on_map/core/common_widgets/custom_app_bar2.dart';
 import 'package:deals_on_map/core/common_widgets/custom_button.dart';
-import 'package:deals_on_map/modules/business/views/business_create_account/create_business_account.dart';
+
+import 'package:deals_on_map/modules/business/views/business_create_account/create_business_account1.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -90,7 +91,7 @@ class _BusinessScreenState extends State<BusinessScreen> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        const CreateBusinessAccount()));
+                                        const CreateBusinessAccount1()));
                           }),
                     ],
                   ),

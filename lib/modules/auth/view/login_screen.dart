@@ -172,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       onSaved: (PhoneNumber number) {
-                        print('On Saved: $number');
+                        Log.console('On Saved: $number');
                       },
                     ),
                     /*Container(

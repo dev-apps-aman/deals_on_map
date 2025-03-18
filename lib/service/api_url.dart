@@ -8,6 +8,13 @@ class ApiUrl {
   static const String verifyOtp = "${baseUrl}verify-otp";
   static const String sellerReg = "${baseUrl}seller-registration";
 
+  static const String businessCategoryList = "${baseUrl}category";
+  static const String businessCategoryServicesList = "${baseUrl}service-list";
+
+  static const String countryList = "${baseUrl}country-list";
+  static const String stateList = "${baseUrl}country-list";
+  static const String cityList = "${baseUrl}country-list";
+
   static const String societyList = "${baseUrl}society-list";
   static const String towerList = "${baseUrl}tower-list";
   static const String homeApi = "${baseUrl}user/home";

@@ -3,10 +3,13 @@ import 'package:deals_on_map/constants/images.dart';
 import 'package:deals_on_map/constants/styles.dart';
 import 'package:deals_on_map/core/common_widgets/custom_app_bar.dart';
 import 'package:deals_on_map/core/common_widgets/custom_button.dart';
-import 'package:deals_on_map/core/common_widgets/custom_dropdown.dart';
+import 'package:deals_on_map/core/common_widgets/custom_dropdown1.dart';
 import 'package:deals_on_map/core/common_widgets/custom_input_fields.dart';
+import 'package:deals_on_map/modules/business/models/business_cat_model.dart';
+import 'package:deals_on_map/modules/business/models/business_cat_services_model.dart';
 import 'package:deals_on_map/modules/business/provider/business_provider.dart';
-import 'package:deals_on_map/service/api_logs.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -15,10 +18,19 @@ class CreateBusinessAccount4 extends StatefulWidget {
   const CreateBusinessAccount4({super.key});
 
   @override
-  State<CreateBusinessAccount4> createState() => _CreateBusinessAccount4State();
+  State<CreateBusinessAccount4> createState() => CreateBusinessAccount4State();
 }
 
-class _CreateBusinessAccount4State extends State<CreateBusinessAccount4> {
+class CreateBusinessAccount4State extends State<CreateBusinessAccount4> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<BusinessProvider>(context, listen: false)
+          .fetchBusinessCategories(context);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -53,36 +65,30 @@ class _CreateBusinessAccount4State extends State<CreateBusinessAccount4> {
                 ),
                 SizedBox(height: 22.h),
                 Consumer<BusinessProvider>(
-                  builder: (context, businessProvider, child) {
-                    return CustomDropdown(
+                  builder: (context, provider, child) {
+                    return CustomDropdown1<BusinessCatModel>(
                       hint: "Business Category",
-                      isLoading: businessProvider.isLoading,
-                      items: businessProvider.stateList,
-                      value: businessProvider.selectedState,
-                      onChanged: (String? value) {
-                        if (value != null &&
-                            businessProvider.selectedCountry != null) {
-                          businessProvider.onStateChange(context, value);
-                          Log.console("Selected Busi cat: $value");
-                        }
+                      isLoading: provider.isLoading,
+                      items: provider.businessCatList,
+                      value: provider.selectedBusinessCat,
+                      itemLabel: (item) => item.title,
+                      onChanged: (BusinessCatModel? value) {
+                        provider.onBusinessCategoryChange(context, value!);
                       },
                     );
                   },
                 ),
                 SizedBox(height: 30.h),
                 Consumer<BusinessProvider>(
-                  builder: (context, businessProvider, child) {
-                    return CustomDropdown(
-                      hint: "Business Services",
-                      isLoading: businessProvider.isLoading,
-                      items: businessProvider.stateList,
-                      value: businessProvider.selectedState,
-                      onChanged: (String? value) {
-                        if (value != null &&
-                            businessProvider.selectedCountry != null) {
-                          businessProvider.onStateChange(context, value);
-                          Log.console("Selected Busi Services: $value");
-                        }
+                  builder: (context, provider, child) {
+                    return CustomDropdown1<BusinessCatServicesModel>(
+                      hint: "Select Service",
+                      isLoading: provider.isLoading,
+                      items: provider.businessCatServicesList,
+                      value: provider.selectedBusinessCatService,
+                      itemLabel: (item) => item.title,
+                      onChanged: (BusinessCatServicesModel? value) {
+                        provider.onServiceChange(value);
                       },
                     );
                   },

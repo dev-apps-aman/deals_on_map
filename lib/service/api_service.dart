@@ -93,20 +93,55 @@ class ApiService {
     return response;
   }
 
-  /// countries list
-  static Future<http.Response> countryList() async {
+// fetch business categories
+
+  static Future<http.Response> businessCategoryList() async {
     http.Response response;
-    var instance = await SharedPreferences.getInstance();
-    var token = instance.getString('access_token');
-    var result = await ApiClient.postData(ApiUrl.contactUs, headers: {
-      'Authorization': 'Bearer $token',
-      "Accept": "application/json",
-    }, body: {});
+    var result = await ApiClient.getData(ApiUrl.businessCategoryList);
     response = http.Response(jsonEncode(result), 200, headers: {
       HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
     });
     return response;
   }
+
+// fetch business services
+
+  static Future<http.Response> businessCategoryServicesList(
+      String catID) async {
+    final String apiUrl =
+        "${ApiUrl.businessCategoryServicesList}?business_category_id=$catID";
+    http.Response response;
+    var result = await ApiClient.getData(apiUrl);
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
+    return response;
+  }
+
+  /// countries list
+
+  // static Future<http.Response> countryList() async {
+  //   http.Response response;
+  //   var instance = await SharedPreferences.getInstance();
+  //   var token = instance.getString('access_token');
+  //   var result = await ApiClient.postData(ApiUrl.contactUs, headers: {
+  //     'Authorization': 'Bearer $token',
+  //     "Accept": "application/json",
+  //   }, body: {});
+  //   response = http.Response(jsonEncode(result), 200, headers: {
+  //     HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+  //   });
+  //   return response;
+  // }
+
+  // static Future<http.Response> countryList() async {
+  //   http.Response response;
+  //   var result = await ApiClient.getData(ApiUrl.countryList);
+  //   response = http.Response(jsonEncode(result), 200, headers: {
+  //     HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+  //   });
+  //   return response;
+  // }
 
   /// state list
   static Future<http.Response> stateList(String country) async {
@@ -141,18 +176,18 @@ class ApiService {
   /// seller Reg
   static Future<http.Response> sellerReg({
     required String businessName,
-  required  String businessOwnerName,
-  required  String businessType,
-   required String websiteLink,
-  required  String businessCategoryId,
-   required String gstNumber,
-  required  String panCardNumber,
-  required  String countryId,
-   required String stateId,
-  required  String cityId,
- required   String address,
-  required  String pincode,
-  required  String sellerMobile,
+    required String businessOwnerName,
+    required String businessType,
+    required String websiteLink,
+    required String businessCategoryId,
+    required String gstNumber,
+    required String panCardNumber,
+    required String countryId,
+    required String stateId,
+    required String cityId,
+    required String address,
+    required String pincode,
+    required String sellerMobile,
   }) async {
     http.Response response;
     var instance = await SharedPreferences.getInstance();
