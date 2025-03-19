@@ -5,10 +5,10 @@ import 'package:deals_on_map/core/common_widgets/custom_app_bar.dart';
 import 'package:deals_on_map/core/common_widgets/custom_button.dart';
 import 'package:deals_on_map/core/common_widgets/custom_dropdown1.dart';
 import 'package:deals_on_map/core/common_widgets/custom_input_fields.dart';
+import 'package:deals_on_map/core/common_widgets/multi_select_dropdown.dart';
 import 'package:deals_on_map/modules/business/models/business_cat_model.dart';
 import 'package:deals_on_map/modules/business/models/business_cat_services_model.dart';
 import 'package:deals_on_map/modules/business/provider/business_provider.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -65,30 +65,43 @@ class CreateBusinessAccount4State extends State<CreateBusinessAccount4> {
                 ),
                 SizedBox(height: 22.h),
                 Consumer<BusinessProvider>(
-                  builder: (context, provider, child) {
+                  builder: (context, businessProvider, child) {
                     return CustomDropdown1<BusinessCatModel>(
                       hint: "Business Category",
-                      isLoading: provider.isLoading,
-                      items: provider.businessCatList,
-                      value: provider.selectedBusinessCat,
+                      isLoading: businessProvider.isLoading,
+                      items: businessProvider.businessCatList,
+                      value: businessProvider.selectedBusinessCat,
                       itemLabel: (item) => item.title,
                       onChanged: (BusinessCatModel? value) {
-                        provider.onBusinessCategoryChange(context, value!);
+                        businessProvider.onBusinessCategoryChange(
+                            context, value!);
                       },
                     );
                   },
                 ),
                 SizedBox(height: 30.h),
                 Consumer<BusinessProvider>(
-                  builder: (context, provider, child) {
+                  builder: (context, businessProvider, _) {
+                    return MultiSelectDropdown<BusinessCatServicesModel>(
+                      hint: "Select Service",
+                      itemLabel: (item) => item.title,
+                      items: businessProvider.businessCatServicesList,
+                      selectedItems:
+                          businessProvider.selectedBusinessCatServices,
+                      onItemToggle: businessProvider.toggleSelection,
+                    );
+                  },
+                ),
+                SizedBox(height: 30.h),
+                Consumer<BusinessProvider>(
+                  builder: (context, businessProvider, child) {
                     return CustomDropdown1<BusinessCatServicesModel>(
                       hint: "Select Service",
-                      isLoading: provider.isLoading,
-                      items: provider.businessCatServicesList,
-                      value: provider.selectedBusinessCatService,
+                      items: businessProvider.businessCatServicesList,
+                      value: businessProvider.selectedBusinessCatService,
                       itemLabel: (item) => item.title,
                       onChanged: (BusinessCatServicesModel? value) {
-                        provider.onServiceChange(value);
+                        businessProvider.onServiceChange(value);
                       },
                     );
                   },

@@ -62,6 +62,7 @@ class BusinessProvider extends ChangeNotifier {
 
   List<BusinessCatModel> businessCatList = [];
   List<BusinessCatServicesModel> businessCatServicesList = [];
+  List<BusinessCatServicesModel> selectedBusinessCatServices = [];
 
   final List<BusinessTypeModel> businessTypesList = [
     BusinessTypeModel(
@@ -280,12 +281,23 @@ class BusinessProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void toggleSelection(BusinessCatServicesModel item) {
+    if (selectedBusinessCatServices.contains(item)) {
+      selectedBusinessCatServices.remove(item);
+    } else {
+      selectedBusinessCatServices.add(item);
+    }
+    notifyListeners();
+  }
+
   Future<void> onBussCatSubmit(BuildContext context) async {
-    String bussCat = bussCatController.text.trim();
     String gst = gstController.text.trim();
     String pan = panController.text.trim();
 
-    if (bussCat.isEmpty || gst.isEmpty || pan.isEmpty) {
+    if (selectedBusinessCat != null ||
+        selectedBusinessCatService != null ||
+        gst.isEmpty ||
+        pan.isEmpty) {
       errorToast(context, "Please fill all details");
       return;
     }
@@ -297,36 +309,6 @@ class BusinessProvider extends ChangeNotifier {
       ),
     );
   }
-
-// // Fetching country list from the API
-//   Future<void> fetchCountryList(BuildContext context) async {
-//     try {
-//       isLoading = true;
-//       notifyListeners();
-
-//       final response = await ApiService.countryList();
-//       var data = jsonDecode(response.body);
-
-//       if (response.statusCode == 200 && data is List) {
-//         countryList = List<String>.from(data);
-//       } else if (response.statusCode == 200 &&
-//           data is Map &&
-//           data.containsKey('countries')) {
-//         countryList = List<String>.from(data['countries']);
-//       } else {
-//         Log.console("Error: Unexpected API response format.");
-//         countryList = [];
-//         errorToast(context, "Failed to fetch countries.");
-//       }
-//     } catch (e) {
-//       Log.console("Error fetching country list: $e");
-//       countryList = [];
-//       errorToast(context, "Network issue. Please try again.");
-//     } finally {
-//       isLoading = false;
-//       notifyListeners();
-//     }
-//   }
 
   // Function to handle country change
   void onCountryChange(BuildContext context, String? country) async {
