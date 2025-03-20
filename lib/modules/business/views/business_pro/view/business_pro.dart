@@ -212,7 +212,7 @@ class _BusinessProState extends State<BusinessPro> {
               child: CustomButton(
                 buttonName: "Pay Now",
                 onPressed: () {
-                  context.read<BusinessProvider>().onSellerRegister(context);
+                  // context.read<BusinessProvider>().onSellerRegister(context);
                   // Navigator.push(
                   //     context,
                   //     MaterialPageRoute(

@@ -4,6 +4,7 @@ import 'package:deals_on_map/constants/styles.dart';
 import 'package:deals_on_map/core/common_widgets/custom_app_bar.dart';
 import 'package:deals_on_map/core/common_widgets/custom_button.dart';
 import 'package:deals_on_map/core/common_widgets/custom_dropdown.dart';
+import 'package:deals_on_map/core/common_widgets/custom_dropdown1.dart';
 import 'package:deals_on_map/core/common_widgets/custom_input_fields.dart';
 import 'package:deals_on_map/modules/business/provider/business_provider.dart';
 import 'package:deals_on_map/service/api_logs.dart';
@@ -104,53 +105,57 @@ class _CreateBusinessAccount5State extends State<CreateBusinessAccount5> {
                 SizedBox(height: 22.h),
                 Consumer<BusinessProvider>(
                   builder: (context, businessProvider, child) {
-                    return CustomDropdown(
-                      hint: "Country",
-                      isLoading: businessProvider.isLoading,
-                      items: businessProvider.countryList,
-                      value: businessProvider.selectedCountry,
-                      onChanged: (String? value) {
-                        if (value != null) {
-                          businessProvider.selectedCountry = value;
-                          Log.console("Country : $value");
-                        }
-                      },
+                    return CustomTextField(
+                      controller: businessProvider.countryController,
+                      borderRadius: 10,
+                      readOnly: true,
+                      fillColor: Colors.white,
+                      borderCl: unselectedFontColor,
+                      hintText: "Country",
+                      leading1: Image.asset(
+                        locationIc,
+                        height: 20.h,
+                        width: 20.w,
+                        color: unselectedFontColor,
+                      ),
                     );
                   },
                 ),
                 SizedBox(height: 20.h),
                 Consumer<BusinessProvider>(
                   builder: (context, businessProvider, child) {
-                    return CustomDropdown(
-                      hint: "State",
-                      isLoading: businessProvider.isLoading,
-                      items: businessProvider.stateList,
-                      value: businessProvider.selectedState,
-                      onChanged: (String? value) {
-                        if (value != null &&
-                            businessProvider.selectedCountry != null) {
-                          businessProvider.onStateChange(context, value);
-                          Log.console("Selected State: $value");
-                        }
-                      },
+                    return CustomTextField(
+                      controller: businessProvider.stateController,
+                      borderRadius: 10,
+                      readOnly: true,
+                      fillColor: Colors.white,
+                      borderCl: unselectedFontColor,
+                      hintText: "State",
+                      leading1: Image.asset(
+                        locationIc,
+                        height: 20.h,
+                        width: 20.w,
+                        color: unselectedFontColor,
+                      ),
                     );
                   },
                 ),
                 SizedBox(height: 20.h),
                 Consumer<BusinessProvider>(
                   builder: (context, businessProvider, child) {
-                    return CustomDropdown(
-                      hint: "City",
-                      isLoading: businessProvider.isLoading,
-                      items: businessProvider.cityList,
-                      value: businessProvider.selectedCity,
-                      onChanged: (String? value) {
-                        if (value != null &&
-                            businessProvider.selectedState != null) {
-                          businessProvider.onCityChange(value);
-                          Log.console("Selected City: $value");
-                        }
-                      },
+                    return CustomTextField(
+                      controller: businessProvider.cityController,
+                      borderRadius: 10,
+                      readOnly: true,
+                      fillColor: Colors.white,
+                      borderCl: unselectedFontColor,
+                      hintText: "City",
+                      leading1: Image.asset(
+                        locationIc,
+                        height: 20.h,
+                        width: 20.w,
+                        color: unselectedFontColor,
+                      ),
                     );
                   },
                 ),
@@ -160,9 +165,10 @@ class _CreateBusinessAccount5State extends State<CreateBusinessAccount5> {
                     return CustomTextField(
                       controller: businessProvider.sAddressController,
                       borderRadius: 10,
+                      readOnly: true,
                       fillColor: Colors.white,
                       borderCl: unselectedFontColor,
-                      hintText: "Street Address",
+                      hintText: "House and shop Address",
                       leading1: Image.asset(
                         locationIc,
                         height: 20.h,
@@ -178,6 +184,7 @@ class _CreateBusinessAccount5State extends State<CreateBusinessAccount5> {
                     return CustomTextField(
                       controller: businessProvider.pinCodeController,
                       borderRadius: 10,
+                      readOnly: true,
                       fillColor: Colors.white,
                       borderCl: unselectedFontColor,
                       hintText: "Pincode",

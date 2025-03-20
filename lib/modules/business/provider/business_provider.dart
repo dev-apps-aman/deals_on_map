@@ -13,11 +13,9 @@ import 'package:deals_on_map/modules/business/views/business_create_account/crea
 import 'package:deals_on_map/modules/business/views/business_create_account/create_business_account4.dart';
 import 'package:deals_on_map/modules/business/views/business_create_account/create_business_account5.dart';
 import 'package:deals_on_map/modules/business/views/business_create_account/create_business_account6.dart';
-import 'package:deals_on_map/modules/business/views/business_create_account/create_business_account7.dart';
-import 'package:deals_on_map/service/api_client.dart';
+import 'package:deals_on_map/modules/business/views/business_dashboard/view/business_dashboard.dart';
 import 'package:deals_on_map/service/api_logs.dart';
 import 'package:deals_on_map/service/api_service.dart';
-import 'package:deals_on_map/service/api_url.dart';
 import 'package:flutter/material.dart';
 import 'package:deals_on_map/core/common_widgets/util.dart';
 import 'package:deals_on_map/modules/business/views/business_create_account/create_business_account2.dart';
@@ -31,6 +29,9 @@ class BusinessProvider extends ChangeNotifier {
   TextEditingController bussCatController = TextEditingController();
   TextEditingController gstController = TextEditingController();
   TextEditingController panController = TextEditingController();
+  TextEditingController countryController = TextEditingController();
+  TextEditingController stateController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
   TextEditingController sAddressController = TextEditingController();
   TextEditingController pinCodeController = TextEditingController();
   TextEditingController mobileController = TextEditingController();
@@ -44,12 +45,8 @@ class BusinessProvider extends ChangeNotifier {
   // bool isSelectedService = false;
 
   String otp = '';
-
-  //  Address Vari
-  String? selectedCountry;
-  String? selectedState;
-  String? selectedCity;
   String? fullAddress;
+  String countryCode = '91';
 
   // Address Lists
   List<String> countryList = [];
@@ -58,7 +55,6 @@ class BusinessProvider extends ChangeNotifier {
 
   BusinessTypeModel? selectedBusinessType;
   BusinessCatModel? selectedBusinessCat;
-  BusinessCatServicesModel? selectedBusinessCatService;
 
   List<BusinessCatModel> businessCatList = [];
   List<BusinessCatServicesModel> businessCatServicesList = [];
@@ -239,8 +235,10 @@ class BusinessProvider extends ChangeNotifier {
   // Handle business category change.......
   void onBusinessCategoryChange(BuildContext context, BusinessCatModel model) {
     selectedBusinessCat = model;
-    fetchCategoryServices(context, selectedBusinessCat!.id.toString());
+    selectedBusinessCatServices.clear();
     notifyListeners();
+
+    fetchCategoryServices(context, selectedBusinessCat!.id.toString());
   }
 
   // Fetch business services
@@ -248,7 +246,7 @@ class BusinessProvider extends ChangeNotifier {
       BuildContext context, String categoryId) async {
     try {
       businessCatServicesList.clear();
-      selectedBusinessCatService = null;
+      selectedBusinessCatServices.clear();
       var result = await ApiService.businessCategoryServicesList(categoryId);
       var json = jsonDecode(result.body);
       if (json["status"] == true) {
@@ -268,25 +266,19 @@ class BusinessProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Handle service change
-  void onServiceChange(BusinessCatServicesModel? service) {
-    selectedBusinessCatService = service;
-
-    if (service == null) {
-      Log.console("Service Deselected");
-    } else {
-      Log.console("Selected Service: ${service.title}");
-    }
-
-    notifyListeners();
-  }
-
   void toggleSelection(BusinessCatServicesModel item) {
     if (selectedBusinessCatServices.contains(item)) {
       selectedBusinessCatServices.remove(item);
+      Log.console("❌ Removed: ${item.title}");
     } else {
       selectedBusinessCatServices.add(item);
+      Log.console("✅ Added: ${item.title}");
     }
+
+    Log.console(
+        "📌 Updated Selected Items: ${selectedBusinessCatServices.map((e) => e.title).toList()}");
+
+    selectedBusinessCatServices = List.from(selectedBusinessCatServices);
     notifyListeners();
   }
 
@@ -294,8 +286,8 @@ class BusinessProvider extends ChangeNotifier {
     String gst = gstController.text.trim();
     String pan = panController.text.trim();
 
-    if (selectedBusinessCat != null ||
-        selectedBusinessCatService != null ||
+    if (selectedBusinessCat == null ||
+        selectedBusinessCatServices.isEmpty ||
         gst.isEmpty ||
         pan.isEmpty) {
       errorToast(context, "Please fill all details");
@@ -310,116 +302,98 @@ class BusinessProvider extends ChangeNotifier {
     );
   }
 
-  // Function to handle country change
-  void onCountryChange(BuildContext context, String? country) async {
-    if (country != null && country != selectedCountry) {
-      selectedCountry = country;
-      selectedState = null;
-      selectedCity = null;
-      stateList = [];
-      cityList = [];
+//   // Function to handle country change
+//   void onCountryChange(BuildContext context, String? country) async {
+//     if (country != null && country != selectedCountry) {
+//       selectedCountry = country;
+//       selectedState = null;
+//       selectedCity = null;
+//       stateList = [];
+//       cityList = [];
 
-      notifyListeners();
+//       notifyListeners();
 
-      await fetchStateList(context, country);
-    }
-  }
+//       await fetchStateList(context, country);
+//     }
+//   }
 
-// Fetching state list based on selected country
-  Future<void> fetchStateList(BuildContext context, String country) async {
-    try {
-      isLoading = true;
-      notifyListeners();
+// // Fetching state list based on selected country
+//   Future<void> fetchStateList(BuildContext context, String country) async {
+//     try {
+//       isLoading = true;
+//       notifyListeners();
 
-      final response = await ApiService.stateList(country);
-      var data = jsonDecode(response.body);
+//       final response = await ApiService.stateList(country);
+//       var data = jsonDecode(response.body);
 
-      Log.console("State List Response: $data");
+//       Log.console("State List Response: $data");
 
-      if (response.statusCode == 200 && data is List) {
-        stateList = List<String>.from(data);
-      } else if (response.statusCode == 200 &&
-          data is Map &&
-          data.containsKey('states')) {
-        stateList = List<String>.from(data['states']);
-      } else {
-        stateList = [];
-        errorToast(context, "No states found for the selected country.");
-      }
-    } catch (e) {
-      Log.console("Error fetching state list: $e");
-      stateList = [];
-      errorToast(context, "Failed to fetch states. Please try again.");
-    } finally {
-      isLoading = false;
-      notifyListeners();
-    }
-  }
+//       if (response.statusCode == 200 && data is List) {
+//         stateList = List<String>.from(data);
+//       } else if (response.statusCode == 200 &&
+//           data is Map &&
+//           data.containsKey('states')) {
+//         stateList = List<String>.from(data['states']);
+//       } else {
+//         stateList = [];
+//         errorToast(context, "No states found for the selected country.");
+//       }
+//     } catch (e) {
+//       Log.console("Error fetching state list: $e");
+//       stateList = [];
+//       errorToast(context, "Failed to fetch states. Please try again.");
+//     } finally {
+//       isLoading = false;
+//       notifyListeners();
+//     }
+//   }
 
-  // Function to handle state change
-  void onStateChange(BuildContext context, String? state) async {
-    if (state != null && state != selectedState) {
-      selectedState = state;
-      selectedCity = null;
-      cityList = [];
+//   // Function to handle state change
+//   void onStateChange(BuildContext context, String? state) async {
+//     if (state != null && state != selectedState) {
+//       selectedState = state;
+//       selectedCity = null;
+//       cityList = [];
 
-      notifyListeners();
+//       notifyListeners();
 
-      await fetchCityList(context, state);
-    }
-  }
+//       await fetchCityList(context, state);
+//     }
+//   }
 
-// Fetching city list based on selected state
-  Future<void> fetchCityList(BuildContext context, String state) async {
-    try {
-      isLoading = true;
-      notifyListeners();
+// // Fetching city list based on selected state
+//   Future<void> fetchCityList(BuildContext context, String state) async {
+//     try {
+//       isLoading = true;
+//       notifyListeners();
 
-      var response = await ApiService.cityList(state);
-      var json = jsonDecode(response.body);
+//       var response = await ApiService.cityList(state);
+//       var json = jsonDecode(response.body);
 
-      Log.console("City List Response: $json");
+//       Log.console("City List Response: $json");
 
-      if (json != null && json.isNotEmpty) {
-        cityList = json;
-      } else {
-        cityList = [];
-        errorToast(context, "No cities found for the selected state.");
-      }
-    } catch (e) {
-      print("Error fetching city list: $e");
-      errorToast(context, "Failed to fetch cities. Please try again.");
-    } finally {
-      isLoading = false;
-      notifyListeners();
-    }
-  }
+//       if (json != null && json.isNotEmpty) {
+//         cityList = json;
+//       } else {
+//         cityList = [];
+//         errorToast(context, "No cities found for the selected state.");
+//       }
+//     } catch (e) {
+//       print("Error fetching city list: $e");
+//       errorToast(context, "Failed to fetch cities. Please try again.");
+//     } finally {
+//       isLoading = false;
+//       notifyListeners();
+//     }
+//   }
 
-  // Function to handle city change
-  void onCityChange(String? city) {
-    if (city != null && city != selectedCity) {
-      selectedCity = city;
-      notifyListeners();
-    }
-  }
-
-  void setLocationFromLocationProvider(LocationProvider locationProvider) {
-    fullAddress = locationProvider.fullAddress;
-    selectedCountry = locationProvider.country;
-    selectedState = locationProvider.state;
-    selectedCity = locationProvider.city;
-    sAddressController.text = locationProvider.street;
-    pinCodeController.text = locationProvider.postalCode;
-
-    Log.console("Full Address: $fullAddress");
-    Log.console("selectedCountry: $selectedCountry");
-    Log.console("selectedState: $selectedState");
-    Log.console("selectedCity: $selectedCity");
-    Log.console("Street Address: ${sAddressController.text}");
-    Log.console("Pin Code: ${pinCodeController.text}");
-
-    notifyListeners();
-  }
+//   // Function to handle city change
+//   void onCityChange(String? city) {
+//     if (city != null && city != selectedCity) {
+//       selectedCity = city;
+//       notifyListeners();
+//     }
+//   }
 
   Future<void> fetchCurrentLoc(BuildContext context) async {
     try {
@@ -433,37 +407,18 @@ class BusinessProvider extends ChangeNotifier {
       Log.console("Fetched State: ${locationProvider.state}");
       Log.console("Fetched City: ${locationProvider.city}");
 
-      // Fill the text fields
+      countryController.text = locationProvider.country;
+      stateController.text = locationProvider.state;
+      cityController.text = locationProvider.city;
       sAddressController.text = locationProvider.street;
       pinCodeController.text = locationProvider.postalCode;
       fullAddress = locationProvider.fullAddress;
 
-      // Make sure the country list contains your country
-      if (!countryList.contains(locationProvider.country)) {
-        countryList.add(locationProvider.country);
-      }
-      selectedCountry = locationProvider.country;
-
-      // Make sure state list contains your state
-      if (!stateList.contains(locationProvider.state)) {
-        stateList.add(locationProvider.state);
-      }
-      selectedState = locationProvider.state;
-
-      // Make sure city list contains your city
-      if (!cityList.contains(locationProvider.city)) {
-        cityList.add(locationProvider.city);
-      }
-      selectedCity = locationProvider.city;
-
       notifyListeners();
 
-      Log.console("Updated lists to include location data");
-      Log.console("Country list now has ${countryList.length} items");
-      Log.console("State list now has ${stateList.length} items");
-      Log.console("City list now has ${cityList.length} items");
+      Log.console("Updated location fields successfully");
     } catch (e) {
-      print("Error fetching current location: $e");
+      Log.console(" Error fetching current location: $e");
     } finally {
       LoaderUtils.removeLoader(context);
     }
@@ -471,15 +426,16 @@ class BusinessProvider extends ChangeNotifier {
 
 // Bussiness address submit
   Future<void> onBussAddressSubmit(BuildContext context) async {
-    // String bussCat = bussCatController.text.trim();
-    String streetAddress = sAddressController.text.trim();
+    String country = countryController.text.trim();
+    String state = stateController.text.trim();
+    String city = cityController.text.trim();
+    String street = sAddressController.text.trim();
     String pinCode = pinCodeController.text.trim();
 
-    if (streetAddress.isEmpty ||
-        pinCode.isEmpty ||
-        selectedCountry!.isEmpty ||
-        selectedState!.isEmpty ||
-        selectedCity!.isEmpty) {
+    if (country.isEmpty ||
+        state.isEmpty | city.isEmpty ||
+        street.isEmpty ||
+        pinCode.isEmpty) {
       errorToast(context, "Please fill all details");
       return;
     }
@@ -492,69 +448,150 @@ class BusinessProvider extends ChangeNotifier {
     );
   }
 
-  // Mobile Number skip
-  Future<void> onSkip(BuildContext context) async {
-    if (mobileController.text.trim().isNotEmpty) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const CreateBusinessAccount7(),
-        ),
-      );
-      return;
-    }
+  // Mobile Number submit
+  Future<void> onMobileSubmit(BuildContext context) async {
+    try {
+      final enteredMobile = mobileController.text.trim();
 
-    SharedPreferences sp = await SharedPreferences.getInstance();
-    String? mobile = sp.getString('mobile');
+      if (enteredMobile.isEmpty) {
+        errorToast(context, "Mobile number is required. Please enter it.");
+        return;
+      }
+      if (enteredMobile.length != 10) {
+        errorToast(context, "Enter A Valid Mobile Number");
+        return;
+      }
 
-    if (mobile != null && mobile.isNotEmpty) {
-      mobileController.text = mobile;
+      SharedPreferences sp = await SharedPreferences.getInstance();
+      String? token = sp.getString('access_token');
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const CreateBusinessAccount7(),
-        ),
-      );
-    } else {
-      errorToast(context, "Mobile number is required. Please enter it.");
+      int isAlreadyVerify = (token != null && token.isNotEmpty) ? 1 : 0;
+      onSellerRegisterOtp(context, isAlreadyVerify);
+    } catch (e, stackTrace) {
+      Log.console(" Error in onMobileSubmit: $e");
+      Log.console("Stack Trace: $stackTrace");
+      errorToast(
+          context, "Something went wrong while submitting your mobile number.");
     }
   }
 
-  // register seller
-  Future<void> onSellerRegister(BuildContext context) async {
+//
+  Future<void> onSellerRegisterOtp(
+      BuildContext context, int isAlreadyVerify) async {
     try {
       isLoading = true;
       notifyListeners();
 
-      var response = await ApiService.sellerReg(
-        businessCategoryId: '',
+      List<int> selectedServiceIds =
+          selectedBusinessCatServices.map((service) => service.id).toList();
+
+      var response = await ApiService.sellerRegOtp(
         businessName: businessNameController.text.trim(),
-        businessType: '',
-        businessOwnerName: '',
-        sellerMobile: mobileController.text.trim(),
+        businessOwnerName: nameController.text.trim(),
+        businessType: selectedBusinessType!.apiValue,
         websiteLink: webLinkController.text.trim(),
+        businessCategoryId: selectedBusinessCat!.id.toString(),
         gstNumber: gstController.text.trim(),
         panCardNumber: panController.text.trim(),
+        countryId: countryController.text.trim(),
+        stateId: stateController.text.trim(),
+        cityId: cityController.text.trim(),
         address: sAddressController.text.trim(),
-        countryId: '1',
-        stateId: '1',
-        cityId: '1',
         pincode: pinCodeController.text.trim(),
+        sellerMobile: mobileController.text.trim(),
+        countryCode: countryCode.trim(),
+        services: selectedServiceIds,
+        isAlreadyVerify: isAlreadyVerify,
       );
-      var json = jsonDecode(response.body);
 
-      Log.console("State List Response: $json");
+      if (response.statusCode == 200) {
+        var json = jsonDecode(response.body);
+        Log.console(" OTP Sent API Response: $json");
 
-      if (json != null && json.isNotEmpty) {
-        stateList = json;
+        if (json['status'] == true) {
+          successToast(context, json['msg'] ?? "OTP Sent Successfully!");
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => OtpScreen(
+                phoneNumber: mobileController.text,
+                onOtpChanged: (otp) {
+                  Log.console("User Entered OTP: $otp");
+                },
+                onResendOtp: () {
+                  onSellerRegisterOtp(context, isAlreadyVerify);
+                },
+                onVerifyPressed: () {
+                  onSellerRegisterVerify(context, otp: otp);
+                },
+              ),
+            ),
+          );
+        } else {
+          errorToast(
+              context, json['msg'] ?? "Failed to send OTP. Please try again.");
+        }
       } else {
-        stateList = [];
-        errorToast(context, "No states found for the selected country.");
+        Log.console(" Server Error: ${response.statusCode}");
+        errorToast(context, "Server Error: ${response.statusCode}");
       }
-    } catch (e) {
-      print("Error fetching state list: $e");
-      errorToast(context, "Failed to fetch states. Please try again.");
+    } catch (e, stackTrace) {
+      Log.console(" Error in onSellerRegisterOtp: $e");
+      Log.console("Stack Trace: $stackTrace");
+      errorToast(context, "Failed to send OTP. Please try again.");
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+
+//
+  Future<void> onSellerRegisterVerify(BuildContext context,
+      {required String otp}) async {
+    try {
+      isLoading = true;
+      notifyListeners();
+
+      List<int> selectedServiceIds =
+          selectedBusinessCatServices.map((service) => service.id).toList();
+
+      var response = await ApiService.sellerRegVerify(
+        businessName: businessNameController.text.trim(),
+        businessOwnerName: nameController.text.trim(),
+        businessType: selectedBusinessType!.apiValue,
+        websiteLink: webLinkController.text.trim(),
+        businessCategoryId: selectedBusinessCat!.id.toString(),
+        gstNumber: gstController.text.trim(),
+        panCardNumber: panController.text.trim(),
+        countryId: countryController.text.trim(),
+        stateId: stateController.text.trim(),
+        cityId: cityController.text.trim(),
+        address: sAddressController.text.trim(),
+        pincode: pinCodeController.text.trim(),
+        sellerMobile: mobileController.text.trim(),
+        countryCode: countryCode.trim(),
+        services: selectedServiceIds,
+        isAlreadyVerify: 1,
+        otp: otp,
+      );
+
+      var json = jsonDecode(response.body);
+      Log.console(" OTP Verification API Response: $json");
+      if (json != null && json.isNotEmpty) {    
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BusinessDashboard(),
+          ),
+        );
+      } else {
+        errorToast(context, "OTP verification failed. Please try again.");
+      }
+    } catch (e, stackTrace) {
+      Log.console(" Error in onSellerRegisterVerify: $e");
+      Log.console("Stack Trace: $stackTrace");
+      errorToast(context, "Failed to verify OTP. Please try again.");
     } finally {
       isLoading = false;
       notifyListeners();

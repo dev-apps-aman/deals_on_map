@@ -173,8 +173,8 @@ class ApiService {
     return response;
   }
 
-  /// seller Reg
-  static Future<http.Response> sellerReg({
+  /// seller Reg otp sent
+  static Future<http.Response> sellerRegOtp({
     required String businessName,
     required String businessOwnerName,
     required String businessType,
@@ -188,6 +188,9 @@ class ApiService {
     required String address,
     required String pincode,
     required String sellerMobile,
+    required String countryCode,
+    required int isAlreadyVerify,
+    required List services,
   }) async {
     http.Response response;
     var instance = await SharedPreferences.getInstance();
@@ -204,6 +207,7 @@ class ApiService {
         "business_type": businessType,
         "website_link": websiteLink,
         "business_category_id": businessCategoryId,
+        "services": jsonEncode(services),
         "gst_number": gstNumber,
         "pan_card_number": panCardNumber,
         "country_id": countryId,
@@ -211,7 +215,64 @@ class ApiService {
         "city_id": cityId,
         "address": address,
         "pincode": pincode,
-        "seller_mobile": sellerMobile
+        "seller_mobile": sellerMobile,
+        "country_code": countryCode,
+        "is_verify": isAlreadyVerify,
+      },
+    );
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
+    return response;
+  }
+
+// seller reg otp verify
+  static Future<http.Response> sellerRegVerify({
+    required String businessName,
+    required String businessOwnerName,
+    required String businessType,
+    required String websiteLink,
+    required String businessCategoryId,
+    required String gstNumber,
+    required String panCardNumber,
+    required String countryId,
+    required String stateId,
+    required String cityId,
+    required String address,
+    required String pincode,
+    required String sellerMobile,
+    required String countryCode,
+    required String otp,
+    required int isAlreadyVerify,
+    required List services,
+  }) async {
+    http.Response response;
+    var instance = await SharedPreferences.getInstance();
+    var token = instance.getString('access_token');
+    var result = await ApiClient.postData(
+      ApiUrl.sellerReg,
+      headers: {
+        'Authorization': 'Bearer $token',
+        "Accept": "application/json",
+      },
+      body: {
+        "business_name": businessName,
+        "business_owner_name": businessOwnerName,
+        "business_type": businessType,
+        "website_link": websiteLink,
+        "business_category_id": businessCategoryId,
+        "services": jsonEncode(services),
+        "gst_number": gstNumber,
+        "pan_card_number": panCardNumber,
+        "country_id": countryId,
+        "state_id": stateId,
+        "city_id": cityId,
+        "address": address,
+        "pincode": pincode,
+        "seller_mobile": sellerMobile,
+        "country_code": countryCode,
+        "is_verify": isAlreadyVerify,
+        "otp": otp
       },
     );
     response = http.Response(jsonEncode(result), 200, headers: {
