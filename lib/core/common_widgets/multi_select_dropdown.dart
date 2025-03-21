@@ -1,6 +1,9 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 
+import '../../constants/colors.dart';
+import '../../constants/styles.dart';
+
 class MultiSelectDropdown<T> extends StatefulWidget {
   final String? label;
   final String hint;
@@ -44,7 +47,12 @@ class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
             widget.selectedItems.isEmpty
                 ? widget.hint
                 : widget.selectedItems.map(widget.itemLabel).join(", "),
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              color: widget.selectedItems.isEmpty ? unselectedFontColor : Colors.black,
+              fontSize: 14,
+              fontFamily: regular,
+            ),
             overflow: TextOverflow.ellipsis,
           ),
           items: widget.items.map((item) {
@@ -59,7 +67,15 @@ class _MultiSelectDropdownState<T> extends State<MultiSelectDropdown<T>> {
                       menuSetState(() {});
                       setState(() {});
                     },
-                    title: Text(widget.itemLabel(item)),
+                    title: Text(
+                      widget.itemLabel(item),
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: regular,
+                      ),
+                    ),
                     controlAffinity: ListTileControlAffinity.leading,
                   );
                 },

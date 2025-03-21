@@ -96,46 +96,46 @@ class _BusinessProState extends State<BusinessPro> {
                           ),
                         ),
                         SizedBox(height: 12.h),
-                        MediaQuery.removePadding(
-                          context: context,
-                          removeTop: true,
-                          child: ListView.builder(
-                            itemCount: 4,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              return Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.only(
-                                        top: 3, bottom: 3, left: 3, right: 3),
-                                    margin: const EdgeInsets.only(bottom: 10),
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: mainColor,
-                                    ),
-                                    child: Icon(
-                                      Icons.check_outlined,
-                                      size: 20.sp,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  SizedBox(width: 8.w),
-                                  Text(
-                                    'Enhance your business visibility',
-                                    style: TextStyle(
-                                      fontFamily: regular,
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 12.sp,
-                                      color: secondaryFontColor,
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        ),
+                        // MediaQuery.removePadding(
+                        //   context: context,
+                        //   removeTop: true,
+                        //   child: ListView.builder(
+                        //     itemCount: 4,
+                        //     shrinkWrap: true,
+                        //     physics: const NeverScrollableScrollPhysics(),
+                        //     itemBuilder: (context, index) {
+                        //       return Row(
+                        //         crossAxisAlignment: CrossAxisAlignment.center,
+                        //         children: [
+                        //           Container(
+                        //             padding: const EdgeInsets.only(
+                        //                 top: 3, bottom: 3, left: 3, right: 3),
+                        //             margin: const EdgeInsets.only(bottom: 10),
+                        //             decoration: const BoxDecoration(
+                        //               shape: BoxShape.circle,
+                        //               color: mainColor,
+                        //             ),
+                        //             child: Icon(
+                        //               Icons.check_outlined,
+                        //               size: 20.sp,
+                        //               color: Colors.white,
+                        //             ),
+                        //           ),
+                        //           SizedBox(width: 8.w),
+                        //           Text(
+                        //             'Enhance your business visibility',
+                        //             style: TextStyle(
+                        //               fontFamily: regular,
+                        //               fontWeight: FontWeight.w400,
+                        //               fontSize: 12.sp,
+                        //               color: secondaryFontColor,
+                        //             ),
+                        //           ),
+                        //         ],
+                        //       );
+                        //     },
+                        //   ),
+                        // ),
                         SizedBox(height: 30.h),
                         Container(
                           padding: EdgeInsets.symmetric(
@@ -204,7 +204,7 @@ class _BusinessProState extends State<BusinessPro> {
                 ],
               ),
             ),
-            bottomSheet: Container(
+            bottomNavigationBar: Container(
               padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 15.h),
               decoration: const BoxDecoration(
                 color: Colors.white,

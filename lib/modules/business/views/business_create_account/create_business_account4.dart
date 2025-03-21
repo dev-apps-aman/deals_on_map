@@ -9,7 +9,7 @@ import 'package:deals_on_map/core/common_widgets/multi_select_dropdown.dart';
 import 'package:deals_on_map/modules/business/models/business_cat_model.dart';
 import 'package:deals_on_map/modules/business/models/business_cat_services_model.dart';
 import 'package:deals_on_map/modules/business/provider/business_provider.dart';
-import 'package:deals_on_map/service/api_logs.dart';
+
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -83,8 +83,6 @@ class CreateBusinessAccount4State extends State<CreateBusinessAccount4> {
                 SizedBox(height: 30.h),
                 Consumer<BusinessProvider>(
                   builder: (context, businessProvider, _) {
-                    Log.console(
-                        "🔄 UI Rebuild: Selected Items: ${businessProvider.selectedBusinessCatServices.length}");
                     return MultiSelectDropdown<BusinessCatServicesModel>(
                       hint: "Select Service",
                       itemLabel: (item) => item.title,
@@ -97,20 +95,6 @@ class CreateBusinessAccount4State extends State<CreateBusinessAccount4> {
                     );
                   },
                 ),
-
-                // Consumer<BusinessProvider>(
-                //   builder: (context, businessProvider, child) {
-                //     return CustomDropdown1<BusinessCatServicesModel>(
-                //       hint: "Select Service",
-                //       items: businessProvider.businessCatServicesList,
-                //       value: businessProvider.selectedBusinessCatService,
-                //       itemLabel: (item) => item.title,
-                //       onChanged: (BusinessCatServicesModel? value) {
-                //         businessProvider.onServiceChange(value);
-                //       },
-                //     );
-                //   },
-                // ),
                 SizedBox(height: 30.h),
                 Consumer<BusinessProvider>(
                   builder: (context, businessProvider, child) {

@@ -8,6 +8,8 @@ import 'package:deals_on_map/modules/business/views/business_create_account/crea
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../business_pro/view/business_pro.dart';
+
 class BusinessScreen extends StatefulWidget {
   const BusinessScreen({super.key});
 
@@ -87,11 +89,15 @@ class _BusinessScreenState extends State<BusinessScreen> {
                       CustomButton(
                           buttonName: "Create Account",
                           onPressed: () {
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) =>
+                            //             const CreateBusinessAccount1()));
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        const CreateBusinessAccount1()));
+                                    builder: (context) => BusinessPro()));
                           }),
                     ],
                   ),
