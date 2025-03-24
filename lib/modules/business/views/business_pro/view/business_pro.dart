@@ -1,32 +1,24 @@
-// ignore_for_file: unused_import
+
 
 import 'package:deals_on_map/constants/colors.dart';
 import 'package:deals_on_map/constants/images.dart';
 import 'package:deals_on_map/constants/styles.dart';
-import 'package:deals_on_map/core/common_widgets/custom_app_bar.dart';
 import 'package:deals_on_map/core/common_widgets/custom_button.dart';
-import 'package:deals_on_map/core/common_widgets/custom_input_fields.dart';
-import 'package:deals_on_map/core/common_widgets/custom_otp_fileds.dart';
 import 'package:deals_on_map/modules/auth/provider/auth_provider.dart';
 import 'package:deals_on_map/modules/business/provider/business_provider.dart';
 import 'package:deals_on_map/modules/business/views/business_dashboard/view/business_dashboard.dart';
-import 'package:deals_on_map/modules/dashboard/view/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-class BusinessPro extends StatefulWidget {
+
+class BusinessPro extends StatelessWidget {
   const BusinessPro({super.key});
 
   @override
-  State<BusinessPro> createState() => _BusinessProState();
-}
-
-class _BusinessProState extends State<BusinessPro> {
-  @override
   Widget build(BuildContext context) {
-    return Consumer<AuthProvider>(
-      builder: (context, provider, child) {
+    return Consumer< BusinessProvider>(
+      builder: (context,  businessProvider, child) {
         return SafeArea(
           child: Scaffold(
             backgroundColor: Colors.white,
@@ -35,6 +27,7 @@ class _BusinessProState extends State<BusinessPro> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Header Section
                   Container(
                     width: double.infinity,
                     height: MediaQuery.of(context).size.height * 0.30,
@@ -63,8 +56,8 @@ class _BusinessProState extends State<BusinessPro> {
                             decoration: BoxDecoration(
                               boxShadow: [
                                 BoxShadow(
-                                  color: Color(0xFF1BAA41).withAlpha(180),
-                                  offset: Offset(0, 0),
+                                  color: const Color(0xFF1BAA41).withAlpha(180),
+                                  offset: const Offset(0, 0),
                                   blurRadius: 15,
                                   spreadRadius: 15,
                                 ),
@@ -86,8 +79,9 @@ class _BusinessProState extends State<BusinessPro> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        // Plans Heading
                         Text(
-                          'Benefit of Plan',
+                          'Select Your Plan',
                           style: TextStyle(
                             fontFamily: medium,
                             fontWeight: FontWeight.w500,
@@ -96,47 +90,66 @@ class _BusinessProState extends State<BusinessPro> {
                           ),
                         ),
                         SizedBox(height: 12.h),
-                        // MediaQuery.removePadding(
-                        //   context: context,
-                        //   removeTop: true,
-                        //   child: ListView.builder(
-                        //     itemCount: 4,
-                        //     shrinkWrap: true,
-                        //     physics: const NeverScrollableScrollPhysics(),
-                        //     itemBuilder: (context, index) {
-                        //       return Row(
-                        //         crossAxisAlignment: CrossAxisAlignment.center,
-                        //         children: [
-                        //           Container(
-                        //             padding: const EdgeInsets.only(
-                        //                 top: 3, bottom: 3, left: 3, right: 3),
-                        //             margin: const EdgeInsets.only(bottom: 10),
-                        //             decoration: const BoxDecoration(
-                        //               shape: BoxShape.circle,
-                        //               color: mainColor,
-                        //             ),
-                        //             child: Icon(
-                        //               Icons.check_outlined,
-                        //               size: 20.sp,
-                        //               color: Colors.white,
-                        //             ),
-                        //           ),
-                        //           SizedBox(width: 8.w),
-                        //           Text(
-                        //             'Enhance your business visibility',
-                        //             style: TextStyle(
-                        //               fontFamily: regular,
-                        //               fontWeight: FontWeight.w400,
-                        //               fontSize: 12.sp,
-                        //               color: secondaryFontColor,
-                        //             ),
-                        //           ),
-                        //         ],
-                        //       );
-                        //     },
-                        //   ),
-                        // ),
+                        // Plan Cards Row
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: List.generate(
+                              businessProvider.plans.length, (index) {
+                            final plan = businessProvider.plans[index];
+                            bool isSelected = businessProvider.selectedPlan == index;
+                            return Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  businessProvider.selectPlan(index);
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 4.w),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 16.h, horizontal: 8.w),
+                                  decoration: BoxDecoration(
+                                    color: isSelected
+                                        ? mainColor.withOpacity(0.1)
+                                        : Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                      color: isSelected
+                                          ? mainColor
+                                          : appBarBdrColor,
+                                      width: 1.w,
+                                    ),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        plan['title'],
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontFamily: semiBold,
+                                          fontSize: 18.sp,
+                                          color: headingColor,
+                                        ),
+                                      ),
+                                      SizedBox(height: 8.h),
+                                      Text(
+                                        plan['price'] == 0
+                                            ? 'Free'
+                                            : '₹ ${plan['price']}',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontFamily: regular,
+                                          fontSize: 14.sp,
+                                          color: secondaryFontColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
                         SizedBox(height: 30.h),
+                        // Plan Details Section
                         Container(
                           padding: EdgeInsets.symmetric(
                               horizontal: 14.w, vertical: 16.h),
@@ -155,7 +168,9 @@ class _BusinessProState extends State<BusinessPro> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Pro',
+                                      businessProvider.selectedPlan == 0
+                                          ? 'Free Plan'
+                                          : 'Premium Plan',
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontFamily: semiBold,
@@ -165,7 +180,9 @@ class _BusinessProState extends State<BusinessPro> {
                                     ),
                                     SizedBox(height: 3.h),
                                     Text(
-                                      'You Can Promote Your Business ',
+                                      businessProvider.selectedPlan == 0
+                                          ? 'Enjoy basic features at no cost.'
+                                          : 'Access enhanced features for your business.',
                                       style: TextStyle(
                                         fontWeight: FontWeight.w400,
                                         fontFamily: regular,
@@ -177,23 +194,24 @@ class _BusinessProState extends State<BusinessPro> {
                                 ),
                               ),
                               SizedBox(width: 10.w),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 14.w, vertical: 20.h),
-                                decoration: BoxDecoration(
-                                  color: mainColor,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Text(
-                                  '₹ 999',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: semiBold,
-                                    fontSize: 22.sp,
-                                    color: headingColor,
+                              if (businessProvider.selectedPlan != 0)
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 14.w, vertical: 20.h),
+                                  decoration: BoxDecoration(
+                                    color: mainColor,
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
-                                ),
-                              )
+                                  child: Text(
+                                    '₹ ${businessProvider.plans[businessProvider.selectedPlan]['price']}',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: semiBold,
+                                      fontSize: 22.sp,
+                                      color: headingColor,
+                                    ),
+                                  ),
+                                )
                             ],
                           ),
                         ),
@@ -210,13 +228,16 @@ class _BusinessProState extends State<BusinessPro> {
                 color: Colors.white,
               ),
               child: CustomButton(
-                buttonName: "Pay Now",
+                buttonName: businessProvider.selectedPlan == 0
+                    ? "Continue"
+                    : "Pay Now", // Button text changes based on plan
                 onPressed: () {
-                  // context.read<BusinessProvider>().onSellerRegister(context);
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => const BusinessDashboard()));
+                  if (businessProvider.selectedPlan == 0) {
+
+                    businessProvider.onPaymentSubmit(context);
+                  } else {
+                    // Implement payment flow for paid plans here.
+                  }
                 },
               ),
             ),

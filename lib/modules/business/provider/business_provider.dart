@@ -21,6 +21,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../dashboard/provider/dashboard_provider.dart';
+import '../../dashboard/view/dashboard_screen.dart';
 import '../views/business_pro/view/business_pro.dart';
 
 class BusinessProvider extends ChangeNotifier {
@@ -81,6 +83,28 @@ class BusinessProvider extends ChangeNotifier {
       apiValue: "service_business",
     ),
   ];
+
+  int selectedPlan = 0;
+  // 0 -> Free, 1 -> ₹599, 2 -> ₹999
+  final List<Map<String, dynamic>> plans = [
+    {
+      'title': 'Free',
+      'price': 0,
+    },
+    {
+      'title': 'Basic',
+      'price': 599,
+    },
+    {
+      'title': 'Pro',
+      'price': 999,
+    },
+  ];
+
+  void selectPlan(int index) {
+    selectedPlan = index;
+    notifyListeners();
+  }
 
   // Bussiness mobile number submit
   Future<void> onSentOtp(BuildContext context) async {
@@ -185,7 +209,8 @@ class BusinessProvider extends ChangeNotifier {
       return;
     }
 
-    Log.console("Navigating to Next Screen with Type: ${selectedBusinessType!.title}");
+    Log.console(
+        "Navigating to Next Screen with Type: ${selectedBusinessType!.title}");
 
     Navigator.push(
       context,
@@ -198,7 +223,8 @@ class BusinessProvider extends ChangeNotifier {
   Future<void> onWebLinkSubmit(BuildContext context) async {
     String webLink = webLinkController.text.trim();
 
-    if (selectedBusinessType?.title.toLowerCase() == "online retail" && webLink.isEmpty) {
+    if (selectedBusinessType?.title.toLowerCase() == "online retail" &&
+        webLink.isEmpty) {
       errorToast(context, "Please enter your website link");
       return;
     }
@@ -221,7 +247,8 @@ class BusinessProvider extends ChangeNotifier {
       Log.console("Business Category API Response: $json");
 
       if (json != null && json is List) {
-        businessCatList = json.map((e) => BusinessCatModel.fromJson(e)).toList();
+        businessCatList =
+            json.map((e) => BusinessCatModel.fromJson(e)).toList();
         Log.console("Business Categories Loaded: ${businessCatList.length}");
       } else {}
     } catch (e) {
@@ -240,7 +267,8 @@ class BusinessProvider extends ChangeNotifier {
   }
 
   // Fetch business services
-  Future<void> fetchCategoryServices(BuildContext context, String categoryId) async {
+  Future<void> fetchCategoryServices(
+      BuildContext context, String categoryId) async {
     try {
       businessCatServicesList.clear();
       selectedBusinessCatServices.clear();
@@ -248,7 +276,9 @@ class BusinessProvider extends ChangeNotifier {
       var json = jsonDecode(result.body);
       if (json["status"] == true) {
         if (context.mounted) {
-          businessCatServicesList = List<BusinessCatServicesModel>.from(json['data'].map((i) => BusinessCatServicesModel.fromJson(i))).toList(growable: true);
+          businessCatServicesList = List<BusinessCatServicesModel>.from(
+                  json['data'].map((i) => BusinessCatServicesModel.fromJson(i)))
+              .toList(growable: true);
         }
       } else {
         if (context.mounted) {
@@ -270,7 +300,8 @@ class BusinessProvider extends ChangeNotifier {
       Log.console(" Added: ${item.title}");
     }
 
-    Log.console(" Updated Selected Items: ${selectedBusinessCatServices.map((e) => e.title).toList()}");
+    Log.console(
+        " Updated Selected Items: ${selectedBusinessCatServices.map((e) => e.title).toList()}");
 
     selectedBusinessCatServices = List.from(selectedBusinessCatServices);
     notifyListeners();
@@ -280,7 +311,10 @@ class BusinessProvider extends ChangeNotifier {
     String gst = gstController.text.trim();
     String pan = panController.text.trim();
 
-    if (selectedBusinessCat == null || selectedBusinessCatServices.isEmpty || gst.isEmpty || pan.isEmpty) {
+    if (selectedBusinessCat == null ||
+        selectedBusinessCatServices.isEmpty ||
+        gst.isEmpty ||
+        pan.isEmpty) {
       errorToast(context, "Please fill all details");
       return;
     }
@@ -293,104 +327,13 @@ class BusinessProvider extends ChangeNotifier {
     );
   }
 
-//   // Function to handle country change
-//   void onCountryChange(BuildContext context, String? country) async {
-//     if (country != null && country != selectedCountry) {
-//       selectedCountry = country;
-//       selectedState = null;
-//       selectedCity = null;
-//       stateList = [];
-//       cityList = [];
-
-//       notifyListeners();
-
-//       await fetchStateList(context, country);
-//     }
-//   }
-
-// // Fetching state list based on selected country
-//   Future<void> fetchStateList(BuildContext context, String country) async {
-//     try {
-//       isLoading = true;
-//       notifyListeners();
-
-//       final response = await ApiService.stateList(country);
-//       var data = jsonDecode(response.body);
-
-//       Log.console("State List Response: $data");
-
-//       if (response.statusCode == 200 && data is List) {
-//         stateList = List<String>.from(data);
-//       } else if (response.statusCode == 200 &&
-//           data is Map &&
-//           data.containsKey('states')) {
-//         stateList = List<String>.from(data['states']);
-//       } else {
-//         stateList = [];
-//         errorToast(context, "No states found for the selected country.");
-//       }
-//     } catch (e) {
-//       Log.console("Error fetching state list: $e");
-//       stateList = [];
-//       errorToast(context, "Failed to fetch states. Please try again.");
-//     } finally {
-//       isLoading = false;
-//       notifyListeners();
-//     }
-//   }
-
-//   // Function to handle state change
-//   void onStateChange(BuildContext context, String? state) async {
-//     if (state != null && state != selectedState) {
-//       selectedState = state;
-//       selectedCity = null;
-//       cityList = [];
-
-//       notifyListeners();
-
-//       await fetchCityList(context, state);
-//     }
-//   }
-
-// // Fetching city list based on selected state
-//   Future<void> fetchCityList(BuildContext context, String state) async {
-//     try {
-//       isLoading = true;
-//       notifyListeners();
-
-//       var response = await ApiService.cityList(state);
-//       var json = jsonDecode(response.body);
-
-//       Log.console("City List Response: $json");
-
-//       if (json != null && json.isNotEmpty) {
-//         cityList = json;
-//       } else {
-//         cityList = [];
-//         errorToast(context, "No cities found for the selected state.");
-//       }
-//     } catch (e) {
-//       print("Error fetching city list: $e");
-//       errorToast(context, "Failed to fetch cities. Please try again.");
-//     } finally {
-//       isLoading = false;
-//       notifyListeners();
-//     }
-//   }
-
-//   // Function to handle city change
-//   void onCityChange(String? city) {
-//     if (city != null && city != selectedCity) {
-//       selectedCity = city;
-//       notifyListeners();
-//     }
-//   }
-
   Future<void> fetchCurrentLoc(BuildContext context) async {
     try {
-      final locationProvider = Provider.of<LocationProvider>(context, listen: false);
+      final locationProvider =
+          Provider.of<LocationProvider>(context, listen: false);
 
-      bool permissionGranted = await locationProvider.requestLocationPermission(context);
+      bool permissionGranted =
+          await locationProvider.requestLocationPermission(context);
 
       Log.console(" Permission Result: $permissionGranted");
       if (!permissionGranted) {
@@ -424,7 +367,10 @@ class BusinessProvider extends ChangeNotifier {
     String street = sAddressController.text.trim();
     String pinCode = pinCodeController.text.trim();
 
-    if (country.isEmpty || state.isEmpty | city.isEmpty || street.isEmpty || pinCode.isEmpty) {
+    if (country.isEmpty ||
+        state.isEmpty | city.isEmpty ||
+        street.isEmpty ||
+        pinCode.isEmpty) {
       errorToast(context, "Please fill all details");
       return;
     }
@@ -459,16 +405,19 @@ class BusinessProvider extends ChangeNotifier {
     } catch (e, stackTrace) {
       Log.console(" Error in onMobileSubmit: $e");
       Log.console("Stack Trace: $stackTrace");
-      errorToast(context, "Something went wrong while submitting your mobile number.");
+      errorToast(
+          context, "Something went wrong while submitting your mobile number.");
     }
   }
 
 //
-  Future<void> onSellerRegisterOtp(BuildContext context, String isAlreadyVerify) async {
+  Future<void> onSellerRegisterOtp(
+      BuildContext context, String isAlreadyVerify) async {
     try {
       isLoading = true;
       notifyListeners();
-      List<String> selectedServiceIds = selectedBusinessCatServices.map((e) => e.id.toString()).toList();
+      List<String> selectedServiceIds =
+          selectedBusinessCatServices.map((e) => e.id.toString()).toList();
       var response = await ApiService.sellerRegOtp(
         selectedServiceIds,
         businessName: businessNameController.text.trim(),
@@ -508,13 +457,15 @@ class BusinessProvider extends ChangeNotifier {
                   onSellerRegisterOtp(context, isAlreadyVerify);
                 },
                 onVerifyPressed: () {
-                  onSellerRegisterVerify(context, otp: otp, isAlreadyVerify: isAlreadyVerify);
+                  onSellerRegisterVerify(context,
+                      otp: otp, isAlreadyVerify: isAlreadyVerify);
                 },
               ),
             ),
           );
         } else {
-          errorToast(context, json['msg'] ?? "Failed to send OTP. Please try again.");
+          errorToast(
+              context, json['msg'] ?? "Failed to send OTP. Please try again.");
         }
       } else {
         Log.console(" Server Error: ${response.statusCode}");
@@ -531,18 +482,17 @@ class BusinessProvider extends ChangeNotifier {
   }
 
 //
-  Future<void> onSellerRegisterVerify(BuildContext context, {
-    required String otp,
-    required String isAlreadyVerify
-  }) async {
+  Future<void> onSellerRegisterVerify(BuildContext context,
+      {required String otp, required String isAlreadyVerify}) async {
     try {
       isLoading = true;
       notifyListeners();
 
-      List<String> selectedServiceIds = selectedBusinessCatServices.map((e) => e.id.toString()).toList();
+      List<String> selectedServiceIds =
+          selectedBusinessCatServices.map((e) => e.id.toString()).toList();
 
-
-      Log.console("🔹 Final OTP Sent for Verification: $otp | Type: ${otp.runtimeType}");
+      Log.console(
+          "🔹 Final OTP Sent for Verification: $otp | Type: ${otp.runtimeType}");
 
       var response = await ApiService.sellerRegVerify(
         selectedServiceIds,
@@ -573,29 +523,23 @@ class BusinessProvider extends ChangeNotifier {
         if (json["user"] != null) {
           String sellerID = json["user"]["id"].toString();
 
-
           var prefs = await SharedPreferences.getInstance();
           await prefs.setString("sellerID", sellerID);
 
           Log.console(" Seller ID Saved: $sellerID");
         }
+        Provider.of<DashboardProvider>(context, listen: false)
+            .updateSellerStatus(true);
 
 
-        // Navigator.pushReplacement(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => BusinessDashboard(),
-        //   ),
-        // );
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => BusinessPro()),
-              (Route<dynamic> route) => false,
+          (Route<dynamic> route) => false,
         );
-
-
       } else {
-        errorToast(context, json["msg"] ?? "OTP verification failed. Please try again.");
+        errorToast(context,
+            json["msg"] ?? "OTP verification failed. Please try again.");
       }
     } catch (e, stackTrace) {
       Log.console(" Error in onSellerRegisterVerify: $e");
@@ -607,30 +551,21 @@ class BusinessProvider extends ChangeNotifier {
     }
   }
 
-
 // Payment  submit
-// Future<void> onPaymentSubmit(BuildContext context) async {
-//   try {
-//     LoaderUtils.showLoader(context);
-//     notifyListeners();
+  Future<void> onPaymentSubmit(BuildContext context) async {
+    try {
+      successToast(context, "Payment Successfully Done!");
 
-//     var response = await ApiService.countryList();
-//     var json = jsonDecode(response.body);
+      // Payment ke baad dashboard screen par navigate karte hain.
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) =>  Dashboard(index: 2)),
+            (Route<dynamic> route) => false,
+      );
+    } catch (e) {
+      print("Error during payment submit: $e");
+      errorToast(context, "Failed to complete payment. Please try again.");
+    }
+  }
 
-//     Log.console("Country List Response: $json");
-
-//     if (json != null && json.isNotEmpty) {
-//       countryList = json;
-//     } else {
-//       countryList = [];
-//       errorToast(context, "No countries found.");
-//     }
-//   } catch (e) {
-//     print("Error fetching country list: $e");
-//     errorToast(context, "Failed to fetch countries. Please try again.");
-//   } finally {
-//     isLoading = false;
-//     notifyListeners();
-//   }
-// }
 }
