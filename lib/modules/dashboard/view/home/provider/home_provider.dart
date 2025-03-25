@@ -4,9 +4,8 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class HomeProvider extends ChangeNotifier{
+class HomeProvider extends ChangeNotifier {
   String currentLocation = 'Fetching location...';
-
 
   Future<void> requestLocationPermission() async {
     PermissionStatus status = await Permission.location.request();
@@ -32,25 +31,36 @@ class HomeProvider extends ChangeNotifier{
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
-      if (permission != LocationPermission.whileInUse && permission != LocationPermission.always) {
+      if (permission != LocationPermission.whileInUse &&
+          permission != LocationPermission.always) {
         currentLocation = 'Location permission denied';
         notifyListeners();
         return;
       }
     }
-    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    LocationSettings locationSettings = LocationSettings(
+      accuracy: LocationAccuracy.high,
+      distanceFilter: 100,
+    );
+
+    Position position = await Geolocator.getCurrentPosition(
+      locationSettings: locationSettings,
+    );
     await getAddressFromCoordinates(position.latitude, position.longitude);
     notifyListeners();
   }
 
-  Future<void> getAddressFromCoordinates(double latitude, double longitude) async {
+  Future<void> getAddressFromCoordinates(
+      double latitude, double longitude) async {
     try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(latitude, longitude);
 
       if (placemarks.isNotEmpty) {
         Placemark place = placemarks.first;
 
-        currentLocation = '${place.street}, ${place.name}, ${place.subLocality}, ${place.locality}, ${place.postalCode}';
+        currentLocation =
+            '${place.street}, ${place.name}, ${place.subLocality}, ${place.locality}, ${place.postalCode}';
         Log.console(currentLocation);
       } else {
         currentLocation = 'Address not found';
@@ -61,5 +71,4 @@ class HomeProvider extends ChangeNotifier{
 
     notifyListeners();
   }
-
 }

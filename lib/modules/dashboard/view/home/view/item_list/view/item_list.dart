@@ -18,7 +18,8 @@ class ItemList extends StatefulWidget {
 
 class _ItemListState extends State<ItemList> {
   int currentIndex = 0;
-  CarouselSliderController carouselSliderController = CarouselSliderController();
+  CarouselSliderController carouselSliderController =
+      CarouselSliderController();
 
   final List<Map<String, String>> data = [
     {"name": "Restaurant", "image": restaurentIc},
@@ -83,11 +84,16 @@ class _ItemListState extends State<ItemList> {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const ItemDetails()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ItemDetails()));
                     },
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h),
-                      margin: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h),
+                      margin: EdgeInsets.symmetric(
+                          horizontal: 12.w, vertical: 10.h),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
@@ -124,14 +130,25 @@ class _ItemListState extends State<ItemList> {
                                     child: Align(
                                       alignment: Alignment.centerLeft,
                                       child: Container(
-                                        width: MediaQuery.of(context).size.width * 1.20,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                1.20,
                                         height: 200.h,
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(15),
-                                          boxShadow: [BoxShadow(offset: const Offset(0, 1), blurRadius: 10, spreadRadius: 0, color: Colors.grey.withOpacity(0.05))],
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          boxShadow: [
+                                            BoxShadow(
+                                                offset: const Offset(0, 1),
+                                                blurRadius: 10,
+                                                spreadRadius: 0,
+                                                color:
+                                                    Colors.grey.withAlpha(15))
+                                          ],
                                         ),
                                         child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(8.0),
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
                                           child: Image.asset(
                                             businessImg,
                                             height: 200,
@@ -165,11 +182,14 @@ class _ItemListState extends State<ItemList> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: List.generate(4, (index) {
                                     return Container(
-                                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 4),
                                       width: currentIndex == index ? 12 : 8,
                                       height: currentIndex == index ? 12 : 8,
                                       decoration: BoxDecoration(
-                                        color: currentIndex == index ? Colors.white : Colors.grey,
+                                        color: currentIndex == index
+                                            ? Colors.white
+                                            : Colors.grey,
                                         shape: BoxShape.circle,
                                       ),
                                     );
@@ -315,7 +335,10 @@ class _ItemListState extends State<ItemList> {
                 fontSize: 12,
               ),
             ),
-            style: const TextStyle(color: Colors.white60, fontSize: 12, fontWeight: FontWeight.w400),
+            style: const TextStyle(
+                color: Colors.white60,
+                fontSize: 12,
+                fontWeight: FontWeight.w400),
             isExpanded: true,
             items: items.map((String country) {
               return DropdownMenuItem<String>(

@@ -1,24 +1,19 @@
-
-
 import 'package:deals_on_map/constants/colors.dart';
 import 'package:deals_on_map/constants/images.dart';
 import 'package:deals_on_map/constants/styles.dart';
 import 'package:deals_on_map/core/common_widgets/custom_button.dart';
-import 'package:deals_on_map/modules/auth/provider/auth_provider.dart';
-import 'package:deals_on_map/modules/business/provider/business_provider.dart';
-import 'package:deals_on_map/modules/business/views/business_dashboard/view/business_dashboard.dart';
+import 'package:deals_on_map/modules/business/provider/business_auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-
 
 class BusinessPro extends StatelessWidget {
   const BusinessPro({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Consumer< BusinessProvider>(
-      builder: (context,  businessProvider, child) {
+    return Consumer<BusinessAuthProvider>(
+      builder: (context, businessAuthProvider, child) {
         return SafeArea(
           child: Scaffold(
             backgroundColor: Colors.white,
@@ -93,14 +88,15 @@ class BusinessPro extends StatelessWidget {
                         // Plan Cards Row
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: List.generate(
-                              businessProvider.plans.length, (index) {
-                            final plan = businessProvider.plans[index];
-                            bool isSelected = businessProvider.selectedPlan == index;
+                          children: List.generate(businessAuthProvider.plans.length,
+                              (index) {
+                            final plan = businessAuthProvider.plans[index];
+                            bool isSelected =
+                                businessAuthProvider.selectedPlan == index;
                             return Expanded(
                               child: GestureDetector(
                                 onTap: () {
-                                  businessProvider.selectPlan(index);
+                                  businessAuthProvider.selectPlan(index);
                                 },
                                 child: Container(
                                   margin: EdgeInsets.symmetric(horizontal: 4.w),
@@ -108,7 +104,7 @@ class BusinessPro extends StatelessWidget {
                                       vertical: 16.h, horizontal: 8.w),
                                   decoration: BoxDecoration(
                                     color: isSelected
-                                        ? mainColor.withOpacity(0.1)
+                                        ? mainColor.withAlpha(25)
                                         : Colors.white,
                                     borderRadius: BorderRadius.circular(10),
                                     border: Border.all(
@@ -168,7 +164,7 @@ class BusinessPro extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      businessProvider.selectedPlan == 0
+                                      businessAuthProvider.selectedPlan == 0
                                           ? 'Free Plan'
                                           : 'Premium Plan',
                                       style: TextStyle(
@@ -180,7 +176,7 @@ class BusinessPro extends StatelessWidget {
                                     ),
                                     SizedBox(height: 3.h),
                                     Text(
-                                      businessProvider.selectedPlan == 0
+                                      businessAuthProvider.selectedPlan == 0
                                           ? 'Enjoy basic features at no cost.'
                                           : 'Access enhanced features for your business.',
                                       style: TextStyle(
@@ -194,7 +190,7 @@ class BusinessPro extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(width: 10.w),
-                              if (businessProvider.selectedPlan != 0)
+                              if (businessAuthProvider.selectedPlan != 0)
                                 Container(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 14.w, vertical: 20.h),
@@ -203,7 +199,7 @@ class BusinessPro extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Text(
-                                    '₹ ${businessProvider.plans[businessProvider.selectedPlan]['price']}',
+                                    '₹ ${businessAuthProvider.plans[businessAuthProvider.selectedPlan]['price']}',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontFamily: semiBold,
@@ -228,13 +224,12 @@ class BusinessPro extends StatelessWidget {
                 color: Colors.white,
               ),
               child: CustomButton(
-                buttonName: businessProvider.selectedPlan == 0
+                buttonName: businessAuthProvider.selectedPlan == 0
                     ? "Continue"
                     : "Pay Now", // Button text changes based on plan
                 onPressed: () {
-                  if (businessProvider.selectedPlan == 0) {
-
-                    businessProvider.onPaymentSubmit(context);
+                  if (businessAuthProvider.selectedPlan == 0) {
+                    businessAuthProvider.onPaymentSubmit(context);
                   } else {
                     // Implement payment flow for paid plans here.
                   }

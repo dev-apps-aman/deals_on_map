@@ -60,7 +60,8 @@ class _OffersState extends State<Offers> {
                   return Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 14.h),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 15.w, vertical: 14.h),
                         child: Row(
                           children: [
                             Image.asset(
@@ -109,9 +110,10 @@ class _OffersState extends State<Offers> {
                             left: 0,
                             right: 0,
                             child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 8.h),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 18.w, vertical: 8.h),
                               decoration: BoxDecoration(
-                                color: const Color(0xFF000000).withOpacity(0.12),
+                                color: const Color(0xFF000000).withAlpha(30),
                               ),
                               child: Row(
                                 children: [
@@ -252,7 +254,10 @@ class _OffersState extends State<Offers> {
                 fontSize: 12,
               ),
             ),
-            style: const TextStyle(color: Colors.white60, fontSize: 12, fontWeight: FontWeight.w400),
+            style: const TextStyle(
+                color: Colors.white60,
+                fontSize: 12,
+                fontWeight: FontWeight.w400),
             isExpanded: true,
             items: items.map((v) {
               return DropdownMenuItem<String>(

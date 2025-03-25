@@ -4,7 +4,7 @@ import 'package:deals_on_map/constants/styles.dart';
 import 'package:deals_on_map/core/common_widgets/custom_app_bar.dart';
 import 'package:deals_on_map/core/common_widgets/custom_button.dart';
 import 'package:deals_on_map/core/common_widgets/custom_input_fields.dart';
-import 'package:deals_on_map/modules/business/provider/business_provider.dart';
+import 'package:deals_on_map/modules/business/provider/business_auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +20,7 @@ class _CreateBusinessAccount5State extends State<CreateBusinessAccount5> {
   @override
   void initState() {
     super.initState();
-    // Provider.of<BusinessProvider>(context, listen: false)
+    // Provider.of<BusinessAuthProvider>(context, listen: false)
     //     .fetchCountryList(context);
   }
 
@@ -61,7 +61,7 @@ class _CreateBusinessAccount5State extends State<CreateBusinessAccount5> {
                   splashColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    Provider.of<BusinessProvider>(context, listen: false)
+                    Provider.of<BusinessAuthProvider>(context, listen: false)
                         .fetchCurrentLoc(context);
                   },
                   child: Container(
@@ -100,10 +100,10 @@ class _CreateBusinessAccount5State extends State<CreateBusinessAccount5> {
                   ),
                 ),
                 SizedBox(height: 22.h),
-                Consumer<BusinessProvider>(
-                  builder: (context, businessProvider, child) {
+                Consumer<BusinessAuthProvider>(
+                  builder: (context, businessAuthProvider, child) {
                     return CustomTextField(
-                      controller: businessProvider.countryController,
+                      controller: businessAuthProvider.countryController,
                       borderRadius: 10,
                       readOnly: true,
                       fillColor: Colors.white,
@@ -119,10 +119,10 @@ class _CreateBusinessAccount5State extends State<CreateBusinessAccount5> {
                   },
                 ),
                 SizedBox(height: 20.h),
-                Consumer<BusinessProvider>(
-                  builder: (context, businessProvider, child) {
+                Consumer<BusinessAuthProvider>(
+                  builder: (context, businessAuthProvider, child) {
                     return CustomTextField(
-                      controller: businessProvider.stateController,
+                      controller: businessAuthProvider.stateController,
                       borderRadius: 10,
                       readOnly: true,
                       fillColor: Colors.white,
@@ -138,10 +138,10 @@ class _CreateBusinessAccount5State extends State<CreateBusinessAccount5> {
                   },
                 ),
                 SizedBox(height: 20.h),
-                Consumer<BusinessProvider>(
-                  builder: (context, businessProvider, child) {
+                Consumer<BusinessAuthProvider>(
+                  builder: (context, businessAuthProvider, child) {
                     return CustomTextField(
-                      controller: businessProvider.cityController,
+                      controller: businessAuthProvider.cityController,
                       borderRadius: 10,
                       readOnly: true,
                       fillColor: Colors.white,
@@ -157,10 +157,10 @@ class _CreateBusinessAccount5State extends State<CreateBusinessAccount5> {
                   },
                 ),
                 SizedBox(height: 20.h),
-                Consumer<BusinessProvider>(
-                  builder: (context, businessProvider, child) {
+                Consumer<BusinessAuthProvider>(
+                  builder: (context, businessAuthProvider, child) {
                     return CustomTextField(
-                      controller: businessProvider.sAddressController,
+                      controller: businessAuthProvider.sAddressController,
                       borderRadius: 10,
                       readOnly: true,
                       fillColor: Colors.white,
@@ -176,10 +176,10 @@ class _CreateBusinessAccount5State extends State<CreateBusinessAccount5> {
                   },
                 ),
                 SizedBox(height: 20.h),
-                Consumer<BusinessProvider>(
-                  builder: (context, businessProvider, child) {
+                Consumer<BusinessAuthProvider>(
+                  builder: (context, businessAuthProvider, child) {
                     return CustomTextField(
-                      controller: businessProvider.pinCodeController,
+                      controller: businessAuthProvider.pinCodeController,
                       borderRadius: 10,
                       readOnly: true,
                       fillColor: Colors.white,
@@ -195,12 +195,12 @@ class _CreateBusinessAccount5State extends State<CreateBusinessAccount5> {
                   },
                 ),
                 SizedBox(height: 30.h),
-                Consumer<BusinessProvider>(
-                  builder: (context, businessProvider, child) {
+                Consumer<BusinessAuthProvider>(
+                  builder: (context, businessAuthProvider, child) {
                     return CustomButton(
                       buttonName: "Continue",
                       onPressed: () {
-                        businessProvider.onBussAddressSubmit(context);
+                        businessAuthProvider.onBussAddressSubmit(context);
                       },
                     );
                   },

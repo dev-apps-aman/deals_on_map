@@ -2,7 +2,11 @@ import 'package:deals_on_map/constants/colors.dart';
 import 'package:deals_on_map/constants/images.dart';
 import 'package:deals_on_map/constants/styles.dart';
 import 'package:deals_on_map/core/common_widgets/custom_app_bar2.dart';
+import 'package:deals_on_map/core/common_widgets/custom_btn.dart';
+
 import 'package:deals_on_map/modules/business/views/business_details/view/business_details.dart';
+import 'package:deals_on_map/modules/business/views/business_offers/create_shop_offer.dart';
+
 import 'package:deals_on_map/modules/business/views/customize_profile/view/add_contact.dart';
 import 'package:deals_on_map/modules/business/views/customize_profile/view/add_photos.dart';
 import 'package:deals_on_map/modules/business/views/customize_profile/view/add_services.dart';
@@ -54,16 +58,20 @@ class _BusinessDashboardState extends State<BusinessDashboard> {
               SizedBox(height: 14.h),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const BusinessDetails()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const BusinessDetails()));
                 },
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.15),
+                        color: Colors.black.withAlpha(35),
                         offset: const Offset(0, 0),
                         blurRadius: 4,
                         spreadRadius: 0,
@@ -84,6 +92,8 @@ class _BusinessDashboardState extends State<BusinessDashboard> {
                       ),
                       SizedBox(height: 2.h),
                       Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 5, vertical: 4),
                         decoration: BoxDecoration(
                           color: appBarBdrColor,
                           borderRadius: BorderRadius.circular(6),
@@ -126,13 +136,21 @@ class _BusinessDashboardState extends State<BusinessDashboard> {
                         children: [
                           Expanded(
                             child: GestureDetector(
-                              onTap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => const AddServices()));
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const AddServices()));
                               },
                               child: Column(
                                 children: [
                                   Container(
-                                    padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
+                                    padding: const EdgeInsets.only(
+                                        left: 10,
+                                        right: 10,
+                                        top: 10,
+                                        bottom: 10),
                                     decoration: const BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: mainColor,
@@ -166,12 +184,20 @@ class _BusinessDashboardState extends State<BusinessDashboard> {
                           Expanded(
                             child: GestureDetector(
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => const AddContact()));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const AddContact()));
                               },
                               child: Column(
                                 children: [
                                   Container(
-                                    padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
+                                    padding: const EdgeInsets.only(
+                                        left: 10,
+                                        right: 10,
+                                        top: 10,
+                                        bottom: 10),
                                     decoration: const BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: appBarBdrColor,
@@ -201,12 +227,20 @@ class _BusinessDashboardState extends State<BusinessDashboard> {
                           Expanded(
                             child: GestureDetector(
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => const AddPhotos()));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const AddPhotos()));
                               },
                               child: Column(
                                 children: [
                                   Container(
-                                    padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
+                                    padding: const EdgeInsets.only(
+                                        left: 10,
+                                        right: 10,
+                                        top: 10,
+                                        bottom: 10),
                                     decoration: const BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: appBarBdrColor,
@@ -239,7 +273,11 @@ class _BusinessDashboardState extends State<BusinessDashboard> {
                               child: Column(
                                 children: [
                                   Container(
-                                      padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
+                                      padding: const EdgeInsets.only(
+                                          left: 10,
+                                          right: 10,
+                                          top: 10,
+                                          bottom: 10),
                                       decoration: const BoxDecoration(
                                         shape: BoxShape.circle,
                                         color: appBarBdrColor,
@@ -271,7 +309,11 @@ class _BusinessDashboardState extends State<BusinessDashboard> {
                               child: Column(
                                 children: [
                                   Container(
-                                    padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
+                                    padding: const EdgeInsets.only(
+                                        left: 10,
+                                        right: 10,
+                                        top: 10,
+                                        bottom: 10),
                                     decoration: const BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: appBarBdrColor,
@@ -302,7 +344,37 @@ class _BusinessDashboardState extends State<BusinessDashboard> {
                     ],
                   ),
                 ),
-              )
+              ),
+              SizedBox(height: 20.h),
+              CustomBtn(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        textAlign: TextAlign.center,
+                        'Create Shop Offers',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.sp,
+                          fontFamily: regular,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(width: 10.w),
+                      Image.asset(
+                        height: 23,
+                        width: 23,
+                        sendWhiteIc,
+                      )
+                    ],
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CreateShopOffer(),
+                        ));
+                  })
             ],
           ),
         ),

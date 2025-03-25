@@ -47,6 +47,7 @@ class LocationProvider extends ChangeNotifier {
       }
 
       if (permission == LocationPermission.deniedForever) {
+        
         await showPermissionDialog(
           context,
           'Permission Denied Forever',

@@ -18,6 +18,7 @@ const picturesImages3 = "assets/images/picturesImages3.png";
 const reelImage = "assets/images/reelImage.png";
 const mapImg = "assets/images/mapImg.png";
 const notFoundImg = "assets/images/notFoundImg.png";
+const offerImg = "assets/images/offer.png";
 
 //icons
 const homeIc = "assets/icons/homeIc.png";
@@ -61,6 +62,7 @@ const currentLocIc = "assets/icons/currentLocIc.png";
 const locationOnIc = "assets/icons/locationOnIc.png";
 const curLocGreenIc = "assets/icons/cur_loc_green_ic.png";
 const sendRedIc = "assets/icons/send_red_ic.png";
+const sendWhiteIc = "assets/icons/sent_white.png";
 
 const shopBegIc = "assets/icons/shop_beg_ic.png";
 const idIc = "assets/icons/id_ic.png";

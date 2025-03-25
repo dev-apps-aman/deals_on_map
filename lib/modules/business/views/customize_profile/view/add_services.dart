@@ -25,7 +25,8 @@ class _AddServicesState extends State<AddServices> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const CustomProgressBar(totalPage: 3, currentPage: 1, isLoading: true),
+              const CustomProgressBar(
+                  totalPage: 3, currentPage: 1, isLoading: true),
               SizedBox(height: 26.h),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 4.h),
@@ -102,7 +103,7 @@ class _AddServicesState extends State<AddServices> {
             color: Colors.white,
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.15),
+                color: Colors.black.withAlpha(30),
                 offset: const Offset(0, 0),
                 blurRadius: 4,
                 spreadRadius: 0,
@@ -120,7 +121,11 @@ class _AddServicesState extends State<AddServices> {
                 backgroundColor: Colors.white,
               )),
               SizedBox(width: 10.w),
-              Expanded(child: CustomButton(buttonName: "Save Continue", onPressed: () {})),
+              Expanded(
+                  child: CustomButton(
+                buttonName: "Save Continue",
+                onPressed: () {},
+              )),
             ],
           ),
         ),

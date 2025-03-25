@@ -1,20 +1,16 @@
 import 'dart:convert';
-
 import 'package:deals_on_map/constants/images.dart';
 import 'package:deals_on_map/core/common_widgets/util.dart';
 import 'package:deals_on_map/modules/auth/provider/location_provider.dart';
-import 'package:deals_on_map/modules/auth/provider/timer_provider.dart';
 import 'package:deals_on_map/modules/auth/view/otp_screen.dart';
 import 'package:deals_on_map/modules/business/models/business_cat_model.dart';
 import 'package:deals_on_map/modules/business/models/business_cat_services_model.dart';
 import 'package:deals_on_map/modules/business/models/business_type_model.dart';
-import 'package:deals_on_map/modules/business/views/business_create_account/create_business_account1.dart';
 import 'package:deals_on_map/modules/business/views/business_create_account/create_business_account2.dart';
 import 'package:deals_on_map/modules/business/views/business_create_account/create_business_account3.dart';
 import 'package:deals_on_map/modules/business/views/business_create_account/create_business_account4.dart';
 import 'package:deals_on_map/modules/business/views/business_create_account/create_business_account5.dart';
 import 'package:deals_on_map/modules/business/views/business_create_account/create_business_account6.dart';
-import 'package:deals_on_map/modules/business/views/business_dashboard/view/business_dashboard.dart';
 import 'package:deals_on_map/service/api_logs.dart';
 import 'package:deals_on_map/service/api_service.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +21,7 @@ import '../../dashboard/provider/dashboard_provider.dart';
 import '../../dashboard/view/dashboard_screen.dart';
 import '../views/business_pro/view/business_pro.dart';
 
-class BusinessProvider extends ChangeNotifier {
+class BusinessAuthProvider extends ChangeNotifier {
   // Text controller for business name
   TextEditingController businessNameController = TextEditingController();
   TextEditingController webLinkController = TextEditingController();
@@ -41,20 +37,9 @@ class BusinessProvider extends ChangeNotifier {
   TextEditingController nameController = TextEditingController();
 
   bool isLoading = true;
-
-  // // Checkbox states
-  // bool isSelectedRetail = false;
-  // bool isSelectedStore = false;
-  // bool isSelectedService = false;
-
   String otp = '';
   String? fullAddress;
   String countryCode = '91';
-
-  // Address Lists
-  List<String> countryList = [];
-  List<String> stateList = [];
-  List<String> cityList = [];
 
   BusinessTypeModel? selectedBusinessType;
   BusinessCatModel? selectedBusinessCat;
@@ -106,69 +91,18 @@ class BusinessProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Bussiness mobile number submit
-  Future<void> onSentOtp(BuildContext context) async {
-    String mobile = mobileController.text.trim();
-
-    if (mobile.isEmpty) {
-      errorToast(context, "Enter Mobile Number");
-      return;
-    }
-    if (mobile.length != 10) {
-      errorToast(context, "Enter valid Mobile Number");
-      return;
-    }
-
-    String mobileWithCode = '+91-$mobile';
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => OtpScreen(
-          phoneNumber: mobileWithCode,
-          onOtpChanged: (otp) {
-            updateOtp(otp);
-          },
-          onResendOtp: () {
-            resendOtp(context);
-          },
-          onVerifyPressed: () {
-            onOtpVerify(context);
-          },
-        ),
-      ),
-    );
-  }
-
   void updateOtp(String newOtp) {
     otp = newOtp;
     notifyListeners();
   }
 
-  void resendOtp(BuildContext context) {
-    successToast(context, "Sending OTP...");
+  // void resendOtp(BuildContext context) {
+  //   successToast(context, "Sending OTP...");
 
-    // loginApi(context);
+  //   // loginApi(context);
 
-    context.read<TimerProvider>().resetTimer();
-  }
-
-// Bussiness otp verify
-  Future<void> onOtpVerify(BuildContext context) async {
-    String otpValue = otp.trim();
-    if (otpValue.isEmpty) {
-      errorToast(context, "Enter OTP");
-      return;
-    }
-    if (otpValue.length != 6) {
-      errorToast(context, "Enter a valid 6-digit OTP");
-      return;
-    }
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => CreateBusinessAccount1()),
-    );
-  }
+  //   context.read<TimerProvider>().resetTimer();
+  // }
 
   // Method to handle business name submission
   Future<void> onBusinessNameSubmit(BuildContext context) async {
@@ -397,10 +331,11 @@ class BusinessProvider extends ChangeNotifier {
         return;
       }
 
-      SharedPreferences sp = await SharedPreferences.getInstance();
-      String? token = sp.getString('access_token');
+      // SharedPreferences sp = await SharedPreferences.getInstance();
+      // String? token = sp.getString('access_token');
 
-      String isAlreadyVerify = (token != null && token.isNotEmpty) ? "1" : "0";
+      // String isAlreadyVerify = (token != null && token.isNotEmpty) ? "1" : "0";
+      String isAlreadyVerify = "1";
       onSellerRegisterOtp(context, isAlreadyVerify);
     } catch (e, stackTrace) {
       Log.console(" Error in onMobileSubmit: $e");
@@ -488,6 +423,16 @@ class BusinessProvider extends ChangeNotifier {
       isLoading = true;
       notifyListeners();
 
+      String otpValue = otp.trim();
+      if (otpValue.isEmpty) {
+        errorToast(context, "Enter OTP");
+        return;
+      }
+      if (otpValue.length != 6) {
+        errorToast(context, "Enter a valid 6-digit OTP");
+        return;
+      }
+
       List<String> selectedServiceIds =
           selectedBusinessCatServices.map((e) => e.id.toString()).toList();
 
@@ -531,7 +476,6 @@ class BusinessProvider extends ChangeNotifier {
         Provider.of<DashboardProvider>(context, listen: false)
             .updateSellerStatus(true);
 
-
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => BusinessPro()),
@@ -559,13 +503,12 @@ class BusinessProvider extends ChangeNotifier {
       // Payment ke baad dashboard screen par navigate karte hain.
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) =>  Dashboard(index: 2)),
-            (Route<dynamic> route) => false,
+        MaterialPageRoute(builder: (context) => Dashboard(index: 2)),
+        (Route<dynamic> route) => false,
       );
     } catch (e) {
       print("Error during payment submit: $e");
       errorToast(context, "Failed to complete payment. Please try again.");
     }
   }
-
 }

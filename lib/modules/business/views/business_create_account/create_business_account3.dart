@@ -4,7 +4,7 @@ import 'package:deals_on_map/constants/styles.dart';
 import 'package:deals_on_map/core/common_widgets/custom_app_bar.dart';
 import 'package:deals_on_map/core/common_widgets/custom_button.dart';
 import 'package:deals_on_map/core/common_widgets/custom_input_fields.dart';
-import 'package:deals_on_map/modules/business/provider/business_provider.dart';
+import 'package:deals_on_map/modules/business/provider/business_auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -49,10 +49,10 @@ class _CreateBusinessAccount3State extends State<CreateBusinessAccount3> {
                 ),
               ),
               SizedBox(height: 22.h),
-              Consumer<BusinessProvider>(
-                builder: (context, businessProvider, child) {
+              Consumer<BusinessAuthProvider>(
+                builder: (context, businessAuthProvider, child) {
                   return CustomTextField(
-                    controller: businessProvider.webLinkController,
+                    controller: businessAuthProvider.webLinkController,
                     borderRadius: 10,
                     fillColor: Colors.white,
                     borderCl: brdColor,
@@ -69,7 +69,9 @@ class _CreateBusinessAccount3State extends State<CreateBusinessAccount3> {
               CustomButton(
                   buttonName: "Continue",
                   onPressed: () {
-                    context.read<BusinessProvider>().onWebLinkSubmit(context);
+                    context
+                        .read<BusinessAuthProvider>()
+                        .onWebLinkSubmit(context);
                   }),
             ],
           ),

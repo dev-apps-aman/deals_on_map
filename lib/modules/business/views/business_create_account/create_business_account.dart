@@ -4,7 +4,7 @@ import 'package:deals_on_map/constants/styles.dart';
 import 'package:deals_on_map/core/common_widgets/custom_app_bar.dart';
 import 'package:deals_on_map/core/common_widgets/custom_button.dart';
 import 'package:deals_on_map/core/common_widgets/custom_input_fields.dart';
-import 'package:deals_on_map/modules/business/provider/business_provider.dart';
+import 'package:deals_on_map/modules/business/provider/business_auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -76,11 +76,11 @@ class CreateBusinessAccount extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: 7.w),
-                  Consumer<BusinessProvider>(
-                    builder: (context, businessProvider, child) {
+                  Consumer<BusinessAuthProvider>(
+                    builder: (context, businessAuthProvider, child) {
                       return Expanded(
                         child: CustomTextField(
-                          controller: businessProvider.mobileController,
+                          controller: businessAuthProvider.mobileController,
                           borderRadius: 10,
                           fillColor: Colors.white,
                           borderCl: unselectedFontColor,
@@ -94,11 +94,7 @@ class CreateBusinessAccount extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 30.h),
-              CustomButton(
-                  buttonName: "Continue",
-                  onPressed: () {
-                    context.read<BusinessProvider>().onSentOtp(context);
-                  }),
+              CustomButton(buttonName: "Continue", onPressed: () {}),
               SizedBox(height: 30.h),
             ],
           ),

@@ -4,7 +4,7 @@ import 'package:deals_on_map/constants/styles.dart';
 import 'package:deals_on_map/core/common_widgets/custom_app_bar.dart';
 import 'package:deals_on_map/core/common_widgets/custom_button.dart';
 import 'package:deals_on_map/core/common_widgets/custom_input_fields.dart';
-import 'package:deals_on_map/modules/business/provider/business_provider.dart';
+import 'package:deals_on_map/modules/business/provider/business_auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -81,11 +81,11 @@ class _CreateBusinessAccount6State extends State<CreateBusinessAccount6> {
                     ),
                   ),
                   SizedBox(width: 7.w),
-                  Consumer<BusinessProvider>(
-                    builder: (context, businessProvider, child) {
+                  Consumer<BusinessAuthProvider>(
+                    builder: (context, businessAuthProvider, child) {
                       return Expanded(
                         child: CustomTextField(
-                          controller: businessProvider.mobileController,
+                          controller: businessAuthProvider.mobileController,
                           borderRadius: 10,
                           maxLength: 10,
                           fillColor: Colors.white,
@@ -102,7 +102,9 @@ class _CreateBusinessAccount6State extends State<CreateBusinessAccount6> {
               CustomButton(
                   buttonName: "Continue",
                   onPressed: () {
-                    context.read<BusinessProvider>().onMobileSubmit(context);
+                    context
+                        .read<BusinessAuthProvider>()
+                        .onMobileSubmit(context);
                   }),
             ],
           ),

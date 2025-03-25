@@ -8,9 +8,7 @@ import 'package:deals_on_map/core/common_widgets/custom_input_fields.dart';
 import 'package:deals_on_map/core/common_widgets/multi_select_dropdown.dart';
 import 'package:deals_on_map/modules/business/models/business_cat_model.dart';
 import 'package:deals_on_map/modules/business/models/business_cat_services_model.dart';
-import 'package:deals_on_map/modules/business/provider/business_provider.dart';
-
-
+import 'package:deals_on_map/modules/business/provider/business_auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +25,7 @@ class CreateBusinessAccount4State extends State<CreateBusinessAccount4> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<BusinessProvider>(context, listen: false)
+      Provider.of<BusinessAuthProvider>(context, listen: false)
           .fetchBusinessCategories(context);
     });
   }
@@ -65,41 +63,41 @@ class CreateBusinessAccount4State extends State<CreateBusinessAccount4> {
                   ),
                 ),
                 SizedBox(height: 22.h),
-                Consumer<BusinessProvider>(
-                  builder: (context, businessProvider, child) {
+                Consumer<BusinessAuthProvider>(
+                  builder: (context, businessAuthProvider, child) {
                     return CustomDropdown1<BusinessCatModel>(
                       hint: "Business Category",
-                      isLoading: businessProvider.isLoading,
-                      items: businessProvider.businessCatList,
-                      value: businessProvider.selectedBusinessCat,
+                      isLoading: businessAuthProvider.isLoading,
+                      items: businessAuthProvider.businessCatList,
+                      value: businessAuthProvider.selectedBusinessCat,
                       itemLabel: (item) => item.title,
                       onChanged: (BusinessCatModel? value) {
-                        businessProvider.onBusinessCategoryChange(
+                        businessAuthProvider.onBusinessCategoryChange(
                             context, value!);
                       },
                     );
                   },
                 ),
                 SizedBox(height: 30.h),
-                Consumer<BusinessProvider>(
-                  builder: (context, businessProvider, _) {
+                Consumer<BusinessAuthProvider>(
+                  builder: (context, businessAuthProvider, _) {
                     return MultiSelectDropdown<BusinessCatServicesModel>(
                       hint: "Select Service",
                       itemLabel: (item) => item.title,
-                      items: businessProvider.businessCatServicesList,
+                      items: businessAuthProvider.businessCatServicesList,
                       selectedItems:
-                          businessProvider.selectedBusinessCatServices,
+                          businessAuthProvider.selectedBusinessCatServices,
                       onItemToggle: (item) {
-                        businessProvider.toggleSelection(item);
+                        businessAuthProvider.toggleSelection(item);
                       },
                     );
                   },
                 ),
                 SizedBox(height: 30.h),
-                Consumer<BusinessProvider>(
-                  builder: (context, businessProvider, child) {
+                Consumer<BusinessAuthProvider>(
+                  builder: (context, businessAuthProvider, child) {
                     return CustomTextField(
-                      controller: businessProvider.gstController,
+                      controller: businessAuthProvider.gstController,
                       borderRadius: 10,
                       fillColor: Colors.white,
                       borderCl: brdColor,
@@ -113,10 +111,10 @@ class CreateBusinessAccount4State extends State<CreateBusinessAccount4> {
                   },
                 ),
                 SizedBox(height: 30.h),
-                Consumer<BusinessProvider>(
-                  builder: (context, businessProvider, child) {
+                Consumer<BusinessAuthProvider>(
+                  builder: (context, businessAuthProvider, child) {
                     return CustomTextField(
-                      controller: businessProvider.panController,
+                      controller: businessAuthProvider.panController,
                       borderRadius: 10,
                       fillColor: Colors.white,
                       borderCl: brdColor,
@@ -133,7 +131,9 @@ class CreateBusinessAccount4State extends State<CreateBusinessAccount4> {
                 CustomButton(
                     buttonName: "Continue",
                     onPressed: () {
-                      context.read<BusinessProvider>().onBussCatSubmit(context);
+                      context
+                          .read<BusinessAuthProvider>()
+                          .onBussCatSubmit(context);
                     }),
               ],
             ),

@@ -21,7 +21,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 0;
-  CarouselSliderController carouselSliderController = CarouselSliderController();
+  CarouselSliderController carouselSliderController =
+      CarouselSliderController();
 
   final List<Map<String, String>> data = [
     {"name": "Restaurant", "image": restaurentIc},
@@ -163,17 +164,25 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 0),
                               width: MediaQuery.of(context).size.width * 0.80,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
-                                boxShadow: [BoxShadow(offset: const Offset(0, 1), blurRadius: 10, spreadRadius: 0, color: Colors.grey.withOpacity(0.05))],
+                                boxShadow: [
+                                  BoxShadow(
+                                      offset: const Offset(0, 1),
+                                      blurRadius: 10,
+                                      spreadRadius: 0,
+                                      color: Colors.grey.withAlpha(15))
+                                ],
                               ),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(15),
                                 child: Image.asset(
                                   bannerImg,
-                                  width: MediaQuery.of(context).size.width * 0.80,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.80,
                                   height: 150.h,
                                   fit: BoxFit.fill,
                                 ),
@@ -242,7 +251,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => ItemList()));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ItemList()));
                             },
                             child: Row(
                               children: [
@@ -268,7 +280,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       SizedBox(height: 10.h),
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 5.w, vertical: 3.h),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
@@ -305,14 +318,26 @@ class _HomeScreenState extends State<HomeScreen> {
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Container(
-                                          width: MediaQuery.of(context).size.width * 1.20,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              1.20,
                                           height: 200.h,
                                           decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(15),
-                                            boxShadow: [BoxShadow(offset: const Offset(0, 1), blurRadius: 10, spreadRadius: 0, color: Colors.grey.withOpacity(0.05))],
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  offset: const Offset(0, 1),
+                                                  blurRadius: 10,
+                                                  spreadRadius: 0,
+                                                  color:
+                                                      Colors.grey.withAlpha(15))
+                                            ],
                                           ),
                                           child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(8.0),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
                                             child: Image.asset(
                                               businessImg,
                                               height: 200,
@@ -329,7 +354,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   top: 10,
                                   right: 10,
                                   child: const Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Icon(
                                         Icons.favorite_outline_rounded,
@@ -346,11 +372,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: List.generate(4, (index) {
                                       return Container(
-                                        margin: EdgeInsets.symmetric(horizontal: 4),
+                                        margin:
+                                            EdgeInsets.symmetric(horizontal: 4),
                                         width: currentIndex == index ? 12 : 8,
                                         height: currentIndex == index ? 12 : 8,
                                         decoration: BoxDecoration(
-                                          color: currentIndex == index ? Colors.white : Colors.grey,
+                                          color: currentIndex == index
+                                              ? Colors.white
+                                              : Colors.grey,
                                           shape: BoxShape.circle,
                                         ),
                                       );
@@ -415,7 +444,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SizedBox(height: 16.h),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 12.h),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 5.w, vertical: 12.h),
                   decoration: BoxDecoration(
                     color: Color(0xFFFFF0EB),
                   ),
@@ -463,19 +493,21 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           Expanded(
                             child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 9.h),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 8.w, vertical: 9.h),
                               decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(10),
                                   border: Border.all(
-                                    color: Color(0xFFEC554F).withOpacity(0.30),
+                                    color: Color(0xFFEC554F).withAlpha(75),
                                     width: 1.w,
                                   )),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Image.asset(
                                         signupIc,
@@ -483,8 +515,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                         width: 30.w,
                                       ),
                                       ShaderMask(
-                                        shaderCallback: (bounds) => LinearGradient(
-                                          colors: const [Color(0xFFFF9F9F), Colors.white],
+                                        shaderCallback: (bounds) =>
+                                            LinearGradient(
+                                          colors: const [
+                                            Color(0xFFFF9F9F),
+                                            Colors.white
+                                          ],
                                           begin: Alignment.topCenter,
                                           end: Alignment.bottomCenter,
                                         ).createShader(bounds),
@@ -517,19 +553,21 @@ class _HomeScreenState extends State<HomeScreen> {
                           SizedBox(width: 10.w),
                           Expanded(
                             child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 9.h),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 8.w, vertical: 9.h),
                               decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(10),
                                   border: Border.all(
-                                    color: Color(0xFFEC554F).withOpacity(0.30),
+                                    color: Color(0xFFEC554F).withAlpha(75),
                                     width: 1.w,
                                   )),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Image.asset(
                                         businessListingIc,
@@ -537,8 +575,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                         width: 30.w,
                                       ),
                                       ShaderMask(
-                                        shaderCallback: (bounds) => LinearGradient(
-                                          colors: const [Color(0xFFFF9F9F), Colors.white],
+                                        shaderCallback: (bounds) =>
+                                            LinearGradient(
+                                          colors: const [
+                                            Color(0xFFFF9F9F),
+                                            Colors.white
+                                          ],
                                           begin: Alignment.topCenter,
                                           end: Alignment.bottomCenter,
                                         ).createShader(bounds),
@@ -571,19 +613,21 @@ class _HomeScreenState extends State<HomeScreen> {
                           SizedBox(width: 10.w),
                           Expanded(
                             child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 9.h),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 8.w, vertical: 9.h),
                               decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(10),
                                   border: Border.all(
-                                    color: Color(0xFFEC554F).withOpacity(0.30),
+                                    color: Color(0xFFEC554F).withAlpha(75),
                                     width: 1.w,
                                   )),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Image.asset(
                                         leadsGenerateIc,
@@ -591,8 +635,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                         width: 30.w,
                                       ),
                                       ShaderMask(
-                                        shaderCallback: (bounds) => LinearGradient(
-                                          colors: const [Color(0xFFFF9F9F), Colors.white],
+                                        shaderCallback: (bounds) =>
+                                            LinearGradient(
+                                          colors: const [
+                                            Color(0xFFFF9F9F),
+                                            Colors.white
+                                          ],
                                           begin: Alignment.topCenter,
                                           end: Alignment.bottomCenter,
                                         ).createShader(bounds),
@@ -685,10 +733,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
                         return Container(
-                            padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 5.w, vertical: 5.h),
                             margin: EdgeInsets.only(right: 10),
                             width: 170.w,
-                            decoration: BoxDecoration(color: appBarBdrColor, borderRadius: BorderRadius.circular(10)),
+                            decoration: BoxDecoration(
+                                color: appBarBdrColor,
+                                borderRadius: BorderRadius.circular(10)),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -696,7 +747,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   clipBehavior: Clip.none,
                                   children: [
                                     CarouselSlider(
-                                      carouselController: carouselSliderController,
+                                      carouselController:
+                                          carouselSliderController,
                                       options: CarouselOptions(
                                         aspectRatio: 1 / .60,
                                         autoPlay: false,
@@ -721,11 +773,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                               width: 170.w,
                                               height: 100.h,
                                               decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(15),
-                                                boxShadow: [BoxShadow(offset: const Offset(0, 1), blurRadius: 10, spreadRadius: 0, color: Colors.grey.withOpacity(0.05))],
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      offset:
+                                                          const Offset(0, 1),
+                                                      blurRadius: 10,
+                                                      spreadRadius: 0,
+                                                      color: Colors.grey
+                                                          .withAlpha(15))
+                                                ],
                                               ),
                                               child: ClipRRect(
-                                                borderRadius: BorderRadius.circular(8.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(8.0),
                                                 child: Image.asset(
                                                   businessImg,
                                                   height: 100,
@@ -742,7 +804,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       top: 10,
                                       right: 10,
                                       child: const Row(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Icon(
                                             Icons.favorite_outline_rounded,
@@ -756,14 +819,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                       bottom: 10,
                                       left: 10,
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
                                         children: List.generate(4, (index) {
                                           return Container(
-                                            margin: EdgeInsets.symmetric(horizontal: 4),
-                                            width: currentIndex == index ? 12 : 8,
-                                            height: currentIndex == index ? 12 : 8,
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: 4),
+                                            width:
+                                                currentIndex == index ? 12 : 8,
+                                            height:
+                                                currentIndex == index ? 12 : 8,
                                             decoration: BoxDecoration(
-                                              color: currentIndex == index ? Colors.white : Colors.grey,
+                                              color: currentIndex == index
+                                                  ? Colors.white
+                                                  : Colors.grey,
                                               shape: BoxShape.circle,
                                             ),
                                           );
@@ -870,10 +939,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
                         return Container(
-                            padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 5.w, vertical: 5.h),
                             margin: EdgeInsets.only(right: 10),
                             width: 170.w,
-                            decoration: BoxDecoration(color: appBarBdrColor, borderRadius: BorderRadius.circular(10)),
+                            decoration: BoxDecoration(
+                                color: appBarBdrColor,
+                                borderRadius: BorderRadius.circular(10)),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -881,7 +953,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   clipBehavior: Clip.none,
                                   children: [
                                     CarouselSlider(
-                                      carouselController: carouselSliderController,
+                                      carouselController:
+                                          carouselSliderController,
                                       options: CarouselOptions(
                                         aspectRatio: 1 / .60,
                                         autoPlay: false,
@@ -906,11 +979,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                               width: 170.w,
                                               height: 100.h,
                                               decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(15),
-                                                boxShadow: [BoxShadow(offset: const Offset(0, 1), blurRadius: 10, spreadRadius: 0, color: Colors.grey.withOpacity(0.05))],
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      offset:
+                                                          const Offset(0, 1),
+                                                      blurRadius: 10,
+                                                      spreadRadius: 0,
+                                                      color: Colors.grey
+                                                          .withAlpha(15))
+                                                ],
                                               ),
                                               child: ClipRRect(
-                                                borderRadius: BorderRadius.circular(8.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(8.0),
                                                 child: Image.asset(
                                                   businessImg,
                                                   height: 100,
@@ -927,7 +1010,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       top: 10,
                                       right: 10,
                                       child: const Row(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Icon(
                                             Icons.favorite_outline_rounded,
@@ -941,14 +1025,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                       bottom: 10,
                                       left: 10,
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
                                         children: List.generate(4, (index) {
                                           return Container(
-                                            margin: EdgeInsets.symmetric(horizontal: 4),
-                                            width: currentIndex == index ? 12 : 8,
-                                            height: currentIndex == index ? 12 : 8,
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: 4),
+                                            width:
+                                                currentIndex == index ? 12 : 8,
+                                            height:
+                                                currentIndex == index ? 12 : 8,
                                             decoration: BoxDecoration(
-                                              color: currentIndex == index ? Colors.white : Colors.grey,
+                                              color: currentIndex == index
+                                                  ? Colors.white
+                                                  : Colors.grey,
                                               shape: BoxShape.circle,
                                             ),
                                           );
@@ -1044,7 +1134,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 MediaQuery.removePadding(
                   context: context,
                   child: GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 8,
                       mainAxisSpacing: 2,
@@ -1193,7 +1284,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 fontSize: 12,
               ),
             ),
-            style: const TextStyle(color: Colors.white60, fontSize: 12, fontWeight: FontWeight.w400),
+            style: const TextStyle(
+                color: Colors.white60,
+                fontSize: 12,
+                fontWeight: FontWeight.w400),
             isExpanded: true,
             items: items.map((String country) {
               return DropdownMenuItem<String>(

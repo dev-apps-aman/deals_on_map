@@ -26,7 +26,8 @@ class _AddContactState extends State<AddContact> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const CustomProgressBar(totalPage: 3, currentPage: 2, isLoading: true),
+              const CustomProgressBar(
+                  totalPage: 3, currentPage: 2, isLoading: true),
               SizedBox(height: 26.h),
               Text(
                 'Add Business Description & Contact',
@@ -205,7 +206,7 @@ class _AddContactState extends State<AddContact> {
             color: Colors.white,
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.15),
+                color: Colors.black.withAlpha(30),
                 offset: const Offset(0, 0),
                 blurRadius: 4,
                 spreadRadius: 0,
@@ -223,7 +224,9 @@ class _AddContactState extends State<AddContact> {
                 backgroundColor: Colors.white,
               )),
               SizedBox(width: 10.w),
-              Expanded(child: CustomButton(buttonName: "Save Continue", onPressed: () {})),
+              Expanded(
+                  child: CustomButton(
+                      buttonName: "Save Continue", onPressed: () {})),
             ],
           ),
         ),

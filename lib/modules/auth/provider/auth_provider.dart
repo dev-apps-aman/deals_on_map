@@ -31,9 +31,14 @@ class AuthProvider extends ChangeNotifier {
   Future<void> loginApi(BuildContext context) async {
     try {
       String mobile = mobileController.text.trim();
-      String result = countryCode.replaceAll('+', '');
+      String code = countryCode.replaceAll('+', '');
 
-      final response = await ApiService.login(mobile, result);
+      if (mobile.isEmpty) {
+        errorToast(context, 'Enter Mobile Number');
+        return;
+      }
+
+      final response = await ApiService.login(mobile, code);
       var json = jsonDecode(response.body);
 
       Log.console("Login API Response: $json");
@@ -89,8 +94,10 @@ class AuthProvider extends ChangeNotifier {
     BuildContext context,
   ) async {
     try {
-      final response =
-          await ApiService.otpVerification(mobileController.text.trim(), otp);
+      String code = countryCode.replaceAll('+', '');
+
+      final response = await ApiService.otpVerification(
+          mobileController.text.trim(), otp, code);
       var json = jsonDecode(response.body);
 
       if (json['message'] == "OTP verified successfully") {

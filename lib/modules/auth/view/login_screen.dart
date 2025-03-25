@@ -62,6 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   )
                 ],
               ),
+              SizedBox(height: 10),
               Image.asset(
                 logoIc,
                 height: 84,
@@ -175,45 +176,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         Log.console('On Saved: $number');
                       },
                     ),
-                    /*Container(
-                          padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 14.w),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: brdColor,
-                                width: 1,
-                              )),
-                          child: Row(
-                            children: [
-                              Image.asset(
-                                indianFlagIc,
-                                height: 22.h,
-                                width: 30.w,
-                              ),
-                              SizedBox(width: 3.w),
-                              Text(
-                                '+91',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14.sp,
-                                  fontFamily: regular,
-                                  color: headingColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),*/
-                    /*SizedBox(width: 7.w),
-                        Expanded(
-                          child: CustomTextField(
-                            borderRadius: 10,
-                            fillColor: Colors.white,
-                            borderCl: brdColor,
-                            hintText: "Enter Mobile Number",
-                            txKeyboardType: TextInputType.phone,
-                            maxLength: 10,
-                          ),
-                        ),*/
                     SizedBox(height: 30.h),
                     CustomButton(
                         buttonName: "Continue",

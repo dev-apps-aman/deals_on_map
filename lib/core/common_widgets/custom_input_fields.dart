@@ -17,7 +17,7 @@ class CustomTextField extends StatefulWidget {
   double? inputFieldWidth;
   String? Function(String?)? validator;
   List<TextInputFormatter>? inputFormatters;
-  List<String> options; //If user want to show a searchable dropdown
+  List<String> options;
   bool isRequired;
   TextInputType? txKeyboardType;
   bool isEnabled;
@@ -34,10 +34,12 @@ class CustomTextField extends StatefulWidget {
   void Function(String)? onChanged;
   Function(String?)? onSaved;
   int maxCheck;
+  int minCheck;
   int? maxLength;
   double? borderRadius;
   Color? borderCl;
   Color? fillColor;
+  TextInputAction? textInputAction;
   final void Function(String)? onFieldSubmitted;
   Function()? onEditingComplete;
   Function()? onTap;
@@ -48,6 +50,7 @@ class CustomTextField extends StatefulWidget {
     this.readOnly,
     this.hintText = "",
     this.maxCheck = 1,
+    this.minCheck = 1,
     this.maxLength,
     this.leading,
     this.leading1,
@@ -77,6 +80,7 @@ class CustomTextField extends StatefulWidget {
     this.onEditingComplete,
     this.onOptionSelection,
     this.textCapitalization,
+    this.textInputAction,
     this.borderCl,
     this.fillColor,
     this.borderRadius,
@@ -155,8 +159,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
             keyboardType: widget.txKeyboardType ?? TextInputType.name,
             obscureText: widget.obscureText ?? false,
             enabled: widget.isEnabled,
+            minLines: widget.minCheck,
             maxLines: widget.maxCheck,
             maxLength: widget.maxLength,
+            textInputAction: widget.textInputAction,
             onTap: widget.onTap,
             style: const TextStyle(
               color: headingColor,
@@ -209,24 +215,22 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 fontFamily: regular,
               ),
               isDense: true,
-              suffixIcon:
-                  widget.leading1 == null
-                      ? null
-                      : Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        child: widget.leading1!,
-                      ),
+              suffixIcon: widget.leading1 == null
+                  ? null
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: widget.leading1!,
+                    ),
               suffixIconConstraints: const BoxConstraints(
                 minWidth: 0,
                 minHeight: 0,
               ),
-              prefixIcon:
-                  widget.leading == null
-                      ? null
-                      : Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: widget.leading,
-                      ),
+              prefixIcon: widget.leading == null
+                  ? null
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: widget.leading,
+                    ),
               prefixIconConstraints: const BoxConstraints(
                 minWidth: 0,
                 minHeight: 0,

@@ -2,11 +2,11 @@ import 'package:deals_on_map/constants/colors.dart';
 import 'package:deals_on_map/constants/styles.dart';
 import 'package:deals_on_map/core/common_widgets/custom_app_bar.dart';
 import 'package:deals_on_map/core/common_widgets/custom_button.dart';
-import 'package:deals_on_map/modules/business/provider/business_provider.dart';
+import 'package:deals_on_map/modules/business/provider/business_auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:deals_on_map/modules/business/models/business_type_model.dart'; // ✅ Model import
+import 'package:deals_on_map/modules/business/models/business_type_model.dart';
 
 class CreateBusinessAccount2 extends StatelessWidget {
   const CreateBusinessAccount2({super.key});
@@ -43,25 +43,27 @@ class CreateBusinessAccount2 extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 22.h),
-                Consumer<BusinessProvider>(
-                  builder: (context, provider, child) {
+                Consumer<BusinessAuthProvider>(
+                  builder: (context, businessAuthProvider, child) {
                     return ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: provider.businessTypesList.length,
+                      itemCount: businessAuthProvider.businessTypesList.length,
                       itemBuilder: (context, index) {
                         final BusinessTypeModel business =
-                            provider.businessTypesList[index];
+                            businessAuthProvider.businessTypesList[index];
                         final bool isSelected =
-                            provider.selectedBusinessType == business;
+                            businessAuthProvider.selectedBusinessType ==
+                                business;
 
                         return buildContainer(
                           business,
                           isSelected,
                           () {
-                            provider.setSelectedBusinessType(business);
+                            businessAuthProvider
+                                .setSelectedBusinessType(business);
                           },
-                          provider,
+                          businessAuthProvider,
                         );
                       },
                     );
@@ -72,7 +74,7 @@ class CreateBusinessAccount2 extends StatelessWidget {
                   buttonName: "Continue",
                   onPressed: () {
                     context
-                        .read<BusinessProvider>()
+                        .read<BusinessAuthProvider>()
                         .onBusinessTypeSubmit(context);
                   },
                 ),
@@ -88,7 +90,7 @@ class CreateBusinessAccount2 extends StatelessWidget {
     BusinessTypeModel business,
     bool isSelected,
     VoidCallback onTap,
-    BusinessProvider provider,
+    BusinessAuthProvider provider,
   ) {
     return InkWell(
       onTap: onTap,
@@ -107,7 +109,7 @@ class CreateBusinessAccount2 extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image.asset(
-              business.imagePath, // ✅ Direct model se data le rahe hain
+              business.imagePath,
               height: 26.h,
               width: 26.h,
             ),

@@ -11,7 +11,6 @@ class DashboardProvider extends ChangeNotifier {
   int selectedIndex = 0;
   bool isSeller = false;
 
-
   void updateSellerStatus(bool status) {
     isSeller = status;
     notifyListeners();
@@ -21,12 +20,12 @@ class DashboardProvider extends ChangeNotifier {
     return [
       const HomeScreen(),
       const MapScreen(),
-      isSeller ? const BusinessDashboard() : const BusinessScreen(),
+      // isSeller ? const BusinessDashboard() : const BusinessScreen(),
+      isSeller ? const BusinessScreen() : BusinessDashboard(),
       const Offers(),
       const ProfileScreen(),
     ];
   }
-
 
   void onItemTapped(int index) {
     selectedIndex = index;

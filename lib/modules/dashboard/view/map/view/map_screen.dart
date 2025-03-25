@@ -17,7 +17,8 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   int currentIndex = 0;
-  CarouselSliderController carouselSliderController = CarouselSliderController();
+  CarouselSliderController carouselSliderController =
+      CarouselSliderController();
 
   final List<Map<String, String>> data = [
     {"name": "Restaurant", "image": restaurentIc},
@@ -94,7 +95,13 @@ class _MapScreenState extends State<MapScreen> {
                     borderRadius: const BorderRadius.vertical(
                       top: Radius.circular(20),
                     ),
-                    boxShadow: [BoxShadow(offset: const Offset(0, -2), blurRadius: 10, spreadRadius: 0, color: Colors.grey.withOpacity(0.1))],
+                    boxShadow: [
+                      BoxShadow(
+                          offset: const Offset(0, -2),
+                          blurRadius: 10,
+                          spreadRadius: 0,
+                          color: Colors.grey.withAlpha(25))
+                    ],
                   ),
                   child: Column(
                     children: [
@@ -146,10 +153,13 @@ class _MapScreenState extends State<MapScreen> {
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
                             return Container(
-                              padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 5.w, vertical: 5.h),
                               margin: const EdgeInsets.only(right: 10),
                               width: 170.w,
-                              decoration: BoxDecoration(color: appBarBdrColor, borderRadius: BorderRadius.circular(10)),
+                              decoration: BoxDecoration(
+                                  color: appBarBdrColor,
+                                  borderRadius: BorderRadius.circular(10)),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -157,7 +167,8 @@ class _MapScreenState extends State<MapScreen> {
                                     clipBehavior: Clip.none,
                                     children: [
                                       CarouselSlider(
-                                        carouselController: carouselSliderController,
+                                        carouselController:
+                                            carouselSliderController,
                                         options: CarouselOptions(
                                           aspectRatio: 1 / .60,
                                           autoPlay: false,
@@ -182,11 +193,22 @@ class _MapScreenState extends State<MapScreen> {
                                                 width: 170.w,
                                                 height: 100.h,
                                                 decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(15),
-                                                  boxShadow: [BoxShadow(offset: const Offset(0, 1), blurRadius: 10, spreadRadius: 0, color: Colors.grey.withOpacity(0.05))],
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                        offset:
+                                                            const Offset(0, 1),
+                                                        blurRadius: 10,
+                                                        spreadRadius: 0,
+                                                        color: Colors.grey
+                                                            .withAlpha(15))
+                                                  ],
                                                 ),
                                                 child: ClipRRect(
-                                                  borderRadius: BorderRadius.circular(8.0),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          8.0),
                                                   child: Image.asset(
                                                     businessImg,
                                                     height: 100,
@@ -203,7 +225,8 @@ class _MapScreenState extends State<MapScreen> {
                                         top: 10,
                                         right: 10,
                                         child: Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Icon(
                                               Icons.favorite_outline_rounded,
@@ -217,14 +240,22 @@ class _MapScreenState extends State<MapScreen> {
                                         bottom: 10,
                                         left: 10,
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
                                           children: List.generate(4, (index) {
                                             return Container(
-                                              margin: EdgeInsets.symmetric(horizontal: 4.w),
-                                              width: currentIndex == index ? 12 : 8,
-                                              height: currentIndex == index ? 12 : 8,
+                                              margin: EdgeInsets.symmetric(
+                                                  horizontal: 4.w),
+                                              width: currentIndex == index
+                                                  ? 12
+                                                  : 8,
+                                              height: currentIndex == index
+                                                  ? 12
+                                                  : 8,
                                               decoration: BoxDecoration(
-                                                color: currentIndex == index ? Colors.white : Colors.grey,
+                                                color: currentIndex == index
+                                                    ? Colors.white
+                                                    : Colors.grey,
                                                 shape: BoxShape.circle,
                                               ),
                                             );
@@ -257,7 +288,8 @@ class _MapScreenState extends State<MapScreen> {
                                   ),
                                   SizedBox(height: 6.h),
                                   Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Image.asset(
                                         locationIc,
@@ -376,7 +408,10 @@ class _MapScreenState extends State<MapScreen> {
                 fontSize: 12,
               ),
             ),
-            style: const TextStyle(color: Colors.white60, fontSize: 12, fontWeight: FontWeight.w400),
+            style: const TextStyle(
+                color: Colors.white60,
+                fontSize: 12,
+                fontWeight: FontWeight.w400),
             isExpanded: true,
             items: items.map((String country) {
               return DropdownMenuItem<String>(
@@ -412,7 +447,8 @@ class _MapScreenState extends State<MapScreen> {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 11.h),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20.dm)),
+                borderRadius:
+                    BorderRadius.vertical(top: Radius.circular(20.dm)),
                 color: appBarBdrColor,
               ),
               child: Row(

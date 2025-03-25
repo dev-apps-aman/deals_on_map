@@ -31,7 +31,8 @@ class _AddPhotosState extends State<AddPhotos> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const CustomProgressBar(totalPage: 3, currentPage: 3, isLoading: true),
+              const CustomProgressBar(
+                  totalPage: 3, currentPage: 3, isLoading: true),
               SizedBox(height: 26.h),
               Text(
                 'upload Your Business Photos',
@@ -62,7 +63,8 @@ class _AddPhotosState extends State<AddPhotos> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30.dm),
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 29.w, vertical: 27.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 29.w, vertical: 27.h),
                     height: 74.h,
                     width: 78.w,
                     child: Image.asset(
@@ -81,7 +83,7 @@ class _AddPhotosState extends State<AddPhotos> {
             color: Colors.white,
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.15),
+                color: Colors.black.withAlpha(30),
                 offset: const Offset(0, 0),
                 blurRadius: 4,
                 spreadRadius: 0,
@@ -94,7 +96,8 @@ class _AddPhotosState extends State<AddPhotos> {
     );
   }
 
-  Future<void> showImagePicker(BuildContext context, AuthProvider authProvider) async {
+  Future<void> showImagePicker(
+      BuildContext context, AuthProvider authProvider) async {
     final ImagePicker picker = ImagePicker();
 
     showModalBottomSheet(
@@ -107,7 +110,8 @@ class _AddPhotosState extends State<AddPhotos> {
           children: [
             ListTile(
               onTap: () async {
-                final XFile? image = await picker.pickImage(source: ImageSource.camera);
+                final XFile? image =
+                    await picker.pickImage(source: ImageSource.camera);
                 if (image != null) {
                   final File imageFile = File(image.path);
                   authProvider.updateImage(imageFile);
@@ -119,7 +123,8 @@ class _AddPhotosState extends State<AddPhotos> {
             ),
             ListTile(
               onTap: () async {
-                final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+                final XFile? image =
+                    await picker.pickImage(source: ImageSource.gallery);
                 if (image != null) {
                   final File imageFile = File(image.path);
                   authProvider.updateImage(imageFile);

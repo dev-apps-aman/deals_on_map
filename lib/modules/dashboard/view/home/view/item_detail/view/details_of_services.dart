@@ -14,7 +14,8 @@ class DetailsOfServices extends StatefulWidget {
 
 class _DetailsOfServicesState extends State<DetailsOfServices> {
   int currentIndex = 0;
-  CarouselSliderController carouselSliderController = CarouselSliderController();
+  CarouselSliderController carouselSliderController =
+      CarouselSliderController();
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +43,11 @@ class _DetailsOfServicesState extends State<DetailsOfServices> {
                       Container(
                         height: 24.h,
                         width: 24.w,
-                        padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 5.w, vertical: 5.h),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4),
-                          color: const Color(0xFF000000).withOpacity(0.60),
+                          color: const Color(0xFF000000).withAlpha(150),
                         ),
                         child: Icon(
                           Icons.arrow_back_outlined,
@@ -57,10 +59,11 @@ class _DetailsOfServicesState extends State<DetailsOfServices> {
                       Container(
                         height: 24.h,
                         width: 24.w,
-                        padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 5.w, vertical: 5.h),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4),
-                          color: const Color(0xFF000000).withOpacity(0.60),
+                          color: const Color(0xFF000000).withAlpha(150),
                         ),
                         child: Image.asset(
                           shareArrowIc,
@@ -82,8 +85,10 @@ class _DetailsOfServicesState extends State<DetailsOfServices> {
                     left: 0,
                     right: 0,
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 12.h),
-                      margin: EdgeInsets.symmetric(horizontal: 17.w, vertical: 12.h),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 10.w, vertical: 12.h),
+                      margin: EdgeInsets.symmetric(
+                          horizontal: 17.w, vertical: 12.h),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
@@ -225,7 +230,8 @@ class _DetailsOfServicesState extends State<DetailsOfServices> {
                           Row(
                             children: [
                               Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10.w, vertical: 6.h),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(6),
                                     border: Border.all(
@@ -254,7 +260,8 @@ class _DetailsOfServicesState extends State<DetailsOfServices> {
                               ),
                               SizedBox(width: 10.w),
                               Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10.w, vertical: 6.h),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(6),
                                     border: Border.all(
@@ -324,7 +331,8 @@ class _DetailsOfServicesState extends State<DetailsOfServices> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 17.w, vertical: 10.h),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 17.w, vertical: 10.h),
                             child: Text(
                               'Videos',
                               style: TextStyle(
@@ -345,9 +353,16 @@ class _DetailsOfServicesState extends State<DetailsOfServices> {
                                 return Container(
                                   width: 170.w,
                                   height: 98.h,
-                                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.h),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 8.w, vertical: 10.h),
                                   decoration: BoxDecoration(
-                                    boxShadow: [BoxShadow(offset: const Offset(0, 1), blurRadius: 10, spreadRadius: 0, color: Colors.grey.withOpacity(0.05))],
+                                    boxShadow: [
+                                      BoxShadow(
+                                          offset: const Offset(0, 1),
+                                          blurRadius: 10,
+                                          spreadRadius: 0,
+                                          color: Colors.grey.withAlpha(15))
+                                    ],
                                   ),
                                   child: Image.asset(
                                     businessImg,
@@ -426,7 +441,8 @@ class _DetailsOfServicesState extends State<DetailsOfServices> {
                     ),
                     SizedBox(height: 15.h),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(6),
                         border: Border.all(
@@ -537,7 +553,8 @@ class _DetailsOfServicesState extends State<DetailsOfServices> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                padding: const EdgeInsets.only(top: 12, bottom: 12, right: 14, left: 14),
+                padding: const EdgeInsets.only(
+                    top: 12, bottom: 12, right: 14, left: 14),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: mainColor,
@@ -550,7 +567,8 @@ class _DetailsOfServicesState extends State<DetailsOfServices> {
               ),
               SizedBox(width: 10.w),
               Container(
-                padding: const EdgeInsets.only(top: 12, bottom: 12, right: 14, left: 14),
+                padding: const EdgeInsets.only(
+                    top: 12, bottom: 12, right: 14, left: 14),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(
