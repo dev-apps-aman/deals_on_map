@@ -15,8 +15,13 @@ class ApiUrl {
   static const String stateList = "${baseUrl}country-list";
   static const String cityList = "${baseUrl}country-list";
 
+  static const String sellerDashboard = "${baseUrl}seller-dashboard";
+
   static const String sellerBussinessUpload =
       "${baseUrl}seller-business-upload";
+
+  static const String createShopOffer = "${baseUrl}create-shop-offer";
+  static const String shopOfferList = "${baseUrl}shop-offer-list";
 
 //.............................................................
   static const String societyList = "${baseUrl}society-list";

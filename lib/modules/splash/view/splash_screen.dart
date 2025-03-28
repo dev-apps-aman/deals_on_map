@@ -3,8 +3,10 @@
 import 'package:deals_on_map/constants/colors.dart';
 import 'package:deals_on_map/constants/images.dart';
 import 'package:deals_on_map/modules/auth/view/login_screen.dart';
+import 'package:deals_on_map/modules/dashboard/provider/dashboard_provider.dart';
 import 'package:deals_on_map/modules/dashboard/view/dashboard_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -18,6 +20,7 @@ class SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    Provider.of<DashboardProvider>(context, listen: false).loadSellerStatus();
     _checkAuth();
   }
 

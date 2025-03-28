@@ -1,8 +1,11 @@
+import 'package:deals_on_map/modules/business/views/business_offers/shop_offers_list_screen.dart';
+import 'package:flutter/material.dart';
 import 'package:deals_on_map/constants/colors.dart';
 import 'package:deals_on_map/constants/images.dart';
 import 'package:deals_on_map/constants/styles.dart';
 import 'package:deals_on_map/core/common_widgets/custom_app_bar2.dart';
 import 'package:deals_on_map/core/common_widgets/custom_btn.dart';
+import 'package:deals_on_map/modules/business/provider/business_dashboard_provider.dart';
 
 import 'package:deals_on_map/modules/business/views/business_details/view/business_details.dart';
 import 'package:deals_on_map/modules/business/views/business_offers/create_shop_offer.dart';
@@ -10,17 +13,26 @@ import 'package:deals_on_map/modules/business/views/business_offers/create_shop_
 import 'package:deals_on_map/modules/business/views/customize_profile/view/add_contact.dart';
 import 'package:deals_on_map/modules/business/views/customize_profile/view/add_photos.dart';
 import 'package:deals_on_map/modules/business/views/customize_profile/view/add_services.dart';
-import 'package:flutter/material.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class BusinessDashboard extends StatefulWidget {
   const BusinessDashboard({super.key});
 
   @override
-  State<BusinessDashboard> createState() => _BusinessDashboardState();
+  State<BusinessDashboard> createState() => BusinessDashboardState();
 }
 
-class _BusinessDashboardState extends State<BusinessDashboard> {
+class BusinessDashboardState extends State<BusinessDashboard> {
+  late final BusinessDashboardProvider businessDashboardProvider;
+  @override
+  void initState() {
+    super.initState();
+    businessDashboardProvider = context.read<BusinessDashboardProvider>();
+    businessDashboardProvider.sellerDashboard(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -59,9 +71,11 @@ class _BusinessDashboardState extends State<BusinessDashboard> {
               GestureDetector(
                 onTap: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const BusinessDetails()));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const BusinessDetails(),
+                    ),
+                  );
                 },
                 child: Container(
                   padding:
@@ -82,7 +96,8 @@ class _BusinessDashboardState extends State<BusinessDashboard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Aamod ItSolutions',
+                        businessDashboardProvider.sellerDetails?.businessName ??
+                            '',
                         style: TextStyle(
                           fontSize: 14.sp,
                           fontFamily: regular,
@@ -99,7 +114,9 @@ class _BusinessDashboardState extends State<BusinessDashboard> {
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
-                          'IT support and services',
+                          businessDashboardProvider
+                                  .sellerDetails?.categoryName ??
+                              '',
                           style: TextStyle(
                             fontSize: 10.sp,
                             fontFamily: regular,
@@ -112,18 +129,36 @@ class _BusinessDashboardState extends State<BusinessDashboard> {
                       Row(
                         children: [
                           Expanded(
-                            child: Text(
+                            child: RichText(
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
-                              'Address: aadarsh, jaipur, Rajasthan 302004',
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                fontFamily: regular,
-                                fontWeight: FontWeight.w500,
-                                color: headingColor,
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'Address: ',
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontFamily: regular,
+                                      fontWeight: FontWeight.w600,
+                                      color: headingColor,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: businessDashboardProvider
+                                            .sellerDetails?.address ??
+                                        '',
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontFamily: regular,
+                                      fontWeight: FontWeight.w500,
+                                      color: headingColor,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
+                          SizedBox(width: 6.w),
                           Icon(
                             Icons.mode_edit_outline_outlined,
                             size: 20.sp,
@@ -138,10 +173,11 @@ class _BusinessDashboardState extends State<BusinessDashboard> {
                             child: GestureDetector(
                               onTap: () {
                                 Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const AddServices()));
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const AddServices(),
+                                  ),
+                                );
                               },
                               child: Column(
                                 children: [
@@ -187,8 +223,8 @@ class _BusinessDashboardState extends State<BusinessDashboard> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            const AddContact()));
+                                      builder: (context) => const AddContact(),
+                                    ));
                               },
                               child: Column(
                                 children: [
@@ -228,10 +264,11 @@ class _BusinessDashboardState extends State<BusinessDashboard> {
                             child: GestureDetector(
                               onTap: () {
                                 Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const AddPhotos()));
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const AddPhotos(),
+                                  ),
+                                );
                               },
                               child: Column(
                                 children: [
@@ -346,35 +383,98 @@ class _BusinessDashboardState extends State<BusinessDashboard> {
                 ),
               ),
               SizedBox(height: 20.h),
-              CustomBtn(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        textAlign: TextAlign.center,
-                        'Create Shop Offers',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16.sp,
-                          fontFamily: regular,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      SizedBox(width: 10.w),
-                      Image.asset(
-                        height: 23,
-                        width: 23,
-                        sendWhiteIc,
-                      )
-                    ],
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [white, lightPink],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CreateShopOffer(),
-                        ));
-                  })
+                  border: Border.all(color: brdColor),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          textAlign: TextAlign.center,
+                          'Your Offers',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontFamily: regular,
+                            fontWeight: FontWeight.w500,
+                            color: headingColor,
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const ShopOffersListScreen(),
+                              ),
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: Row(
+                              children: [
+                                Text(
+                                  'View All',
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontFamily: regular,
+                                    fontWeight: FontWeight.w700,
+                                    color: mainColor,
+                                  ),
+                                ),
+                                SizedBox(width: 5.w),
+                                Icon(Icons.arrow_forward_ios_outlined,
+                                    size: 12.sp, color: mainColor),
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 14.h),
+                    CustomBtn(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              textAlign: TextAlign.center,
+                              'Create Shop Offers',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16.sp,
+                                fontFamily: regular,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            SizedBox(width: 10.w),
+                            Image.asset(
+                              height: 23,
+                              width: 23,
+                              sendWhiteIc,
+                            )
+                          ],
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CreateShopOffer(),
+                            ),
+                          );
+                        }),
+                  ],
+                ),
+              )
             ],
           ),
         ),

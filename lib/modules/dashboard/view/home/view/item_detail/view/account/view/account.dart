@@ -8,10 +8,10 @@ class Account extends StatefulWidget {
   const Account({super.key});
 
   @override
-  State<Account> createState() => _AccountState();
+  State<Account> createState() => AccountState();
 }
 
-class _AccountState extends State<Account> {
+class AccountState extends State<Account> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -33,11 +33,12 @@ class _AccountState extends State<Account> {
                     color: Colors.black,
                   ),
                 ),
-                SizedBox(height: 6.h),
-                ListView.builder(
+                SizedBox(height: 8.h),
+                ListView.separated(
                     itemCount: 4,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
+                    separatorBuilder: (context, index) => SizedBox(height: 15.h) ,
                     itemBuilder: (context, index) {
                       return Row(
                         children: [
@@ -130,6 +131,7 @@ class _AccountState extends State<Account> {
                         color: linkColor,
                       )),
                   child: Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Image.asset(
                         linkIc,

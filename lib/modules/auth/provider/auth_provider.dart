@@ -101,6 +101,8 @@ class AuthProvider extends ChangeNotifier {
       var json = jsonDecode(response.body);
 
       if (json['message'] == "OTP verified successfully") {
+
+
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('access_token', json['access_token'] ?? '');
         await prefs.setString('mobile', json['user']?['mobile'] ?? '');
@@ -109,6 +111,8 @@ class AuthProvider extends ChangeNotifier {
         await prefs.setString('status', json['user']?['status'] ?? '');
         await prefs.setString('role', json['user']?['role'] ?? '');
         await prefs.setString('countryCode', countryCode);
+        await prefs.setString('countryCode', countryCode);
+        await prefs.setInt('is_seller_verified', json['user']?['is_seller_verified']);
 
         Navigator.pushAndRemoveUntil(
           context,
@@ -162,7 +166,6 @@ class AuthProvider extends ChangeNotifier {
       );
 
       locationPermissionGranted = true;
-
       LoaderUtils.removeLoader(context);
       notifyListeners();
     } catch (e) {

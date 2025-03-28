@@ -9,6 +9,8 @@ import 'package:deals_on_map/modules/dashboard/view/home/view/item_detail/view/r
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../../business/views/business_details/view/pictures/view/pictures.dart';
+
 class ItemDetails extends StatefulWidget {
   const ItemDetails({super.key});
 

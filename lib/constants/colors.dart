@@ -20,3 +20,5 @@ const Color customAppBarColor = Color(0xFFE2F0E6);
 const Color businessBrdColor = Color(0xFFDFDFDF);
 const Color greeenFAEF = Color(0xFFEAFAEF);
 const Color greeenCFBB = Color(0xFFB4CFBB);
+const Color white = Color(0xFFFFFFFF);
+const Color lightPink = Color(0xFFFFF0E0);

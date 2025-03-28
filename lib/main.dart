@@ -4,6 +4,7 @@ import 'package:deals_on_map/modules/auth/provider/auth_provider.dart';
 import 'package:deals_on_map/modules/auth/provider/location_provider.dart';
 import 'package:deals_on_map/modules/auth/provider/timer_provider.dart';
 import 'package:deals_on_map/modules/business/provider/business_auth_provider.dart';
+import 'package:deals_on_map/modules/business/provider/business_dashboard_provider.dart';
 import 'package:deals_on_map/modules/business/provider/shop_offer_provider.dart';
 import 'package:deals_on_map/modules/dashboard/provider/dashboard_provider.dart';
 import 'package:deals_on_map/modules/dashboard/view/home/provider/home_provider.dart';
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => HomeProvider()),
         ChangeNotifierProvider(create: (_) => BusinessAuthProvider()),
         ChangeNotifierProvider(create: (_) => LocationProvider()),
+        ChangeNotifierProvider(create: (_) => BusinessDashboardProvider()),
         ChangeNotifierProvider(create: (_) => ShopOfferProvider()),
       ],
       child: GestureDetector(

@@ -16,8 +16,6 @@ import 'package:deals_on_map/service/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../dashboard/provider/dashboard_provider.dart';
 import '../../dashboard/view/dashboard_screen.dart';
 import '../views/business_pro/view/business_pro.dart';
 
@@ -200,7 +198,7 @@ class BusinessAuthProvider extends ChangeNotifier {
     fetchCategoryServices(context, selectedBusinessCat!.id.toString());
   }
 
-  // Fetch business services
+
   Future<void> fetchCategoryServices(
       BuildContext context, String categoryId) async {
     try {
@@ -470,12 +468,10 @@ class BusinessAuthProvider extends ChangeNotifier {
 
           var prefs = await SharedPreferences.getInstance();
           await prefs.setString("sellerID", sellerID);
+          await prefs.setInt('is_seller_verified', 1);
 
           Log.console(" Seller ID Saved: $sellerID");
         }
-        Provider.of<DashboardProvider>(context, listen: false)
-            .updateSellerStatus(true);
-
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => BusinessPro()),
@@ -499,8 +495,6 @@ class BusinessAuthProvider extends ChangeNotifier {
   Future<void> onPaymentSubmit(BuildContext context) async {
     try {
       successToast(context, "Payment Successfully Done!");
-
-      // Payment ke baad dashboard screen par navigate karte hain.
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => Dashboard(index: 2)),

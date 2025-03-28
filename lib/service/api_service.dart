@@ -5,6 +5,8 @@ import 'dart:io';
 
 import 'package:deals_on_map/service/api_url.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'package:mime/mime.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api_client.dart';
@@ -15,7 +17,7 @@ class ApiService {
     try {
       var instance = await SharedPreferences.getInstance();
       var token = instance.getString('access_token');
-      Log.console("AccessToken$token");
+      Log.console("AccessToken $token");
       if (token == null) {
         return "";
       } else {
@@ -143,8 +145,7 @@ class ApiService {
   /// state list
   static Future<http.Response> stateList(String country) async {
     http.Response response;
-    var instance = await SharedPreferences.getInstance();
-    var token = instance.getString('access_token');
+    var token = await getAccessToken();
     var result = await ApiClient.postData(ApiUrl.contactUs, headers: {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
@@ -158,8 +159,7 @@ class ApiService {
   /// city list
   static Future<http.Response> cityList(String state) async {
     http.Response response;
-    var instance = await SharedPreferences.getInstance();
-    var token = instance.getString('access_token');
+    var token = await getAccessToken();
     var result = await ApiClient.postData(ApiUrl.contactUs, headers: {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
@@ -190,8 +190,7 @@ class ApiService {
     required String isAlreadyVerify,
   }) async {
     http.Response response;
-    var instance = await SharedPreferences.getInstance();
-    var token = instance.getString('access_token');
+    var token = await getAccessToken();
     Map<String, String> requestBody = {
       "business_name": businessName,
       "business_owner_name": businessOwnerName,
@@ -246,8 +245,7 @@ class ApiService {
     required String otp,
   }) async {
     http.Response response;
-    var instance = await SharedPreferences.getInstance();
-    var token = instance.getString('access_token');
+    var token = await getAccessToken();
     Map<String, String> requestBody = {
       "business_name": businessName,
       "business_owner_name": businessOwnerName,
@@ -302,8 +300,7 @@ class ApiService {
   ///towerListApi
   static Future<http.Response> towerListApi(String societyId) async {
     http.Response response;
-    var instance = await SharedPreferences.getInstance();
-    var token = instance.getString('access_token');
+    var token = await getAccessToken();
     var result = await ApiClient.postData(ApiUrl.towerList, headers: {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
@@ -333,8 +330,7 @@ class ApiService {
   ///productListApi
   static Future<http.Response> productListApi(String categoryId) async {
     http.Response response;
-    var instance = await SharedPreferences.getInstance();
-    var token = instance.getString('access_token');
+    var token = await getAccessToken();
     var result = await ApiClient.postData(ApiUrl.productListApi, headers: {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
@@ -350,8 +346,7 @@ class ApiService {
   ///productDetails
   static Future<http.Response> productDetails(String productId) async {
     http.Response response;
-    var instance = await SharedPreferences.getInstance();
-    var token = instance.getString('access_token');
+    var token = await getAccessToken();
     var result = await ApiClient.postData(ApiUrl.productDetails, headers: {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
@@ -367,8 +362,7 @@ class ApiService {
   ///getProfile
   static Future<http.Response> getProfile() async {
     http.Response response;
-    var instance = await SharedPreferences.getInstance();
-    var token = instance.getString('access_token');
+    var token = await getAccessToken();
     var result = await ApiClient.postData(ApiUrl.getProfile, headers: {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
@@ -383,8 +377,7 @@ class ApiService {
   static Future<http.Response> addCart(
       String productId, String quantity, String remove) async {
     http.Response response;
-    var instance = await SharedPreferences.getInstance();
-    var token = instance.getString('access_token');
+    var token = await getAccessToken();
     var result = await ApiClient.postData(ApiUrl.addCart, headers: {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
@@ -402,8 +395,7 @@ class ApiService {
   ///cartList
   static Future<http.Response> cartList() async {
     http.Response response;
-    var instance = await SharedPreferences.getInstance();
-    var token = instance.getString('access_token');
+    var token = await getAccessToken();
     var result = await ApiClient.postData(ApiUrl.cartListApi, headers: {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
@@ -417,8 +409,7 @@ class ApiService {
   ///updateCart
   static Future<http.Response> updateCart(String productId, String type) async {
     http.Response response;
-    var instance = await SharedPreferences.getInstance();
-    var token = instance.getString('access_token');
+    var token = await getAccessToken();
     var result = await ApiClient.postData(ApiUrl.updateCart, headers: {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
@@ -435,8 +426,7 @@ class ApiService {
   ///addWishListApi
   static Future<http.Response> addWishList(String productId) async {
     http.Response response;
-    var instance = await SharedPreferences.getInstance();
-    var token = instance.getString('access_token');
+    var token = await getAccessToken();
     var result = await ApiClient.postData(ApiUrl.addWishListApi, headers: {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
@@ -452,8 +442,7 @@ class ApiService {
   ///wishList
   static Future<http.Response> wishList() async {
     http.Response response;
-    var instance = await SharedPreferences.getInstance();
-    var token = instance.getString('access_token');
+    var token = await getAccessToken();
     var result = await ApiClient.postData(ApiUrl.wishListApi, headers: {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
@@ -467,8 +456,7 @@ class ApiService {
   ///timeSlots
   static Future<http.Response> timeSlots() async {
     http.Response response;
-    var instance = await SharedPreferences.getInstance();
-    var token = instance.getString('access_token');
+    var token = await getAccessToken();
     var result = await ApiClient.postData(ApiUrl.getTimeSlots, headers: {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
@@ -482,8 +470,7 @@ class ApiService {
   ///orderList
   static Future<http.Response> orderList(String deliveryStatus) async {
     http.Response response;
-    var instance = await SharedPreferences.getInstance();
-    var token = instance.getString('access_token');
+    var token = await getAccessToken();
     var result = await ApiClient.postData(ApiUrl.orderList, headers: {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
@@ -515,8 +502,7 @@ class ApiService {
     String gstPer,
   ) async {
     http.Response response;
-    var instance = await SharedPreferences.getInstance();
-    var token = instance.getString('access_token');
+    var token = await getAccessToken();
     var result = await ApiClient.postData(ApiUrl.saveOrder, headers: {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
@@ -612,8 +598,7 @@ class ApiService {
   ///cmsGet
   static Future<http.Response> cmsGet(String type) async {
     http.Response response;
-    var instance = await SharedPreferences.getInstance();
-    var token = instance.getString('access_token');
+    var token = await getAccessToken();
     var result = await ApiClient.postData(ApiUrl.cmsPage, headers: {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
@@ -629,8 +614,7 @@ class ApiService {
   ///contactUs
   static Future<http.Response> contactUs(String type) async {
     http.Response response;
-    var instance = await SharedPreferences.getInstance();
-    var token = instance.getString('access_token');
+    var token = await getAccessToken();
     var result = await ApiClient.postData(ApiUrl.contactUs, headers: {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
@@ -646,8 +630,7 @@ class ApiService {
   ///deleteAccount
   static Future<http.Response> deleteAccount() async {
     http.Response response;
-    var instance = await SharedPreferences.getInstance();
-    var token = instance.getString('access_token');
+    var token = await getAccessToken();
     var result = await ApiClient.postData(ApiUrl.deleteAccount, headers: {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
@@ -726,8 +709,7 @@ class ApiService {
   ///addressList
   static Future<http.Response> addressList() async {
     http.Response response;
-    var instance = await SharedPreferences.getInstance();
-    var token = instance.getString('access_token');
+    var token = await getAccessToken();
     var result = await ApiClient.postData(ApiUrl.addressList, headers: {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
@@ -751,8 +733,7 @@ class ApiService {
     String addressType,
   ) async {
     http.Response response;
-    var instance = await SharedPreferences.getInstance();
-    var token = instance.getString('access_token');
+    var token = await getAccessToken();
     var result = await ApiClient.postData(ApiUrl.addAddress, headers: {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
@@ -776,8 +757,7 @@ class ApiService {
   ///deleteAddress
   static Future<http.Response> deleteAddress(String addressId) async {
     http.Response response;
-    var instance = await SharedPreferences.getInstance();
-    var token = instance.getString('access_token');
+    var token = await getAccessToken();
     var result = await ApiClient.postData(ApiUrl.deleteAddress, headers: {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
@@ -793,8 +773,7 @@ class ApiService {
   ///selectAddress
   static Future<http.Response> selectAddress(String addressId) async {
     http.Response response;
-    var instance = await SharedPreferences.getInstance();
-    var token = instance.getString('access_token');
+    var token = await getAccessToken();
     var result = await ApiClient.postData(ApiUrl.selectAddress, headers: {
       'Authorization': 'Bearer $token',
       "Accept": "application/json",
@@ -810,10 +789,9 @@ class ApiService {
   /// seller dashboard
   static Future<http.Response> sellerDashboard() async {
     http.Response response;
-    var instance = await SharedPreferences.getInstance();
-    var token = instance.getString('access_token');
+    var token = await getAccessToken();
     var result = await ApiClient.postData(
-      ApiUrl.selectAddress,
+      ApiUrl.sellerDashboard,
       headers: {
         'Authorization': 'Bearer $token',
         "Accept": "application/json",
@@ -826,19 +804,157 @@ class ApiService {
     return response;
   }
 
-  /// seller dashboard
-  static Future<http.Response> sellerBusinessUpload() async {
-    http.Response response;
-    var instance = await SharedPreferences.getInstance();
-    var token = instance.getString('access_token');
-    var result = await ApiClient.postData(
-      ApiUrl.sellerBussinessUpload,
-      headers: {
-        'Authorization': 'Bearer $token',
-        "Accept": "application/json",
-      },
-      body: {},
+  /// Create Shop Offer
+
+  static Future<http.Response> createShopOffer(
+    List<File> images,
+    String title,
+    String description,
+  ) async {
+    var token = await getAccessToken();
+    Map<String, String> requestBody = {
+      "title": title,
+      "description": description,
+    };
+    var result = await ApiService.uploadMultiPalImages(
+      token: token,
+      url: ApiUrl.createShopOffer,
+      image: images,
+      filed: 'files',
+      body: requestBody,
+      isSingle: false,
+      singleImage: File(""),
     );
+    if (result.statusCode == 200 || result.statusCode == 201) {
+      return result;
+    } else {
+      Log.console("Something went wrong! Please try again.");
+      return http.Response("Request failed with status: ${result.statusCode}",
+          result.statusCode);
+    }
+  }
+
+  static Future<http.Response> uploadMultiPalImages({
+    required String token,
+    required String url,
+    required bool isSingle,
+    required String filed,
+    required List<File> image,
+    required File singleImage,
+    required Map<String, String> body,
+  }) async {
+    try {
+      Map<String, String> headers = {};
+      headers['Connection'] = "keep-alive";
+      headers['Authorization'] = 'Bearer $token';
+      headers['Content-Type'] = 'multipart/form-data';
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse(url),
+      );
+      if (isSingle) {
+        final mimeTypeData =
+            lookupMimeType(singleImage.path, headerBytes: [0xFF, 0xD8])
+                ?.split('/');
+        request.files.add(
+          await http.MultipartFile.fromPath(
+            filed,
+            singleImage.path,
+            contentType: MediaType(
+              mimeTypeData![0],
+              mimeTypeData[1],
+            ),
+          ),
+        );
+      } else {
+        for (var i = 0; i < image.length; i++) {
+          String? mimeType =
+              lookupMimeType(image[i].path) ?? 'application/octet-stream';
+          List<String> mimeTypeData = mimeType.split('/');
+          if (mimeTypeData.length != 2) {
+            mimeTypeData = ['application', 'octet-stream'];
+          }
+          request.files.add(
+            await http.MultipartFile.fromPath(
+              filed,
+              image[i].path,
+              contentType: MediaType(
+                mimeTypeData[0],
+                mimeTypeData[1],
+              ),
+            ),
+          );
+        }
+      }
+
+      request.fields.addAll(body);
+      request.headers.addAll(headers);
+      http.StreamedResponse response = await request.send();
+      var httpResponse = await http.Response.fromStream(response);
+      Log.console(
+        'REQ Headers: $headers\n'
+        'RES Headers: ${httpResponse.request?.headers}\n'
+        'REQ BODY: ${request.fields}\n'
+        'REQUEST\n >> ${httpResponse.request}\n'
+        'STATUS\n >> ${httpResponse.statusCode}\n'
+        'BODY\n >> ${httpResponse.body}',
+      );
+      return httpResponse;
+    } catch (e, stackTrack) {
+      Log.console("'Error on \n >> $url', error: $e, stackTrace: $stackTrack");
+      rethrow;
+    }
+  }
+
+  /// seller business upload
+  static Future<http.Response> sellerBusinessUpload() async {
+    var result;
+    http.Response response;
+    try {
+      var url = ApiUrl.sellerBussinessUpload;
+      Log.console('Http.Post Url: $url');
+      var token = await getAccessToken();
+
+      http.MultipartRequest request =
+          http.MultipartRequest('POST', Uri.parse(url));
+      request.headers.addAll({
+        'Authorization': 'Bearer $token',
+      });
+      Log.console('Http.Post Headers: ${request.headers}');
+      // if (selectedImg.isNotEmpty) {
+      //   http.MultipartFile file =
+      //   await http.MultipartFile.fromPath('files', selectedImg[0].path);
+      //   request.files.add(file);
+      // }
+      Log.console('Http.Post filed: ${request.fields}');
+      response = await http.Response.fromStream(await request.send());
+      Log.console('Http.Response Body: ${response.body}');
+      if (response.statusCode == 200) {
+        result = jsonDecode(response.body);
+      } else if (response.statusCode == 404) {
+        result = {'status_code': 400, 'message': '404'};
+      } else if (response.statusCode == 401) {
+        result = jsonDecode(response.body);
+      }
+    } catch (e) {
+      result = http.Response(
+        jsonEncode({e.toString()}),
+        204,
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+        },
+      );
+    }
+    return result;
+  }
+
+  static Future<http.Response> shopOfferList() async {
+    http.Response response;
+    var token = await getAccessToken();
+    var result = await ApiClient.getData(ApiUrl.shopOfferList, headers: {
+      'Authorization': 'Bearer $token',
+      "Accept": "application/json",
+    });
     response = http.Response(jsonEncode(result), 200, headers: {
       HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
     });
