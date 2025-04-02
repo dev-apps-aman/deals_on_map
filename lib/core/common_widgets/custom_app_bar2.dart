@@ -26,7 +26,8 @@ class _CustomAppBar2State extends State<CustomAppBar2> {
   @override
   void initState() {
     super.initState();
-    Provider.of<HomeProvider>(context, listen: false).requestLocationPermission();
+    Provider.of<HomeProvider>(context, listen: false)
+        .requestLocationPermission();
   }
 
   @override
@@ -49,38 +50,48 @@ class _CustomAppBar2State extends State<CustomAppBar2> {
               ),
               SizedBox(width: 10.w),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Location",
-                      style: TextStyle(
-                        color: fontColor,
-                        fontFamily: regular,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                        fontSize: 14.sp,
+                child: GestureDetector(
+                  onTap: () {
+                    print("📌 Location text clicked!");
+                    provider.getCurrentLocation();
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Location",
+                        style: TextStyle(
+                          color: fontColor,
+                          fontFamily: regular,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                          fontSize: 14.sp,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 2.h),
-                    Text(
-                      maxLines: 1,
-                      provider.currentLocation,
-                      style: TextStyle(
-                        color: mainColor,
-                        fontFamily: regular,
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                        fontSize: 12.sp,
+                      SizedBox(height: 2.h),
+                      Text(
+                        provider.currentLocation,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: mainColor,
+                          fontFamily: regular,
+                          fontWeight: FontWeight.w400,
+                          fontStyle: FontStyle.normal,
+                          fontSize: 12.sp,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 30),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationScreen()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const NotificationScreen()));
                 },
                 child: Icon(
                   Icons.notifications,

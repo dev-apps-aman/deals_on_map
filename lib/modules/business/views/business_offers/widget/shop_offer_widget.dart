@@ -1,5 +1,7 @@
 import 'package:deals_on_map/constants/colors.dart';
 import 'package:deals_on_map/constants/styles.dart';
+import 'package:deals_on_map/core/common_widgets/shimmer.dart';
+import 'package:deals_on_map/service/api_url.dart';
 import 'package:flutter/material.dart';
 
 class ShopOfferWidget extends StatelessWidget {
@@ -33,11 +35,25 @@ class ShopOfferWidget extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Image.asset(
-                  imageUrl,
+                child: SizedBox(
                   width: 102,
                   height: 61,
-                  fit: BoxFit.cover,
+                  child: Image.network(
+                    imageUrl,
+                    fit: BoxFit.cover,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return const CustomShimmer(width: 102, height: 61);
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        'assets/images/placeholder.png',
+                        width: 102,
+                        height: 61,
+                        fit: BoxFit.cover,
+                      );
+                    },
+                  ),
                 ),
               ),
               const SizedBox(width: 12),

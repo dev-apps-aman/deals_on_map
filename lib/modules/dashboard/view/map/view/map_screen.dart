@@ -38,7 +38,6 @@ class _MapScreenState extends State<MapScreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: const CustomAppBar2(),
         body: Stack(
           children: [
             Container(

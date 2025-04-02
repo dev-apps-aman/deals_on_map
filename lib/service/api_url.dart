@@ -2,7 +2,7 @@ class ApiUrl {
   static const String baseUrl =
       "https://project.dealsonmap.aamoditsolutions.com/api/v1/";
   static const String imageUrl =
-      "https://project.dealsonmap.aamoditsolutions.com/public/";
+      "https://project.dealsonmap.aamoditsolutions.com";
   static const String login = "${baseUrl}send-otp";
   static const String register = "${baseUrl}register";
   static const String verifyOtp = "${baseUrl}verify-otp";
@@ -21,12 +21,14 @@ class ApiUrl {
       "${baseUrl}seller-business-upload";
 
   static const String createShopOffer = "${baseUrl}create-shop-offer";
+  static const String deleteShopOffer = "${baseUrl}delete-shop-offer";
+  static const String updateShopOffer = "${baseUrl}update-shop-offer";
   static const String shopOfferList = "${baseUrl}shop-offer-list";
 
 //.............................................................
   static const String societyList = "${baseUrl}society-list";
   static const String towerList = "${baseUrl}tower-list";
-  static const String homeApi = "${baseUrl}user/home";
+  static const String homeApi = "${baseUrl}home_api";
   static const String cartListApi = "${baseUrl}user/cart-list";
   static const String updateCart = "${baseUrl}user/update-cart";
   static const String addWishListApi = "${baseUrl}user/add-wishlist";

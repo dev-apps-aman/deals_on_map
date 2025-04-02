@@ -14,9 +14,11 @@ class BusinessDashboardProvider extends ChangeNotifier {
       var json = jsonDecode(result.body);
       Log.console(json);
       if (json["status"] == true && json['data'] != null) {
+        if (!context.mounted) return;
         sellerDetails = BusinessDashboardModel.fromJson(json['data']);
-        successToast(context, 'Details Feteched');
+        successToast(context, 'Details Fetched');
       } else {
+        if (!context.mounted) return;
         errorToast(
             context, json["message"]?.toString() ?? "Something went wrong");
       }
@@ -26,7 +28,7 @@ class BusinessDashboardProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // seller bussiness upload
+  // seller business upload
   Future<void> sellerBusinessUpload(BuildContext context) async {
     try {
       var result = await ApiService.sellerBusinessUpload();

@@ -22,7 +22,6 @@ class _OffersState extends State<Offers> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: const CustomAppBar2(),
         body: SingleChildScrollView(
           child: Column(
             children: [

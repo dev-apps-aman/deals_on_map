@@ -22,3 +22,6 @@ const Color greeenFAEF = Color(0xFFEAFAEF);
 const Color greeenCFBB = Color(0xFFB4CFBB);
 const Color white = Color(0xFFFFFFFF);
 const Color lightPink = Color(0xFFFFF0E0);
+const Color pastel = Color(0xFFE8F3EB);
+const Color lightPink2 = Color(0xFFFAE3DA);
+const Color darkPink3 = Color(0xFFC29685);

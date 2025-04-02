@@ -29,40 +29,40 @@ class _LoginScreenState extends State<LoginScreen> {
           resizeToAvoidBottomInset: false,
           body: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const Dashboard(index: 0)),
-                        (route) => false,
-                      );
-                    },
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 17.w, vertical: 4.h),
-                      margin: EdgeInsets.only(top: 10.h, right: 10.w),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6),
-                          border:
-                              Border.all(color: secondaryFontColor, width: 1)),
-                      child: const Text(
-                        'Skip',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: regular,
-                          color: mainColor,
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(height: 10),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.end,
+              //   children: [
+              //     GestureDetector(
+              //       onTap: () {
+              //         Navigator.pushAndRemoveUntil(
+              //           context,
+              //           MaterialPageRoute(
+              //               builder: (context) => const Dashboard(index: 0)),
+              //           (route) => false,
+              //         );
+              //       },
+              //       child: Container(
+              //         padding:
+              //             EdgeInsets.symmetric(horizontal: 17.w, vertical: 4.h),
+              //         margin: EdgeInsets.only(top: 10.h, right: 10.w),
+              //         decoration: BoxDecoration(
+              //             borderRadius: BorderRadius.circular(6),
+              //             border:
+              //                 Border.all(color: secondaryFontColor, width: 1)),
+              //         child: const Text(
+              //           'Skip',
+              //           style: TextStyle(
+              //             fontSize: 12,
+              //             fontWeight: FontWeight.w400,
+              //             fontFamily: regular,
+              //             color: mainColor,
+              //           ),
+              //         ),
+              //       ),
+              //     )
+              //   ],
+              // ),
+              SizedBox(height: 20),
               Image.asset(
                 logoIc,
                 height: 84,

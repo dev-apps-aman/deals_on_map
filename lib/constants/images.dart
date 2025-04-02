@@ -81,6 +81,9 @@ const hospitalIc = "assets/icons/hospitalIc.png";
 const beautyIc = "assets/icons/beautyIc.png";
 const storeIc = "assets/icons/storeIc.png";
 
+const enquiriesIc = "assets/icons/enquiries_1.png";
+const questionIc = "assets/icons/question_2.png";
+
 const fbIc = "assets/icons/fbIc.png";
 const instaIc = "assets/icons/instaIc.png";
 const whatsappIc = "assets/icons/whatsappIc.png";

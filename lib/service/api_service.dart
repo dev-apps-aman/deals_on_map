@@ -316,11 +316,11 @@ class ApiService {
   ///homeListApi
   static Future<http.Response> homeListApi() async {
     http.Response response;
-    var token = await getAccessToken();
-    var result = await ApiClient.postData(ApiUrl.homeApi, headers: {
-      'Authorization': 'Bearer $token',
-      "Accept": "application/json",
-    }, body: {});
+    // var token = await getAccessToken();
+    var result = await ApiClient.getData(ApiUrl.homeApi, headers: {
+      // 'Authorization': 'Bearer $token',
+      // "Accept": "application/json",
+    });
     response = http.Response(jsonEncode(result), 200, headers: {
       HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
     });
@@ -805,7 +805,6 @@ class ApiService {
   }
 
   /// Create Shop Offer
-
   static Future<http.Response> createShopOffer(
     List<File> images,
     String title,
@@ -834,54 +833,127 @@ class ApiService {
     }
   }
 
+  // delete shop offer
+  static Future<http.Response> deleteShopOffer(int offerID) async {
+    http.Response response;
+    var token = await getAccessToken();
+    var result = await ApiClient.getData(
+        "${ApiUrl.deleteShopOffer}?offer_id=$offerID",
+        headers: {
+          'Authorization': 'Bearer $token',
+          "Accept": "application/json",
+        });
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
+    return response;
+  }
+
+  // update shop offer
+  static Future<http.Response> updateShopOffer(
+    List<File> images,
+    String title,
+    String description,
+    String offerID,
+    List<String> deleteImagesId, // ✅ Only contains IDs, not URLs
+  ) async {
+    var token = await getAccessToken();
+
+    Map<String, String> requestBody = {
+      "title": title,
+      "description": description,
+      "offer_id": offerID,
+    };
+
+    // ✅ Ensure only numeric image IDs are sent (Not URLs)
+    if (deleteImagesId.isNotEmpty) {
+      for (int i = 0; i < deleteImagesId.length; i++) {
+        requestBody['delete_image_id[$i]'] = deleteImagesId[i];
+      }
+    }
+
+    try {
+      var result = await ApiService.uploadMultiPalImages(
+        token: token,
+        url: ApiUrl.updateShopOffer,
+        image: images,
+        filed: 'files',
+        body: requestBody,
+        isSingle: false,
+      );
+
+      Log.console("Response Status: ${result.statusCode}");
+      Log.console("Response Body: ${result.body}");
+
+      if (result.statusCode == 200 || result.statusCode == 201) {
+        return result;
+      } else {
+        Log.console("Error: API request failed.");
+        return http.Response(
+          "Request failed with status: ${result.statusCode}",
+          result.statusCode,
+        );
+      }
+    } catch (e) {
+      Log.console("Exception in updateShopOffer: $e");
+      return http.Response("Exception: ${e.toString()}", 500);
+    }
+  }
+
+  //shop offer list
+  static Future<http.Response> shopOfferList() async {
+    http.Response response;
+    var token = await getAccessToken();
+    var result = await ApiClient.getData(ApiUrl.shopOfferList, headers: {
+      'Authorization': 'Bearer $token',
+      "Accept": "application/json",
+    });
+    response = http.Response(jsonEncode(result), 200, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    });
+    return response;
+  }
+
   static Future<http.Response> uploadMultiPalImages({
     required String token,
     required String url,
     required bool isSingle,
     required String filed,
     required List<File> image,
-    required File singleImage,
+    File? singleImage,
     required Map<String, String> body,
   }) async {
     try {
-      Map<String, String> headers = {};
-      headers['Connection'] = "keep-alive";
-      headers['Authorization'] = 'Bearer $token';
-      headers['Content-Type'] = 'multipart/form-data';
-      var request = http.MultipartRequest(
-        'POST',
-        Uri.parse(url),
-      );
-      if (isSingle) {
-        final mimeTypeData =
-            lookupMimeType(singleImage.path, headerBytes: [0xFF, 0xD8])
-                ?.split('/');
+      var headers = {
+        'Connection': "keep-alive",
+        'Authorization': 'Bearer $token',
+      };
+
+      var request = http.MultipartRequest('POST', Uri.parse(url));
+
+      if (isSingle && singleImage != null) {
+        String? mimeType = lookupMimeType(singleImage.path);
+        List<String> mimeTypeData =
+            mimeType?.split('/') ?? ['application', 'octet-stream'];
+
         request.files.add(
           await http.MultipartFile.fromPath(
             filed,
             singleImage.path,
-            contentType: MediaType(
-              mimeTypeData![0],
-              mimeTypeData[1],
-            ),
+            contentType: MediaType(mimeTypeData[0], mimeTypeData[1]),
           ),
         );
       } else {
-        for (var i = 0; i < image.length; i++) {
+        for (var img in image) {
           String? mimeType =
-              lookupMimeType(image[i].path) ?? 'application/octet-stream';
+              lookupMimeType(img.path) ?? 'application/octet-stream';
           List<String> mimeTypeData = mimeType.split('/');
-          if (mimeTypeData.length != 2) {
-            mimeTypeData = ['application', 'octet-stream'];
-          }
+
           request.files.add(
             await http.MultipartFile.fromPath(
               filed,
-              image[i].path,
-              contentType: MediaType(
-                mimeTypeData[0],
-                mimeTypeData[1],
-              ),
+              img.path,
+              contentType: MediaType(mimeTypeData[0], mimeTypeData[1]),
             ),
           );
         }
@@ -889,19 +961,23 @@ class ApiService {
 
       request.fields.addAll(body);
       request.headers.addAll(headers);
-      http.StreamedResponse response = await request.send();
-      var httpResponse = await http.Response.fromStream(response);
+
+      http.StreamedResponse streamedResponse = await request.send();
+      var response = await http.Response.fromStream(streamedResponse);
+
       Log.console(
-        'REQ Headers: $headers\n'
-        'RES Headers: ${httpResponse.request?.headers}\n'
-        'REQ BODY: ${request.fields}\n'
-        'REQUEST\n >> ${httpResponse.request}\n'
-        'STATUS\n >> ${httpResponse.statusCode}\n'
-        'BODY\n >> ${httpResponse.body}',
+        '🔵 API Request: $url\n'
+        '📩 Headers: $headers\n'
+        '📤 Body: ${request.fields}\n'
+        '🖼️ Uploaded Files: ${request.files.length}\n'
+        '📥 Response: ${response.statusCode}\n'
+        '📄 Body: ${response.body}',
       );
-      return httpResponse;
-    } catch (e, stackTrack) {
-      Log.console("'Error on \n >> $url', error: $e, stackTrace: $stackTrack");
+
+      return response;
+    } catch (e, stackTrace) {
+      Log.console("❌ Error in $url: $e \n StackTrace: $stackTrace");
+
       rethrow;
     }
   }
@@ -946,18 +1022,5 @@ class ApiService {
       );
     }
     return result;
-  }
-
-  static Future<http.Response> shopOfferList() async {
-    http.Response response;
-    var token = await getAccessToken();
-    var result = await ApiClient.getData(ApiUrl.shopOfferList, headers: {
-      'Authorization': 'Bearer $token',
-      "Accept": "application/json",
-    });
-    response = http.Response(jsonEncode(result), 200, headers: {
-      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
-    });
-    return response;
   }
 }

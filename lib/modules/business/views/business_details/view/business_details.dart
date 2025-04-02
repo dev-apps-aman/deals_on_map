@@ -3,7 +3,6 @@ import 'package:deals_on_map/constants/images.dart';
 import 'package:deals_on_map/constants/styles.dart';
 import 'package:deals_on_map/core/common_widgets/custom_app_bar.dart';
 import 'package:deals_on_map/modules/business/views/business_details/view/pictures/view/pictures.dart';
-import 'package:deals_on_map/modules/dashboard/view/home/view/item_detail/view/pictures/view/pictures.dart';
 import 'package:deals_on_map/modules/dashboard/view/home/view/item_detail/view/reels/view/reels.dart';
 import 'package:deals_on_map/modules/dashboard/view/home/view/item_detail/view/account/view/account.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +30,7 @@ class BusinessDetailsState extends State<BusinessDetails> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: CustomAppBar(
-          title: "Aamod Itsolution",
+          title: "Aamod It Solution",
           widget: Padding(
             padding: const EdgeInsets.only(right: 10),
             child: Icon(
@@ -100,7 +99,7 @@ class BusinessDetailsState extends State<BusinessDetails> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      _statusWidget(verifyIc, "Verified", headingColor),
+                      _statusWidget(verifyIc, "Verified", mainColor),
                       _statusWidget(offlineIc, "Offline", secondaryColor),
                       _statusWidget(onlineIc, "Online", secondaryColor),
                     ],

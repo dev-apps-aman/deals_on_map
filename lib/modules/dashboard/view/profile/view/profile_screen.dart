@@ -99,7 +99,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: const CustomAppBar2(),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 17),
           child: SingleChildScrollView(
@@ -117,7 +116,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Padding(
                         padding: const EdgeInsets.only(left: 15),
                         child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 2.h),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20.w, vertical: 2.h),
                           decoration: const BoxDecoration(
                             color: dividerColor,
                             borderRadius: BorderRadius.only(
@@ -137,7 +137,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 17),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 13, vertical: 17),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
@@ -199,7 +200,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     bottom: 0,
                                     right: 5,
                                     child: Container(
-                                        padding: const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 5),
+                                        padding: const EdgeInsets.only(
+                                            left: 5,
+                                            right: 5,
+                                            top: 5,
+                                            bottom: 5),
                                         decoration: const BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: textSpanColor,
@@ -248,8 +253,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   );*/
                               },
                               child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
-                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: brdColor),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 14, vertical: 4),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: brdColor),
                                 child: const Row(
                                   children: [
                                     Icon(
@@ -290,7 +298,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       return InkWell(
                         onTap: yourInfoItems[index].onTap,
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 5, vertical: 2),
                           child: Row(
                             children: [
                               Image.asset(

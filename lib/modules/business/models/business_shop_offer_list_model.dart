@@ -1,10 +1,12 @@
+import 'package:deals_on_map/service/api_url.dart';
+
 class ShopOfferModel {
   final int id;
   final String title;
   final String description;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final List<String> images;
+  final List<OfferImageModel> images;
 
   ShopOfferModel({
     required this.id,
@@ -22,9 +24,10 @@ class ShopOfferModel {
       description: json['description'] ?? '',
       createdAt: DateTime.parse(json['created_at']),
       updatedAt: DateTime.parse(json['updated_at']),
-      images: json['images'] == null
-          ? []
-          : (json['images'] as List<dynamic>).map((e) => e.toString()).toList(),
+      images: (json['images'] as List<dynamic>?)
+              ?.map((e) => OfferImageModel.fromJson(e))
+              .toList() ??
+          [],
     );
   }
 
@@ -35,7 +38,28 @@ class ShopOfferModel {
       'description': description,
       'created_at': createdAt.toIso8601String(),
       'updated_at': updatedAt.toIso8601String(),
-      'images': images,
+      'images': images.map((img) => img.toJson()).toList(),
+    };
+  }
+}
+
+class OfferImageModel {
+  final int id;
+  final String image;
+
+  OfferImageModel({required this.id, required this.image});
+
+  factory OfferImageModel.fromJson(Map<String, dynamic> json) {
+    return OfferImageModel(
+      id: json['id'],
+      image: ApiUrl.imageUrl + (json['image'] ?? ''),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'image': image,
     };
   }
 }
